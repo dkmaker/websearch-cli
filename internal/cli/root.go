@@ -149,8 +149,10 @@ func run(cmd *cobra.Command, args []string) error {
 	}
 
 	// Cache result
-	if data, err := json.Marshal(result); err == nil {
-		responseCache.Set(cacheKey, data)
+	if !flagNoCache {
+		if data, err := json.Marshal(result); err == nil {
+			responseCache.Set(cacheKey, data)
+		}
 	}
 
 	return outputResult(result)
