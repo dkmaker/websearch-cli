@@ -96,3 +96,73 @@ func TestGitHubSearchRepos(t *testing.T) {
 		t.Error("expected language in content")
 	}
 }
+
+func TestGitHubSearchCode(t *testing.T) {
+	mockResp := map[string]interface{}{
+		"total_count":        1,
+		"incomplete_results": false,
+		"items": []map[string]interface{}{
+			{
+				"name":     "main.go",
+				"path":     "cmd/server/main.go",
+				"html_url": "https://github.com/owner/repo/blob/main/cmd/server/main.go",
+				"repository": map[string]interface{}{
+					"full_name": "owner/repo",
+				},
+				"text_matches": []map[string]interface{}{
+					{"fragment": "func main() {\n\thttp.ListenAndServe(\":8080\", nil)\n}"},
+				},
+			},
+		},
+	}
+
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.URL.Path != "/search/code" {
+			t.Errorf("expected /search/code, got %s", r.URL.Path)
+		}
+		// Code search requires text-match accept header
+		accept := r.Header.Get("Accept")
+		if !strings.Contains(accept, "text-match") {
+			t.Error("expected text-match accept header for code search")
+		}
+		// Code search requires auth
+		if r.Header.Get("Authorization") == "" {
+			t.Error("expected Authorization header for code search")
+		}
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(mockResp)
+	}))
+	defer server.Close()
+
+	p := NewGitHub("ghp_testtoken", server.URL)
+	result, err := p.Search(context.Background(), "http.ListenAndServe language:go", SearchOptions{
+		Mode:       "code",
+		MaxResults: 10,
+	})
+	if err != nil {
+		t.Fatalf("Search error: %v", err)
+	}
+	if result.Mode != "code" {
+		t.Errorf("expected mode 'code', got %q", result.Mode)
+	}
+	if !strings.Contains(result.Content, "owner/repo") {
+		t.Error("expected repo name in content")
+	}
+	if !strings.Contains(result.Content, "cmd/server/main.go") {
+		t.Error("expected file path in content")
+	}
+	if !strings.Contains(result.Content, "ListenAndServe") {
+		t.Error("expected code fragment in content")
+	}
+}
+
+func TestGitHubSearchCodeRequiresAuth(t *testing.T) {
+	p := NewGitHub("", "http://localhost")
+	_, err := p.Search(context.Background(), "test", SearchOptions{Mode: "code"})
+	if err == nil {
+		t.Error("expected error for code search without token")
+	}
+	if !strings.Contains(err.Error(), "GITHUB_TOKEN") {
+		t.Errorf("expected GITHUB_TOKEN in error, got: %v", err)
+	}
+}

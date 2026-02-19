@@ -207,7 +207,50 @@ func formatStars(count int) string {
 }
 
 func (g *GitHub) searchCode(ctx context.Context, query string, opts SearchOptions) (*Result, error) {
-	return nil, fmt.Errorf("code search not yet implemented")
+	if g.token == "" {
+		return nil, fmt.Errorf("code search requires authentication. Set GITHUB_TOKEN")
+	}
+
+	endpoint := g.buildURL("/search/code", query, opts.MaxResults)
+	body, err := g.doRequest(ctx, endpoint, "application/vnd.github.text-match+json")
+	if err != nil {
+		return nil, err
+	}
+
+	var resp githubSearchResponse
+	if err := json.Unmarshal(body, &resp); err != nil {
+		return nil, fmt.Errorf("parsing response: %w", err)
+	}
+
+	var items []githubCodeResult
+	if err := json.Unmarshal(resp.Items, &items); err != nil {
+		return nil, fmt.Errorf("parsing code results: %w", err)
+	}
+
+	result := &Result{
+		Provider: "github",
+		Mode:     "code",
+	}
+
+	var sb strings.Builder
+	for i, item := range items {
+		if i > 0 {
+			sb.WriteString("\n\n")
+		}
+		sb.WriteString(fmt.Sprintf("**%s** %s", item.Repository.FullName, item.Path))
+		for _, tm := range item.TextMatches {
+			if tm.Fragment != "" {
+				sb.WriteString("\n  " + strings.ReplaceAll(tm.Fragment, "\n", "\n  "))
+				break // only first fragment
+			}
+		}
+		result.Sources = append(result.Sources, Source{
+			Title: item.Repository.FullName + "/" + item.Path,
+			URL:   item.HTMLURL,
+		})
+	}
+	result.Content = sb.String()
+	return result, nil
 }
 
 func (g *GitHub) searchIssues(ctx context.Context, query string, opts SearchOptions) (*Result, error) {
