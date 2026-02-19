@@ -78,6 +78,54 @@ func TestBraveSearch(t *testing.T) {
 	}
 }
 
+func TestCleanBraveHTML(t *testing.T) {
+	tests := []struct {
+		name  string
+		input string
+		want  string
+	}{
+		{
+			name:  "strong tags to markdown bold",
+			input: "<strong>bold text</strong>",
+			want:  "**bold text**",
+		},
+		{
+			name:  "em tags to markdown italic",
+			input: "<em>italic text</em>",
+			want:  "*italic text*",
+		},
+		{
+			name:  "mixed HTML tags and entities",
+			input: "<strong>Go</strong> &amp; <em>Rust</em> are &quot;fast&quot;",
+			want:  "**Go** & *Rust* are \"fast\"",
+		},
+		{
+			name:  "no HTML passes through unchanged",
+			input: "plain text with no markup",
+			want:  "plain text with no markup",
+		},
+		{
+			name:  "unknown tags are stripped",
+			input: "text with <span class=\"hl\">highlighted</span> and <br/>break",
+			want:  "text with highlighted and break",
+		},
+		{
+			name:  "nested tags",
+			input: "<strong><em>bold italic</em></strong>",
+			want:  "***bold italic***",
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got := cleanBraveHTML(tt.input)
+			if got != tt.want {
+				t.Errorf("cleanBraveHTML(%q) = %q, want %q", tt.input, got, tt.want)
+			}
+		})
+	}
+}
+
 func TestBraveSearchHTMLEntities(t *testing.T) {
 	mockResp := map[string]interface{}{
 		"web": map[string]interface{}{

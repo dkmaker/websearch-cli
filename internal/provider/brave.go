@@ -9,11 +9,26 @@ import (
 	"io"
 	"net/http"
 	"net/url"
+	"regexp"
 	"strconv"
 	"strings"
 )
 
 const defaultBraveURL = "https://api.search.brave.com"
+
+var htmlTagRe = regexp.MustCompile(`<[^>]+>`)
+
+// cleanBraveHTML converts common HTML tags to markdown equivalents,
+// strips any remaining HTML tags, and unescapes HTML entities.
+func cleanBraveHTML(s string) string {
+	s = strings.ReplaceAll(s, "<strong>", "**")
+	s = strings.ReplaceAll(s, "</strong>", "**")
+	s = strings.ReplaceAll(s, "<em>", "*")
+	s = strings.ReplaceAll(s, "</em>", "*")
+	s = htmlTagRe.ReplaceAllString(s, "")
+	s = html.UnescapeString(s)
+	return s
+}
 
 type Brave struct {
 	apiKey  string
@@ -111,8 +126,8 @@ func (b *Brave) Search(ctx context.Context, query string, opts SearchOptions) (*
 		if i > 0 {
 			sb.WriteString("\n\n")
 		}
-		title := html.UnescapeString(r.Title)
-		desc := html.UnescapeString(r.Description)
+		title := cleanBraveHTML(r.Title)
+		desc := cleanBraveHTML(r.Description)
 		sb.WriteString(fmt.Sprintf("**%s**\n%s", title, desc))
 		result.Sources = append(result.Sources, Source{
 			Title: title,
