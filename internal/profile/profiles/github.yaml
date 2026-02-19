@@ -1,0 +1,7 @@
+name: github
+description: GitHub repository and code search
+provider: github
+mode: repos
+system_prompt: ""
+max_results: 10
+output_format: markdown

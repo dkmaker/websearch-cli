@@ -20,6 +20,22 @@ func TestLoadBuiltinProfile(t *testing.T) {
 	}
 }
 
+func TestLoadBuiltinGitHub(t *testing.T) {
+	p, err := Load("github")
+	if err != nil {
+		t.Fatalf("Load(github) error: %v", err)
+	}
+	if p.Name != "github" {
+		t.Errorf("expected name 'github', got %q", p.Name)
+	}
+	if p.Provider != "github" {
+		t.Errorf("expected provider 'github', got %q", p.Provider)
+	}
+	if p.Mode != "repos" {
+		t.Errorf("expected mode 'repos', got %q", p.Mode)
+	}
+}
+
 func TestLoadBuiltinNodejs(t *testing.T) {
 	p, err := Load("nodejs")
 	if err != nil {
@@ -68,8 +84,8 @@ func TestLoadAllBuiltin(t *testing.T) {
 	if err != nil {
 		t.Fatalf("LoadAllBuiltin error: %v", err)
 	}
-	if len(profiles) < 3 {
-		t.Errorf("expected at least 3 profiles, got %d", len(profiles))
+	if len(profiles) < 4 {
+		t.Errorf("expected at least 4 profiles, got %d", len(profiles))
 	}
 	// Verify they're sorted by name
 	for i := 1; i < len(profiles); i++ {
@@ -94,14 +110,14 @@ func TestLoadAllBuiltin(t *testing.T) {
 
 func TestListProfiles(t *testing.T) {
 	profiles := ListBuiltin()
-	if len(profiles) < 3 {
-		t.Errorf("expected at least 3 built-in profiles, got %d", len(profiles))
+	if len(profiles) < 4 {
+		t.Errorf("expected at least 4 built-in profiles, got %d", len(profiles))
 	}
 	names := make(map[string]bool)
 	for _, p := range profiles {
 		names[p] = true
 	}
-	for _, want := range []string{"general", "nodejs", "python"} {
+	for _, want := range []string{"general", "github", "nodejs", "python"} {
 		if !names[want] {
 			t.Errorf("expected profile %q in list", want)
 		}
