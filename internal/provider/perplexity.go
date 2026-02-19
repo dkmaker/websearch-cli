@@ -166,9 +166,10 @@ func (p *Perplexity) Search(ctx context.Context, query string, opts SearchOption
 	}
 
 	result := &Result{
-		Content:  pResp.Choices[0].Message.Content,
-		Provider: "perplexity",
-		Mode:     mode,
+		Content:      pResp.Choices[0].Message.Content,
+		Provider:     "perplexity",
+		Mode:         mode,
+		FinishReason: pResp.Choices[0].FinishReason,
 	}
 
 	seen := make(map[string]bool)

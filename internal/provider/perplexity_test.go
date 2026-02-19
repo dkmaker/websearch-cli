@@ -89,6 +89,50 @@ func TestPerplexitySearch(t *testing.T) {
 	}
 }
 
+func TestPerplexityFinishReason(t *testing.T) {
+	tests := []struct {
+		name         string
+		finishReason string
+	}{
+		{"stop", "stop"},
+		{"length", "length"},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			mockResp := map[string]interface{}{
+				"id":    "test-id",
+				"model": "sonar",
+				"choices": []map[string]interface{}{
+					{
+						"index": 0,
+						"message": map[string]string{
+							"role":    "assistant",
+							"content": "Test content",
+						},
+						"finish_reason": tt.finishReason,
+					},
+				},
+			}
+
+			server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+				w.Header().Set("Content-Type", "application/json")
+				json.NewEncoder(w).Encode(mockResp)
+			}))
+			defer server.Close()
+
+			p := NewPerplexity("test-key", server.URL)
+			result, err := p.Search(context.Background(), "test", SearchOptions{Mode: "ask"})
+			if err != nil {
+				t.Fatalf("Search error: %v", err)
+			}
+			if result.FinishReason != tt.finishReason {
+				t.Errorf("expected FinishReason %q, got %q", tt.finishReason, result.FinishReason)
+			}
+		})
+	}
+}
+
 func TestPerplexityModeToModel(t *testing.T) {
 	tests := []struct {
 		mode  string

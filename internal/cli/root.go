@@ -112,6 +112,13 @@ func run(cmd *cobra.Command, args []string) error {
 		mode = prof.Mode
 	}
 
+	// Auto-scale max_tokens for research mode to prevent truncation.
+	// Research mode (sonar-deep-research) produces long-form responses
+	// (3,000-10,000+ tokens) that get cut off at the default 2048.
+	if shouldAutoScaleTokens(mode, flagMaxTokens, prof.MaxTokens) {
+		prof.MaxTokens = researchTokenScaleTarget
+	}
+
 	// Get API keys
 	perplexityKey := os.Getenv("PERPLEXITY_API_KEY")
 	braveKey := os.Getenv("BRAVE_API_KEY")
@@ -372,6 +379,22 @@ func formatProfileNames(names []string) string {
 		}
 	}
 	return strings.Join(formatted, ", ")
+}
+
+// researchTokenScaleThreshold is the max_tokens value at or below which
+// research mode auto-scales to researchTokenScaleTarget.
+const researchTokenScaleThreshold = 2048
+
+// researchTokenScaleTarget is the max_tokens value used for research mode
+// when auto-scaling is triggered.
+const researchTokenScaleTarget = 16384
+
+// shouldAutoScaleTokens returns true if research mode token auto-scaling
+// should be applied. This happens when mode is "research", the user didn't
+// explicitly set --max-tokens (flagMaxTokens == 0), and the profile's
+// max_tokens is at or below the threshold.
+func shouldAutoScaleTokens(mode string, flagMaxTokens, profileMaxTokens int) bool {
+	return mode == "research" && flagMaxTokens == 0 && profileMaxTokens <= researchTokenScaleThreshold
 }
 
 func capitalize(s string) string {

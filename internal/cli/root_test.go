@@ -197,6 +197,85 @@ func TestValidateModeGitHub(t *testing.T) {
 	}
 }
 
+func TestShouldAutoScaleTokens(t *testing.T) {
+	tests := []struct {
+		name             string
+		mode             string
+		flagMaxTokens    int
+		profileMaxTokens int
+		want             bool
+	}{
+		{
+			name:             "research mode with default tokens triggers auto-scale",
+			mode:             "research",
+			flagMaxTokens:    0,
+			profileMaxTokens: 2048,
+			want:             true,
+		},
+		{
+			name:             "research mode with low profile tokens triggers auto-scale",
+			mode:             "research",
+			flagMaxTokens:    0,
+			profileMaxTokens: 1024,
+			want:             true,
+		},
+		{
+			name:             "research mode with explicit --max-tokens does not auto-scale",
+			mode:             "research",
+			flagMaxTokens:    4096,
+			profileMaxTokens: 2048,
+			want:             false,
+		},
+		{
+			name:             "research mode with high profile tokens does not auto-scale",
+			mode:             "research",
+			flagMaxTokens:    0,
+			profileMaxTokens: 8192,
+			want:             false,
+		},
+		{
+			name:             "ask mode does not auto-scale",
+			mode:             "ask",
+			flagMaxTokens:    0,
+			profileMaxTokens: 2048,
+			want:             false,
+		},
+		{
+			name:             "search mode does not auto-scale",
+			mode:             "search",
+			flagMaxTokens:    0,
+			profileMaxTokens: 2048,
+			want:             false,
+		},
+		{
+			name:             "reason mode does not auto-scale",
+			mode:             "reason",
+			flagMaxTokens:    0,
+			profileMaxTokens: 2048,
+			want:             false,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got := shouldAutoScaleTokens(tt.mode, tt.flagMaxTokens, tt.profileMaxTokens)
+			if got != tt.want {
+				t.Errorf("shouldAutoScaleTokens(%q, %d, %d) = %v, want %v",
+					tt.mode, tt.flagMaxTokens, tt.profileMaxTokens, got, tt.want)
+			}
+		})
+	}
+}
+
+func TestAutoScaleConstants(t *testing.T) {
+	if researchTokenScaleThreshold != 2048 {
+		t.Errorf("expected threshold 2048, got %d", researchTokenScaleThreshold)
+	}
+	if researchTokenScaleTarget != 16384 {
+		t.Errorf("expected target 16384, got %d", researchTokenScaleTarget)
+	}
+}
+
 func TestSelfPrimerGitHub(t *testing.T) {
 	output := buildSelfPrimer("", "", "ghp_token", false, false)
 	if !strings.Contains(output, "github (ready)") {
