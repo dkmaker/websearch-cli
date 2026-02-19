@@ -15,6 +15,13 @@ import (
 	"github.com/spf13/cobra"
 )
 
+var appVersion = "dev"
+
+func SetVersion(v string) {
+	appVersion = v
+	rootCmd.Version = v
+}
+
 var (
 	flagProfile        string
 	flagMode           string
