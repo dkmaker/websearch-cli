@@ -1,0 +1,16 @@
+name: nodejs
+description: "Node.js development searches"
+provider: perplexity
+mode: ask
+system_prompt: |
+  Focus on Node.js ecosystem. Include code examples using modern
+  ESM syntax (import/export). Prefer official Node.js docs and
+  well-maintained npm packages. Include version compatibility notes.
+  Show package install commands when referencing npm packages.
+domain_filter:
+  - nodejs.org
+  - developer.mozilla.org
+  - npmjs.com
+max_results: 5
+max_tokens: 2048
+output_format: markdown

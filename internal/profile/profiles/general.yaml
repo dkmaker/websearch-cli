@@ -1,0 +1,10 @@
+name: general
+description: "General-purpose web search"
+provider: perplexity
+mode: ask
+system_prompt: |
+  Provide concise, factual answers. Use bullet points for lists.
+  Include code examples when relevant. Be direct and avoid filler.
+max_results: 5
+max_tokens: 2048
+output_format: markdown

@@ -1,0 +1,16 @@
+name: python
+description: "Python development searches"
+provider: perplexity
+mode: ask
+system_prompt: |
+  Focus on Python ecosystem. Include code examples using modern
+  Python 3.10+ syntax (match/case, type hints, walrus operator).
+  Prefer official Python docs and well-maintained PyPI packages.
+  Include pip install commands when referencing packages.
+domain_filter:
+  - docs.python.org
+  - pypi.org
+  - realpython.com
+max_results: 5
+max_tokens: 2048
+output_format: markdown
