@@ -63,6 +63,35 @@ func TestMergeProfiles(t *testing.T) {
 	}
 }
 
+func TestLoadAllBuiltin(t *testing.T) {
+	profiles, err := LoadAllBuiltin()
+	if err != nil {
+		t.Fatalf("LoadAllBuiltin error: %v", err)
+	}
+	if len(profiles) < 3 {
+		t.Errorf("expected at least 3 profiles, got %d", len(profiles))
+	}
+	// Verify they're sorted by name
+	for i := 1; i < len(profiles); i++ {
+		if profiles[i].Name < profiles[i-1].Name {
+			t.Errorf("profiles not sorted: %q before %q", profiles[i-1].Name, profiles[i].Name)
+		}
+	}
+	// Verify general profile is present and loaded
+	found := false
+	for _, p := range profiles {
+		if p.Name == "general" {
+			found = true
+			if p.Provider == "" {
+				t.Error("expected provider on general profile")
+			}
+		}
+	}
+	if !found {
+		t.Error("expected general profile in results")
+	}
+}
+
 func TestListProfiles(t *testing.T) {
 	profiles := ListBuiltin()
 	if len(profiles) < 3 {

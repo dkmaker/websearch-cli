@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"sort"
 	"strings"
 
 	"gopkg.in/yaml.v3"
@@ -108,6 +109,21 @@ func Merge(base, override *Profile) *Profile {
 		merged.OutputFormat = override.OutputFormat
 	}
 	return &merged
+}
+
+// LoadAllBuiltin loads and returns all built-in profiles, sorted by name.
+func LoadAllBuiltin() ([]*Profile, error) {
+	names := ListBuiltin()
+	sort.Strings(names)
+	var profiles []*Profile
+	for _, name := range names {
+		p, err := loadBuiltin(name)
+		if err != nil {
+			return nil, fmt.Errorf("loading builtin profile %q: %w", name, err)
+		}
+		profiles = append(profiles, p)
+	}
+	return profiles, nil
 }
 
 // ListBuiltin returns the names of all built-in profiles.
