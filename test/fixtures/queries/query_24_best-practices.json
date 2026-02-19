@@ -1,0 +1,17 @@
+{
+  "id": 24,
+  "category": "best-practices",
+  "problem": "A blue-green deployment requires database schema changes, but the old (blue) application version must continue serving traffic during the transition, meaning the migration must be backward-compatible with the old code, and if the new (green) version fails, the schema must be rollback-safe without losing data written by either version.",
+  "query": "What is the recommended pattern for database migration rollbacks in a blue-green deployment where the new schema must be backward compatible with the old application version still serving traffic",
+  "difficulty": "hard",
+  "tags": [
+    "database",
+    "migrations",
+    "deployment",
+    "backward-compatibility"
+  ],
+  "profile": "general",
+  "mode": "reason",
+  "reasoning": "Database migration strategy during blue-green deploys requires understanding expand-contract pattern, backward compatibility, and rollback safety. Mode 'reason' for step-by-step analysis of migration phases.",
+  "command": "./websearch --no-cache -m reason \"What is the recommended pattern for database migration rollbacks in a blue-green deployment where the new schema must be backward compatible with the old application version still serving traffic\""
+}

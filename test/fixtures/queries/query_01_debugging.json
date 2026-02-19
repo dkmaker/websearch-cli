@@ -1,0 +1,17 @@
+{
+  "id": 1,
+  "category": "debugging",
+  "problem": "A Go program hangs indefinitely because a goroutine tries to send on an unbuffered channel while the only other goroutine is blocked on sync.WaitGroup.Wait(), creating a circular dependency where neither can proceed.",
+  "query": "Why does my Go program deadlock when using sync.WaitGroup inside a goroutine that also writes to an unbuffered channel with no concurrent reader",
+  "difficulty": "hard",
+  "tags": [
+    "go",
+    "concurrency",
+    "deadlock",
+    "channels"
+  ],
+  "profile": "general",
+  "mode": "reason",
+  "reasoning": "Go concurrency deadlock is a nuanced debugging problem requiring chain-of-thought analysis. No language-specific profile fits Go. Mode 'reason' chosen because the answer requires step-by-step logical deduction about goroutine scheduling and blocking behavior.",
+  "command": "./websearch --no-cache -m reason \"Why does my Go program deadlock when using sync.WaitGroup inside a goroutine that also writes to an unbuffered channel with no concurrent reader\""
+}

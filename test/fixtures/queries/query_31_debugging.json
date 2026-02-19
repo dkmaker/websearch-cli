@@ -1,0 +1,17 @@
+{
+  "id": 31,
+  "category": "debugging",
+  "problem": "An Elasticsearch cluster returns inconsistent relevance scores for the same document across identical queries because function_score with random_score produces different results per shard, and uneven document distribution across shards causes different IDF calculations, making search results non-deterministic.",
+  "query": "Elasticsearch query returns different relevance scores for the same document across repeated searches when using function_score with random_score and the index has multiple shards with uneven document distribution",
+  "difficulty": "hard",
+  "tags": [
+    "elasticsearch",
+    "relevance",
+    "scoring",
+    "distributed"
+  ],
+  "profile": "general",
+  "mode": "reason",
+  "reasoning": "Elasticsearch scoring variance across shards involves DFS query-then-fetch, shard-level IDF, and random_score seed behavior. Mode 'reason' for understanding the distributed scoring mechanics.",
+  "command": "./websearch --no-cache -m reason \"Elasticsearch query returns different relevance scores for the same document across repeated searches when using function_score with random_score and the index has multiple shards with uneven document distribution\""
+}

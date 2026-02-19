@@ -1,0 +1,20 @@
+{
+  "id": 48,
+  "category": "bootstrapping",
+  "problem": "A developer setting up a TypeScript project with Vitest wants path aliases (e.g., @/components) defined once in tsconfig.json and automatically resolved in Vite's build config and Vitest's test runner, avoiding the common pitfall of maintaining duplicate alias definitions that drift out of sync.",
+  "query": "vite-tsconfig-paths vitest path aliases tsconfig.json resolve production build test setup TypeScript",
+  "difficulty": "medium",
+  "tags": [
+    "typescript",
+    "bootstrapping",
+    "vitest",
+    "vite",
+    "path-aliases",
+    "tsconfig"
+  ],
+  "profile": "general",
+  "mode": "ask",
+  "provider_override": "brave",
+  "reasoning": "Using Brave web search to find the vite-tsconfig-paths plugin repo, setup guides, and blog posts showing the integration. Brave is ideal for discovering the specific npm packages and configuration examples needed to solve this.",
+  "command": "./websearch --no-cache --provider brave \"vite-tsconfig-paths vitest path aliases tsconfig.json resolve production build test setup TypeScript\""
+}

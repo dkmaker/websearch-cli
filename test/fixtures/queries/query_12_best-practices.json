@@ -1,0 +1,17 @@
+{
+  "id": 12,
+  "category": "best-practices",
+  "problem": "A Go service runs both an HTTP server and Kafka consumer goroutines with manual offset commits. On SIGTERM, it must drain in-flight HTTP requests, stop consuming new Kafka messages, finish processing current messages, commit final offsets, and shut down cleanly — all with proper ordering to avoid data loss or duplicate processing.",
+  "query": "What is the correct way to implement graceful shutdown in a Go HTTP server that also runs background goroutines consuming from Kafka with manual offset commits",
+  "difficulty": "hard",
+  "tags": [
+    "go",
+    "graceful-shutdown",
+    "kafka",
+    "lifecycle"
+  ],
+  "profile": "general",
+  "mode": "reason",
+  "reasoning": "Coordinating shutdown across HTTP server, goroutines, and Kafka consumer with offset management requires careful ordering. Mode 'reason' because the shutdown sequence has dependencies that need step-by-step analysis.",
+  "command": "./websearch --no-cache -m reason \"What is the correct way to implement graceful shutdown in a Go HTTP server that also runs background goroutines consuming from Kafka with manual offset commits\""
+}

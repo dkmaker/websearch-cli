@@ -1,0 +1,19 @@
+{
+  "id": 23,
+  "category": "documentation",
+  "problem": "A Kubernetes service needs nginx ingress annotations that simultaneously handle WebSocket upgrade headers, enable cookie-based sticky sessions for stateful connections, proxy gRPC-Web traffic with the correct content-type, and respond to CORS preflight OPTIONS requests — all on the same ingress resource.",
+  "query": "nginx ingress controller annotations websocket upgrade sticky sessions gRPC-Web CORS preflight kubernetes",
+  "difficulty": "hard",
+  "tags": [
+    "kubernetes",
+    "nginx",
+    "websocket",
+    "grpc",
+    "cors"
+  ],
+  "profile": "general",
+  "mode": "ask",
+  "provider_override": "brave",
+  "reasoning": "Using Brave web search to find specific nginx ingress annotation references, GitHub examples, and blog posts showing combined websocket + sticky session + gRPC + CORS configs. Raw search results let us find actual configuration snippets across multiple sources.",
+  "command": "./websearch --no-cache --provider brave \"nginx ingress controller annotations websocket upgrade sticky sessions gRPC-Web CORS preflight kubernetes\""
+}

@@ -1,0 +1,18 @@
+{
+  "id": 2,
+  "category": "dependency-management",
+  "problem": "A Go project cannot compile because two of its direct dependencies each import a different major version of the same upstream module, and Go's module system treats major versions as distinct packages, causing type incompatibilities at the boundary.",
+  "query": "go modules incompatible major version transitive dependency conflict replace directive",
+  "difficulty": "hard",
+  "tags": [
+    "go",
+    "modules",
+    "dependency-conflict",
+    "semver"
+  ],
+  "profile": "github",
+  "mode": "issues",
+  "reasoning": "Using GitHub issues search to find real-world reports of Go module major version conflicts in the golang/go issue tracker and popular Go projects. Issue discussions often contain the exact resolution steps (replace directives, version pinning) that developers used.",
+  "command": "./websearch --no-cache -p github -m issues \"go modules incompatible major version transitive dependency conflict replace directive\"",
+  "provider_override": ""
+}

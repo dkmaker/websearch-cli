@@ -1,0 +1,18 @@
+{
+  "id": 14,
+  "category": "dependency-management",
+  "problem": "A Python package with C extensions was installed via pip in an Alpine-based Docker image, but the compiled .so files were linked against a specific libssl version that no longer matches what's installed in the container after a base image update, causing ImportError at runtime even though the package appears installed.",
+  "query": "Python package installed via pip shows ImportError for a C extension module that exists in site-packages but was compiled against a different version of libssl than what is available in the Alpine Docker image",
+  "difficulty": "hard",
+  "tags": [
+    "python",
+    "pip",
+    "docker",
+    "native-extensions",
+    "alpine"
+  ],
+  "profile": "general",
+  "mode": "reason",
+  "reasoning": "Although Python-related, this is really a system-level linking issue (musl vs glibc, shared library versions) that extends beyond the python profile's domain filters. Mode 'reason' for the diagnosis of library linking mismatch.",
+  "command": "./websearch --no-cache -m reason \"Python package installed via pip shows ImportError for a C extension module that exists in site-packages but was compiled against a different version of libssl than what is available in the Alpine Docker image\""
+}

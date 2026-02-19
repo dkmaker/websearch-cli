@@ -1,0 +1,17 @@
+{
+  "id": 20,
+  "category": "dependency-management",
+  "problem": "A Rust cargo workspace has two internal crates that each depend on different major versions of serde, and the derive macros from each version generate incompatible code, so types defined in one crate cannot be serialized/deserialized by the other crate's serde version.",
+  "query": "How to handle diamond dependency problem in Rust cargo workspace where two crates depend on different versions of serde with incompatible derive macro output",
+  "difficulty": "hard",
+  "tags": [
+    "rust",
+    "cargo",
+    "dependencies",
+    "workspace"
+  ],
+  "profile": "general",
+  "mode": "reason",
+  "reasoning": "Rust's semver-based resolution with proc macros adds complexity beyond typical dependency conflicts. Mode 'reason' for understanding how cargo resolves workspace dependencies and when derive macro output becomes incompatible across versions.",
+  "command": "./websearch --no-cache -m reason \"How to handle diamond dependency problem in Rust cargo workspace where two crates depend on different versions of serde with incompatible derive macro output\""
+}

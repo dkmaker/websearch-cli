@@ -1,0 +1,18 @@
+{
+  "id": 40,
+  "category": "best-practices",
+  "problem": "A Go microservice handles HTTP requests that spawn goroutines and make downstream gRPC calls, but log entries from different requests are interleaved and lack correlation IDs. The developer needs to propagate request context (trace ID, user ID) through the entire call chain including middleware, handlers, goroutines, and outgoing gRPC interceptors.",
+  "query": "structured logging context propagation trace ID middleware gRPC interceptor language:go",
+  "difficulty": "medium",
+  "tags": [
+    "go",
+    "logging",
+    "observability",
+    "context-propagation",
+    "grpc"
+  ],
+  "profile": "github",
+  "mode": "code",
+  "reasoning": "Using GitHub code search to find real-world implementations of structured logging with context propagation in Go services. Code search reveals actual patterns — how developers inject loggers into context, extract them in gRPC interceptors, and propagate trace IDs through middleware.",
+  "command": "./websearch --no-cache -p github -m code \"structured logging context propagation trace ID middleware gRPC interceptor language:go\""
+}

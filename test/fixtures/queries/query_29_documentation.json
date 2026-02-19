@@ -1,0 +1,19 @@
+{
+  "id": 29,
+  "category": "documentation",
+  "problem": "An AWS CDK application needs a custom resource to perform an action not supported by CloudFormation natively (e.g., seeding a database, calling an external API). The Lambda-backed provider must correctly handle Create, Update, and Delete lifecycle events and return a stable PhysicalResourceId to avoid orphaned resources on stack updates.",
+  "query": "AWS CDK custom resource Lambda provider framework Create Update Delete lifecycle PhysicalResourceId",
+  "difficulty": "hard",
+  "tags": [
+    "aws",
+    "cdk",
+    "custom-resources",
+    "lambda",
+    "infrastructure"
+  ],
+  "profile": "general",
+  "mode": "ask",
+  "provider_override": "brave",
+  "reasoning": "Using Brave web search to find AWS CDK documentation pages, construct library references, and blog posts with working custom resource provider examples. Brave excels at surfacing specific AWS doc URLs and CDK API references.",
+  "command": "./websearch --no-cache --provider brave \"AWS CDK custom resource Lambda provider framework Create Update Delete lifecycle PhysicalResourceId\""
+}

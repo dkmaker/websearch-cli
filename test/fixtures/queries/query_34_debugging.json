@@ -1,0 +1,19 @@
+{
+  "id": 34,
+  "category": "debugging",
+  "problem": "Prometheus shows scrape targets as healthy (UP), but Grafana dashboards have gaps in time series data. The gaps align with long GC pauses in the monitored application, during which the metrics HTTP endpoint is unresponsive and Prometheus records a successful scrape with stale or missing counter increments.",
+  "query": "Prometheus scrape target UP but Grafana gaps time series data missing garbage collection pause application metrics",
+  "difficulty": "medium",
+  "tags": [
+    "prometheus",
+    "grafana",
+    "monitoring",
+    "gc",
+    "observability"
+  ],
+  "profile": "general",
+  "mode": "ask",
+  "provider_override": "brave",
+  "reasoning": "Using Brave web search to find blog posts, GitHub issues, and Prometheus community discussions about scrape timing vs GC pauses. This is a known operational issue best answered by finding real-world incident reports and solutions from practitioners.",
+  "command": "./websearch --no-cache --provider brave \"Prometheus scrape target UP but Grafana gaps time series data missing garbage collection pause application metrics\""
+}

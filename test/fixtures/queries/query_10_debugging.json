@@ -1,0 +1,17 @@
+{
+  "id": 10,
+  "category": "debugging",
+  "problem": "A PostgreSQL query that previously ran fast using a sequential scan became extremely slow after running ANALYZE, because the updated table statistics convinced the query planner to switch to a nested loop join with index scan on a large partitioned table — a plan that is far worse for the actual data distribution.",
+  "query": "PostgreSQL query that was fast with sequential scan now takes 30 seconds after ANALYZE because the planner switched to a nested loop join with an index scan on a large partitioned table",
+  "difficulty": "hard",
+  "tags": [
+    "postgresql",
+    "query-planner",
+    "performance",
+    "partitioning"
+  ],
+  "profile": "general",
+  "mode": "reason",
+  "reasoning": "PostgreSQL query planner regression debugging requires understanding statistics, cost estimation, and join strategy selection. Mode 'reason' for the logical deduction needed to diagnose why updated statistics led to a worse plan.",
+  "command": "./websearch --no-cache -m reason \"PostgreSQL query that was fast with sequential scan now takes 30 seconds after ANALYZE because the planner switched to a nested loop join with an index scan on a large partitioned table\""
+}

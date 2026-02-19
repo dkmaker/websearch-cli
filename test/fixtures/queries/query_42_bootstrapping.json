@@ -1,0 +1,19 @@
+{
+  "id": 42,
+  "category": "bootstrapping",
+  "problem": "A team wants to organize multiple related Python packages in a single repository with shared development tooling, where packages can depend on each other via path references during development but install normally from PyPI in production. They need to evaluate whether uv workspaces or poetry workspaces better handles the virtual environment sharing and cross-package dependency resolution.",
+  "query": "What is the correct way to bootstrap a Python monorepo with multiple packages that share a common virtual environment using uv or poetry workspaces where packages depend on each other with path dependencies",
+  "difficulty": "hard",
+  "tags": [
+    "python",
+    "bootstrapping",
+    "monorepo",
+    "uv",
+    "poetry",
+    "workspaces"
+  ],
+  "profile": "general",
+  "mode": "reason",
+  "reasoning": "uv workspaces are relatively new and not well-covered by the python profile's 3 domain filters. Using 'general' for broader access to uv docs, poetry docs, and community guides. Mode 'reason' because comparing uv vs poetry workspace approaches requires tradeoff analysis.",
+  "command": "./websearch --no-cache -m reason \"What is the correct way to bootstrap a Python monorepo with multiple packages that share a common virtual environment using uv or poetry workspaces where packages depend on each other with path dependencies\""
+}

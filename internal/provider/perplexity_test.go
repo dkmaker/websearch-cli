@@ -96,7 +96,7 @@ func TestPerplexityModeToModel(t *testing.T) {
 	}{
 		{"ask", "sonar"},
 		{"search", "sonar-pro"},
-		{"reason", "sonar-reasoning"},
+		{"reason", "sonar-reasoning-pro"},
 		{"research", "sonar-deep-research"},
 	}
 	for _, tt := range tests {

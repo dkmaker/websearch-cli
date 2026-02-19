@@ -1,0 +1,17 @@
+{
+  "id": 28,
+  "category": "debugging",
+  "problem": "A Go application using go-redis against a Redis Cluster experiences latency spikes during cluster rebalancing because the client's cached slot-to-node mapping becomes stale, causing continuous MOVED/ASK redirections on every command until the client refreshes its cluster topology.",
+  "query": "Redis Cluster returns MOVED and ASK redirections continuously causing latency spikes in a Go application using go-redis when cluster is rebalancing slots after adding a new node",
+  "difficulty": "hard",
+  "tags": [
+    "redis",
+    "cluster",
+    "go",
+    "latency"
+  ],
+  "profile": "general",
+  "mode": "reason",
+  "reasoning": "Redis Cluster slot migration with MOVED/ASK handling in the go-redis client requires understanding cluster topology refresh, redirection handling, and pipeline behavior during rebalancing. Mode 'reason' for root cause analysis.",
+  "command": "./websearch --no-cache -m reason \"Redis Cluster returns MOVED and ASK redirections continuously causing latency spikes in a Go application using go-redis when cluster is rebalancing slots after adding a new node\""
+}

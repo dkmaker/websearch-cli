@@ -1,0 +1,17 @@
+{
+  "id": 21,
+  "category": "architecture",
+  "problem": "A system using CQRS with event sourcing must project read models from an event store receiving 10,000 events per second while keeping read model staleness under 100ms, requiring careful design of projection infrastructure, partitioning, and potentially in-memory caching to meet the latency SLA.",
+  "query": "What is the best strategy for implementing CQRS with event sourcing in a system where read models need to be eventually consistent within 100ms and the event store receives 10k events per second",
+  "difficulty": "hard",
+  "tags": [
+    "cqrs",
+    "event-sourcing",
+    "performance",
+    "consistency"
+  ],
+  "profile": "general",
+  "mode": "research",
+  "reasoning": "Deep architectural question combining CQRS, event sourcing, performance constraints, and consistency requirements. Mode 'research' for comprehensive multi-source analysis from distributed systems literature and real-world implementations.",
+  "command": "./websearch --no-cache -m research \"What is the best strategy for implementing CQRS with event sourcing in a system where read models need to be eventually consistent within 100ms and the event store receives 10k events per second\""
+}

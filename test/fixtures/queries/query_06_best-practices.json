@@ -1,0 +1,17 @@
+{
+  "id": 6,
+  "category": "best-practices",
+  "problem": "A Rust async application using tokio needs a unified error handling strategy that can represent failures from HTTP clients, database drivers (sqlx/diesel), and serde serialization without losing error context or making match arms unmanageable.",
+  "query": "How should I structure error handling in a Rust async application using tokio where errors can originate from network IO, database queries, and serialization",
+  "difficulty": "hard",
+  "tags": [
+    "rust",
+    "async",
+    "error-handling",
+    "tokio"
+  ],
+  "profile": "general",
+  "mode": "reason",
+  "reasoning": "Rust error handling design with thiserror/anyhow, async trait bounds, and error composition across multiple domains. Mode 'reason' for the design tradeoff analysis between error type strategies.",
+  "command": "./websearch --no-cache -m reason \"How should I structure error handling in a Rust async application using tokio where errors can originate from network IO, database queries, and serialization\""
+}

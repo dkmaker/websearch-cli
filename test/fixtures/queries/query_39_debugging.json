@@ -1,0 +1,18 @@
+{
+  "id": 39,
+  "category": "debugging",
+  "problem": "An AWS Lambda running Spring Boot 3 with SnapStart and provisioned concurrency still exhibits cold start latency when traffic exceeds the provisioned limit. Additionally, SnapStart restores from a snapshot where the database connection pool was initialized, but those connections are stale/closed after restore, causing connection failures on the first requests.",
+  "query": "AWS Lambda function with provisioned concurrency still shows cold start latency spikes at exactly the provisioned limit when using SnapStart with a Spring Boot 3 application that initializes database connection pool during init phase",
+  "difficulty": "hard",
+  "tags": [
+    "aws",
+    "lambda",
+    "cold-start",
+    "java",
+    "spring-boot"
+  ],
+  "profile": "general",
+  "mode": "reason",
+  "reasoning": "Lambda SnapStart with provisioned concurrency and connection pools has subtle interactions — snapshot restore invalidates pooled connections, CRaC hooks needed. Mode 'reason' for understanding the lifecycle interaction.",
+  "command": "./websearch --no-cache -m reason \"AWS Lambda function with provisioned concurrency still shows cold start latency spikes at exactly the provisioned limit when using SnapStart with a Spring Boot 3 application that initializes database connection pool during init phase\""
+}

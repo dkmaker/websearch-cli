@@ -1,0 +1,19 @@
+{
+  "id": 46,
+  "category": "bootstrapping",
+  "problem": "A TypeScript monorepo has shared library packages consumed by both a Next.js frontend and a NestJS backend. TypeScript project references with composite builds should enable incremental compilation, but Next.js and NestJS have conflicting tsconfig requirements (e.g., jsx settings, module targets), and shared packages must emit declarations that satisfy both consumers without duplicating type definitions.",
+  "query": "How to set up a TypeScript monorepo with project references and composite builds where shared packages are consumed by both a Next.js app and a NestJS API without duplicating type declarations or breaking incremental compilation",
+  "difficulty": "hard",
+  "tags": [
+    "typescript",
+    "bootstrapping",
+    "monorepo",
+    "project-references",
+    "nextjs",
+    "nestjs"
+  ],
+  "profile": "general",
+  "mode": "reason",
+  "reasoning": "TypeScript monorepo with project references across Next.js and NestJS requires understanding composite builds, declaration emit, and framework-specific tsconfig requirements. The 'nodejs' profile filters are too narrow. Mode 'reason' for the configuration analysis.",
+  "command": "./websearch --no-cache -m reason \"How to set up a TypeScript monorepo with project references and composite builds where shared packages are consumed by both a Next.js app and a NestJS API without duplicating type declarations or breaking incremental compilation\""
+}

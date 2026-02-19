@@ -1,0 +1,18 @@
+{
+  "id": 18,
+  "category": "best-practices",
+  "problem": "A single-page application with a backend-for-frontend (BFF) layer needs to securely manage authentication tokens, choosing between storing JWT access tokens in httpOnly cookies (vulnerable to CSRF) versus keeping them in memory with refresh token rotation (lost on page reload), each with distinct attack surfaces.",
+  "query": "What are the security implications of using JWT access tokens stored in httpOnly cookies versus in-memory with refresh token rotation for a single-page application with a BFF pattern",
+  "difficulty": "hard",
+  "tags": [
+    "security",
+    "jwt",
+    "authentication",
+    "spa",
+    "bff"
+  ],
+  "profile": "general",
+  "mode": "reason",
+  "reasoning": "Security tradeoff analysis between multiple authentication strategies with different attack surface considerations (XSS, CSRF, token theft). Mode 'reason' for structured comparison of threat models.",
+  "command": "./websearch --no-cache -m reason \"What are the security implications of using JWT access tokens stored in httpOnly cookies versus in-memory with refresh token rotation for a single-page application with a BFF pattern\""
+}

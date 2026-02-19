@@ -1,0 +1,18 @@
+{
+  "id": 13,
+  "category": "debugging",
+  "problem": "A Java application in Docker runs fine on a developer's machine but gets OOMKilled by Kubernetes despite setting container memory limits to 2Gi and JVM heap to 1536m, because the JVM consumes significant memory beyond the heap (metaspace, thread stacks, direct buffers, GC overhead) that exceeds the remaining 512MB.",
+  "query": "Docker container runs fine locally but gets OOMKilled in Kubernetes even though memory limits are set to 2Gi and the Java app has -Xmx set to 1536m with G1GC",
+  "difficulty": "hard",
+  "tags": [
+    "docker",
+    "kubernetes",
+    "java",
+    "memory",
+    "oom"
+  ],
+  "profile": "general",
+  "mode": "reason",
+  "reasoning": "Java memory in containers is a classic debugging puzzle — off-heap memory, metaspace, thread stacks, native memory, cgroup limits. Mode 'reason' for systematic analysis of where the 464MB gap between Xmx and cgroup limit gets consumed.",
+  "command": "./websearch --no-cache -m reason \"Docker container runs fine locally but gets OOMKilled in Kubernetes even though memory limits are set to 2Gi and the Java app has -Xmx set to 1536m with G1GC\""
+}

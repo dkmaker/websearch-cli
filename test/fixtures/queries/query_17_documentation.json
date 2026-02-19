@@ -1,0 +1,18 @@
+{
+  "id": 17,
+  "category": "documentation",
+  "problem": "A TypeScript library author needs to ship a package that works for both ESM and CJS consumers with correct TypeScript types, but configuring Vite's library mode build output alongside package.json conditional exports and TypeScript's moduleResolution settings is error-prone and poorly documented as a cohesive setup.",
+  "query": "How to set up Vite library mode to output both ESM and CJS bundles with correct package.json exports map that works with Node.js conditional exports and TypeScript moduleResolution bundler",
+  "difficulty": "hard",
+  "tags": [
+    "vite",
+    "typescript",
+    "esm",
+    "cjs",
+    "package-exports"
+  ],
+  "profile": "general",
+  "mode": "reason",
+  "reasoning": "Dual ESM/CJS output with correct exports map is notoriously tricky. The 'nodejs' profile filters would miss Vite docs and TypeScript config guides. Mode 'reason' because the interplay between Vite build config, package.json exports, and TypeScript resolution needs careful analysis.",
+  "command": "./websearch --no-cache -m reason \"How to set up Vite library mode to output both ESM and CJS bundles with correct package.json exports map that works with Node.js conditional exports and TypeScript moduleResolution bundler\""
+}

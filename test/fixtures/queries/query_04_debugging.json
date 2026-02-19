@@ -1,0 +1,17 @@
+{
+  "id": 4,
+  "category": "debugging",
+  "problem": "After upgrading Node.js from v18 to v22, a production application crashes with SIGABRT signal and produces no JavaScript stack trace because the crash originates in a native addon's C++ code that was compiled against the older Node.js ABI.",
+  "query": "Node.js process crashes with SIGABRT and no stack trace after upgrading from v18 to v22 when using native addons compiled with node-gyp",
+  "difficulty": "hard",
+  "tags": [
+    "nodejs",
+    "native-addons",
+    "node-gyp",
+    "migration"
+  ],
+  "profile": "nodejs",
+  "mode": "reason",
+  "reasoning": "Node.js specific crash debugging. Using 'nodejs' profile for ecosystem context. Mode 'reason' because SIGABRT with native addons requires understanding ABI compatibility, N-API versions, and V8 changes across Node versions — needs chain-of-thought.",
+  "command": "./websearch --no-cache -p nodejs -m reason \"Node.js process crashes with SIGABRT and no stack trace after upgrading from v18 to v22 when using native addons compiled with node-gyp\""
+}

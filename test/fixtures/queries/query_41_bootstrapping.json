@@ -1,0 +1,18 @@
+{
+  "id": 41,
+  "category": "bootstrapping",
+  "problem": "A developer starting a new Python project needs a modern pyproject.toml-based setup using setuptools that exposes both a CLI tool (via console_scripts entry point) and a library API for programmatic use, with separate optional dependency groups for development tools, testing, and documentation — and editable installs must work for local development.",
+  "query": "pyproject.toml setuptools console_scripts optional-dependencies editable install template",
+  "difficulty": "medium",
+  "tags": [
+    "python",
+    "bootstrapping",
+    "pyproject",
+    "setuptools",
+    "packaging"
+  ],
+  "profile": "github",
+  "mode": "repos",
+  "reasoning": "Using GitHub repos search to find real Python project templates and cookiecutters that demonstrate modern pyproject.toml setups with console_scripts and optional dependency groups. Seeing actual working repositories is more useful than documentation for bootstrapping decisions.",
+  "command": "./websearch --no-cache -p github \"pyproject.toml setuptools console_scripts optional-dependencies editable install template\""
+}

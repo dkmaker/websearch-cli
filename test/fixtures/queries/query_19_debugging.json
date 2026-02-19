@@ -1,0 +1,17 @@
+{
+  "id": 19,
+  "category": "debugging",
+  "problem": "A micro-frontend architecture using Webpack 5 Module Federation loads a remote component successfully, but React hooks throw 'Invalid hook call' because the shared singleton configuration for React doesn't prevent the remote from bundling its own copy, resulting in two React instances when the remote uses useContext from the host's provider tree.",
+  "query": "Webpack 5 Module Federation remote container loads but shared singleton React dependency causes 'Invalid hook call' error only when the remote component uses useContext from a provider defined in the host",
+  "difficulty": "hard",
+  "tags": [
+    "webpack",
+    "module-federation",
+    "react",
+    "microfrontend"
+  ],
+  "profile": "general",
+  "mode": "reason",
+  "reasoning": "Module Federation singleton sharing with React context is a subtle bug involving multiple React instances. Mode 'reason' for diagnosing the duplicate React instance root cause and shared scope configuration.",
+  "command": "./websearch --no-cache -m reason \"Webpack 5 Module Federation remote container loads but shared singleton React dependency causes Invalid hook call error only when the remote component uses useContext from a provider defined in the host\""
+}

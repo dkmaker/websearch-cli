@@ -1,0 +1,17 @@
+{
+  "id": 36,
+  "category": "best-practices",
+  "problem": "A high-concurrency Go application shares a single pgxpool connection pool between fast OLTP queries (1-5ms) and slow analytics queries (5-30s). The slow queries hold connections for extended periods, starving the fast queries and causing timeouts, even though the pool is sized for the fast query workload.",
+  "query": "What is the recommended approach for handling database connection pool exhaustion in a high-concurrency Go application using pgxpool when some queries are long-running analytics mixed with fast OLTP queries",
+  "difficulty": "hard",
+  "tags": [
+    "go",
+    "postgresql",
+    "connection-pool",
+    "performance"
+  ],
+  "profile": "general",
+  "mode": "reason",
+  "reasoning": "Connection pool starvation from mixed workloads requires understanding pool sizing, separate pools, query timeouts, and connection lifetime management. Mode 'reason' for analyzing the contention pattern and solutions.",
+  "command": "./websearch --no-cache -m reason \"What is the recommended approach for handling database connection pool exhaustion in a high-concurrency Go application using pgxpool when some queries are long-running analytics mixed with fast OLTP queries\""
+}

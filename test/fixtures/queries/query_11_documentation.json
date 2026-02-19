@@ -1,0 +1,18 @@
+{
+  "id": 11,
+  "category": "documentation",
+  "problem": "A team using Terraform Cloud with remote execution needs to configure cross-account AWS access using assume_role with an external_id, but the dynamic credentials feature in Terraform Cloud changes how authentication flows, and the provider configuration must work both locally and in the remote runner.",
+  "query": "Terraform AWS provider assume_role external_id cross-account Terraform Cloud dynamic credentials configuration",
+  "difficulty": "hard",
+  "tags": [
+    "terraform",
+    "aws",
+    "iam",
+    "infrastructure-as-code"
+  ],
+  "profile": "general",
+  "mode": "ask",
+  "provider_override": "brave",
+  "reasoning": "Using Brave web search to find specific Terraform and AWS documentation pages, blog posts, and forum answers about this configuration. Brave's raw web results are ideal for locating authoritative doc pages rather than getting an AI-synthesized answer.",
+  "command": "./websearch --no-cache --provider brave \"Terraform AWS provider assume_role external_id cross-account Terraform Cloud dynamic credentials configuration\""
+}

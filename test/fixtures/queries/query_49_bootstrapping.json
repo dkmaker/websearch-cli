@@ -1,0 +1,19 @@
+{
+  "id": 49,
+  "category": "bootstrapping",
+  "problem": "A team starting a new AWS CDK project in TypeScript needs a structure that supports multiple CloudFormation stacks sharing common constructs, with each stack having its own integration test suite using CDK assertions. The CI pipeline must run cdk synth and tests in parallel to keep build times manageable as the number of stacks grows.",
+  "query": "How to set up a new TypeScript AWS CDK project with multiple stacks that share constructs where each stack has its own integration tests using jest and the CDK assertions library and synth runs in parallel during CI",
+  "difficulty": "hard",
+  "tags": [
+    "typescript",
+    "bootstrapping",
+    "aws-cdk",
+    "jest",
+    "infrastructure",
+    "testing"
+  ],
+  "profile": "general",
+  "mode": "reason",
+  "reasoning": "CDK multi-stack project structure with shared constructs and parallel synth in CI spans AWS CDK, Jest, and CI configuration. Mode 'reason' for analyzing the project layout and test isolation strategy.",
+  "command": "./websearch --no-cache -m reason \"How to set up a new TypeScript AWS CDK project with multiple stacks that share constructs where each stack has its own integration tests using jest and the CDK assertions library and synth runs in parallel during CI\""
+}

@@ -1,0 +1,17 @@
+{
+  "id": 27,
+  "category": "architecture",
+  "problem": "A distributed transaction using the saga pattern spans three microservices, but when the saga needs to roll back and a compensating action fails (e.g., the refund service is down), the system enters an inconsistent state. The design must handle retries of compensating actions with idempotency keys to guarantee eventual consistency.",
+  "query": "How to implement a saga orchestrator pattern for a distributed transaction spanning three microservices where compensating actions themselves can fail and need retry with idempotency guarantees",
+  "difficulty": "hard",
+  "tags": [
+    "microservices",
+    "saga",
+    "distributed-transactions",
+    "reliability"
+  ],
+  "profile": "general",
+  "mode": "reason",
+  "reasoning": "Saga pattern with failing compensations adds a layer of complexity beyond the basic pattern. Mode 'reason' for analyzing the nested failure scenarios and idempotency design.",
+  "command": "./websearch --no-cache -m reason \"How to implement a saga orchestrator pattern for a distributed transaction spanning three microservices where compensating actions themselves can fail and need retry with idempotency guarantees\""
+}

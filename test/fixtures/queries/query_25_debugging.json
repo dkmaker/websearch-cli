@@ -1,0 +1,17 @@
+{
+  "id": 25,
+  "category": "debugging",
+  "problem": "A TypeScript codebase uses a recursive conditional type (DeepPartial<T>) with mapped types to make all nested properties optional, but when applied to a deeply nested API response type with many levels of nesting, the TypeScript compiler hits its recursion depth limit and emits an error refusing to evaluate the type.",
+  "query": "TypeScript compiler emits 'Type instantiation is excessively deep and possibly infinite' when using a recursive conditional type for deep partial with mapped types on a complex nested API response type",
+  "difficulty": "hard",
+  "tags": [
+    "typescript",
+    "type-system",
+    "generics",
+    "compiler"
+  ],
+  "profile": "general",
+  "mode": "reason",
+  "reasoning": "TypeScript type system limits with recursive types need understanding of recursion depth limits and workarounds (tail-call optimization in TS 4.5+, breaking recursion with intermediate types). Mode 'reason' for analyzing the type-level computation.",
+  "command": "./websearch --no-cache -m reason \"TypeScript compiler emits Type instantiation is excessively deep and possibly infinite when using a recursive conditional type for deep partial with mapped types on a complex nested API response type\""
+}

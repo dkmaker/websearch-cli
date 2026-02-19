@@ -1,0 +1,17 @@
+{
+  "id": 38,
+  "category": "architecture",
+  "problem": "A system using Protobuf-serialized messages in Kafka topics needs to evolve message schemas over time while producers and consumers are deployed on independent release cycles. Adding, removing, or changing fields must not break existing consumers or producers, requiring strict adherence to Protobuf wire format compatibility rules and potentially a schema registry for governance.",
+  "query": "How to implement zero-downtime schema evolution for Protobuf messages in a system using Kafka where producers and consumers are deployed independently and messages must remain backward and forward compatible",
+  "difficulty": "hard",
+  "tags": [
+    "protobuf",
+    "kafka",
+    "schema-evolution",
+    "compatibility"
+  ],
+  "profile": "general",
+  "mode": "reason",
+  "reasoning": "Protobuf schema evolution with Kafka requires understanding wire format compatibility, field numbering rules, and schema registry integration. Mode 'reason' for analyzing the compatibility matrix and safe evolution patterns.",
+  "command": "./websearch --no-cache -m reason \"How to implement zero-downtime schema evolution for Protobuf messages in a system using Kafka where producers and consumers are deployed independently and messages must remain backward and forward compatible\""
+}

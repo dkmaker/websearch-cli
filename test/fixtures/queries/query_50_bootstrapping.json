@@ -1,0 +1,20 @@
+{
+  "id": 50,
+  "category": "bootstrapping",
+  "problem": "A developer wants to start a new TypeScript Express API with strict ESM (no CommonJS fallbacks), using tsx for fast development reloads, esbuild for production bundling, and zod-to-openapi for generating OpenAPI schemas directly from request/response Zod validators. The challenge is getting all these tools to work together under strict ESM mode where require() is unavailable and dynamic imports behave differently.",
+  "query": "What is the correct way to initialize a TypeScript Express API project with strict ESM mode, tsx for development, esbuild for production bundling, and OpenAPI schema generation from Zod validators that stays in sync with route handlers",
+  "difficulty": "hard",
+  "tags": [
+    "typescript",
+    "bootstrapping",
+    "express",
+    "esm",
+    "esbuild",
+    "openapi",
+    "zod"
+  ],
+  "profile": "general",
+  "mode": "reason",
+  "reasoning": "Multi-tool TypeScript setup with ESM, tsx, esbuild, and Zod-to-OpenAPI spans many ecosystems. The 'nodejs' profile filters are too narrow. Mode 'reason' because strict ESM with Express and build tooling has configuration pitfalls that need step-by-step analysis.",
+  "command": "./websearch --no-cache -m reason \"What is the correct way to initialize a TypeScript Express API project with strict ESM mode, tsx for development, esbuild for production bundling, and OpenAPI schema generation from Zod validators that stays in sync with route handlers\""
+}

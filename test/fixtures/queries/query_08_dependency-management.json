@@ -1,0 +1,17 @@
+{
+  "id": 8,
+  "category": "dependency-management",
+  "problem": "A large monorepo on Yarn 1 uses workspace hoisting, and many packages have undeclared peer dependencies that only work because Yarn hoists them to the root. Migrating to pnpm's strict isolated node_modules breaks these implicit resolutions, causing hundreds of 'module not found' errors.",
+  "query": "How to migrate a large monorepo from Yarn 1 workspaces to pnpm workspaces without breaking hoisted dependency resolution that packages implicitly rely on",
+  "difficulty": "hard",
+  "tags": [
+    "monorepo",
+    "pnpm",
+    "yarn",
+    "migration"
+  ],
+  "profile": "general",
+  "mode": "reason",
+  "reasoning": "Migration between package managers with implicit hoisting assumptions is complex. The 'nodejs' profile filters would miss pnpm docs and migration guides. Mode 'reason' because understanding hoisting differences requires step-by-step analysis of resolution strategies.",
+  "command": "./websearch --no-cache -m reason \"How to migrate a large monorepo from Yarn 1 workspaces to pnpm workspaces without breaking hoisted dependency resolution that packages implicitly rely on\""
+}

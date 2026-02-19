@@ -1,0 +1,17 @@
+{
+  "id": 22,
+  "category": "debugging",
+  "problem": "Kubernetes pods intermittently fail to resolve external DNS names (getting SERVFAIL) while cluster-internal service names resolve fine, suggesting an issue with CoreDNS forwarding to upstream resolvers — possibly caused by conntrack table exhaustion, UDP source port conflicts, or ndots configuration causing excessive search domain appending.",
+  "query": "Kubernetes pod DNS resolution fails intermittently with 'SERVFAIL' for external domains but cluster-internal service discovery works fine and CoreDNS pods show no errors in logs",
+  "difficulty": "hard",
+  "tags": [
+    "kubernetes",
+    "dns",
+    "coredns",
+    "networking"
+  ],
+  "profile": "general",
+  "mode": "reason",
+  "reasoning": "Intermittent DNS failures in K8s are notoriously hard to debug — conntrack races, ndots configuration, upstream DNS issues. Mode 'reason' for systematic elimination of possible causes.",
+  "command": "./websearch --no-cache -m reason \"Kubernetes pod DNS resolution fails intermittently with SERVFAIL for external domains but cluster-internal service discovery works fine and CoreDNS pods show no errors in logs\""
+}

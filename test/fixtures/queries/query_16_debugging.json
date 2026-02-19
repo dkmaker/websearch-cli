@@ -1,0 +1,17 @@
+{
+  "id": 16,
+  "category": "debugging",
+  "problem": "A GitHub Actions CI pipeline using a matrix strategy works on pushes to the main branch but intermittently fails on pull requests from forked repositories because fork PRs receive a read-only GITHUB_TOKEN that cannot create check runs or write to the repository.",
+  "query": "resource not accessible by integration GITHUB_TOKEN pull_request fork permissions",
+  "difficulty": "medium",
+  "tags": [
+    "github-actions",
+    "ci-cd",
+    "permissions",
+    "security"
+  ],
+  "profile": "github",
+  "mode": "issues",
+  "reasoning": "Using GitHub issues search to find the actual issue reports and discussions about GITHUB_TOKEN permissions on fork PRs. The actions/runner and community repos have detailed threads with workarounds (pull_request_target, workflow_run, etc.).",
+  "command": "./websearch --no-cache -p github -m issues \"resource not accessible by integration GITHUB_TOKEN pull_request fork permissions\""
+}

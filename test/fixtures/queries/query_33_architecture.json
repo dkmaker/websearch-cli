@@ -1,0 +1,17 @@
+{
+  "id": 33,
+  "category": "architecture",
+  "problem": "A Go application needs a plugin system for third-party extensions, but Go's built-in plugin package requires CGO and shared libraries (platform-dependent, fragile), and the alternative of static linking means plugins can't be loaded at runtime. The architect must evaluate alternatives like hashicorp/go-plugin (RPC), WASM runtimes, or embedded interpreters.",
+  "query": "How to design a plugin system in Go that allows dynamically loading third-party code at runtime without using CGO or the plugin package considering the limitations of Go's static linking",
+  "difficulty": "hard",
+  "tags": [
+    "go",
+    "plugin-system",
+    "architecture",
+    "extensibility"
+  ],
+  "profile": "general",
+  "mode": "reason",
+  "reasoning": "Go plugin architecture without CGO/plugin package requires creative alternatives (RPC, WASM, Yaegi). Mode 'reason' for evaluating the tradeoffs of each approach given Go's constraints.",
+  "command": "./websearch --no-cache -m reason \"How to design a plugin system in Go that allows dynamically loading third-party code at runtime without using CGO or the plugin package considering the limitations of Go's static linking\""
+}

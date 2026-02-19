@@ -1,0 +1,17 @@
+{
+  "id": 7,
+  "category": "debugging",
+  "problem": "A Next.js App Router application works correctly in development but produces React hydration mismatch errors in production, specifically when streaming SSR sends partial HTML via Suspense boundaries and the client-side React tree doesn't match due to timing-dependent data or browser-only APIs.",
+  "query": "React hydration mismatch errors appearing only in production when using Next.js App Router with streaming SSR and Suspense boundaries around data-fetching components",
+  "difficulty": "hard",
+  "tags": [
+    "react",
+    "nextjs",
+    "ssr",
+    "hydration"
+  ],
+  "profile": "general",
+  "mode": "reason",
+  "reasoning": "React/Next.js hydration is notoriously subtle. The 'nodejs' profile domain filters (nodejs.org, MDN, npmjs.com) would miss Next.js docs, React docs, and Stack Overflow. Using 'general' for broad access. Mode 'reason' because production-only hydration with streaming SSR requires understanding server/client rendering divergence.",
+  "command": "./websearch --no-cache -m reason \"React hydration mismatch errors appearing only in production when using Next.js App Router with streaming SSR and Suspense boundaries around data-fetching components\""
+}

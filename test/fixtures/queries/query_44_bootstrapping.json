@@ -1,0 +1,18 @@
+{
+  "id": 44,
+  "category": "bootstrapping",
+  "problem": "A Python project uses the src/ layout convention and contains both pure Python modules and Cython .pyx extensions that must be compiled to .so files. The developer needs 'pip install -e .' to work for iterative development, but editable installs with Cython extensions require the build step to run and place compiled .so files where Python's import system can find them relative to the src/ directory.",
+  "query": "How to set up a Python project with src layout that has both Cython extensions and pure Python modules where pip install -e works for development and the compiled extensions are correctly discovered at import time",
+  "difficulty": "hard",
+  "tags": [
+    "python",
+    "bootstrapping",
+    "cython",
+    "src-layout",
+    "extensions"
+  ],
+  "profile": "python",
+  "mode": "reason",
+  "reasoning": "Cython with src layout and editable installs is Python-packaging specific. Using 'python' profile — docs.python.org and pypi.org cover setuptools/Cython integration. Mode 'reason' because the interaction between editable installs, compiled extensions, and src layout has non-obvious failure modes.",
+  "command": "./websearch --no-cache -p python -m reason \"How to set up a Python project with src layout that has both Cython extensions and pure Python modules where pip install -e works for development and the compiled extensions are correctly discovered at import time\""
+}

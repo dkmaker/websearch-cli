@@ -1,0 +1,18 @@
+{
+  "id": 32,
+  "category": "dependency-management",
+  "problem": "A polyglot project with Python, Rust, and Node.js components needs a reproducible Nix flake that provides all three toolchains, but the Rust crate depends on a C library (e.g., openssl-sys) that must be provided as a Nix package and correctly linked via pkg-config during the cargo build phase.",
+  "query": "How to set up a Nix flake for a polyglot project with Python, Rust, and Node.js dependencies where the Rust crate needs to link against a system library provided by a Nix package",
+  "difficulty": "hard",
+  "tags": [
+    "nix",
+    "polyglot",
+    "rust",
+    "python",
+    "reproducibility"
+  ],
+  "profile": "general",
+  "mode": "reason",
+  "reasoning": "Nix flakes for polyglot projects with native linking is niche and complex. Mode 'reason' because configuring buildInputs, PKG_CONFIG_PATH, and cross-language dependency resolution requires careful analysis.",
+  "command": "./websearch --no-cache -m reason \"How to set up a Nix flake for a polyglot project with Python, Rust, and Node.js dependencies where the Rust crate needs to link against a system library provided by a Nix package\""
+}

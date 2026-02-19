@@ -1,0 +1,19 @@
+{
+  "id": 47,
+  "category": "bootstrapping",
+  "problem": "A TypeScript library author needs to publish a package that works for both ESM (import) and CJS (require) consumers. The tsconfig must be configured to emit .js files with correct ESM import specifiers (including .js extensions), generate .d.ts declaration files, and produce source maps — while also building a separate CJS output, all coordinated with the package.json exports and type fields.",
+  "query": "What is the correct tsconfig.json configuration for a TypeScript library that needs to emit both ESM and CJS with declaration files and source maps where the ESM output uses .js extensions in import paths and works with Node.js native ESM loader",
+  "difficulty": "hard",
+  "tags": [
+    "typescript",
+    "bootstrapping",
+    "esm",
+    "cjs",
+    "dual-package",
+    "tsconfig"
+  ],
+  "profile": "nodejs",
+  "mode": "reason",
+  "reasoning": "Dual ESM/CJS TypeScript library config is deeply tied to Node.js module resolution. Using 'nodejs' profile — nodejs.org covers the ESM loader behavior. Mode 'reason' because the tsconfig interplay with package.json type field and .js extensions in source requires careful analysis.",
+  "command": "./websearch --no-cache -p nodejs -m reason \"What is the correct tsconfig.json configuration for a TypeScript library that needs to emit both ESM and CJS with declaration files and source maps where the ESM output uses .js extensions in import paths and works with Node.js native ESM loader\""
+}

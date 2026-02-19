@@ -1,0 +1,17 @@
+{
+  "id": 30,
+  "category": "best-practices",
+  "problem": "A Go microservice makes HTTP calls to multiple unreliable third-party APIs with different reliability characteristics and timeout profiles. It needs a circuit breaker implementation that prevents cascading failures by detecting when an API is down, stopping requests during the open state, and carefully testing with limited traffic in the half-open state before fully resuming.",
+  "query": "circuit breaker Go HTTP resilience half-open state language:go",
+  "difficulty": "medium",
+  "tags": [
+    "go",
+    "circuit-breaker",
+    "resilience",
+    "http"
+  ],
+  "profile": "github",
+  "mode": "repos",
+  "reasoning": "Using GitHub repos search to discover the best Go circuit breaker libraries (sony/gobreaker, afex/hystrix-go, etc.) by finding actively maintained repositories. Repo search surfaces star counts, recent activity, and README descriptions to evaluate options.",
+  "command": "./websearch --no-cache -p github \"circuit breaker Go HTTP resilience half-open state language:go\""
+}

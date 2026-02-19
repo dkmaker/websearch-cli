@@ -50,7 +50,7 @@ func modeToModel(mode string) string {
 	case "search":
 		return "sonar-pro"
 	case "reason":
-		return "sonar-reasoning"
+		return "sonar-reasoning-pro"
 	case "research":
 		return "sonar-deep-research"
 	default:

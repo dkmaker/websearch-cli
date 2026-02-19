@@ -1,0 +1,3 @@
+# Ignore stress test result files but keep this directory
+*
+!.gitignore

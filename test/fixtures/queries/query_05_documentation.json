@@ -1,0 +1,17 @@
+{
+  "id": 5,
+  "category": "documentation",
+  "problem": "A Python FastAPI application using async SQLAlchemy sessions and Celery background workers needs distributed tracing, but OpenTelemetry auto-instrumentation must be configured to correctly propagate trace context across the async web framework, async database driver, and separate Celery worker processes.",
+  "query": "What is the correct way to configure OpenTelemetry auto-instrumentation for a Python FastAPI app that uses SQLAlchemy async sessions and celery workers",
+  "difficulty": "hard",
+  "tags": [
+    "python",
+    "opentelemetry",
+    "fastapi",
+    "observability"
+  ],
+  "profile": "general",
+  "mode": "reason",
+  "reasoning": "Although Python-focused, this spans OpenTelemetry, FastAPI, SQLAlchemy async, and Celery — too broad for the python profile's 3 domain filters. Using 'general' for full web access. Mode 'reason' because configuring OTel across async frameworks and task queues involves multiple interacting pieces.",
+  "command": "./websearch --no-cache -m reason \"What is the correct way to configure OpenTelemetry auto-instrumentation for a Python FastAPI app that uses SQLAlchemy async sessions and celery workers\""
+}

@@ -1,0 +1,17 @@
+{
+  "id": 9,
+  "category": "architecture",
+  "problem": "A Kubernetes-deployed service that auto-scales horizontally needs to coordinate access to an external third-party API that enforces strict rate limits, so that all pod replicas collectively stay under the limit without a single pod monopolizing the quota or requests being rejected.",
+  "query": "What is the recommended approach for implementing distributed locking in a Kubernetes environment where pods scale horizontally and need to coordinate access to a shared external API with rate limits",
+  "difficulty": "hard",
+  "tags": [
+    "kubernetes",
+    "distributed-systems",
+    "rate-limiting",
+    "coordination"
+  ],
+  "profile": "general",
+  "mode": "reason",
+  "reasoning": "Distributed systems architecture spanning Kubernetes, coordination patterns (Redis/etcd/Lease), and rate limiting strategies. Mode 'reason' for tradeoff analysis between different locking approaches and their failure modes.",
+  "command": "./websearch --no-cache -m reason \"What is the recommended approach for implementing distributed locking in a Kubernetes environment where pods scale horizontally and need to coordinate access to a shared external API with rate limits\""
+}

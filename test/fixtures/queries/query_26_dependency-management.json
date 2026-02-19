@@ -1,0 +1,17 @@
+{
+  "id": 26,
+  "category": "dependency-management",
+  "problem": "An Android project depends on two third-party libraries that each bundle a different version of the same native .so file. Gradle's default merge strategy picks one version, but the other library was compiled against API symbols only present in its bundled version, causing UnsatisfiedLinkError when that library's code runs at runtime.",
+  "query": "How to resolve Gradle build failure where two Android libraries include different versions of the same native .so file and merging native libs causes UnsatisfiedLinkError at runtime",
+  "difficulty": "hard",
+  "tags": [
+    "android",
+    "gradle",
+    "native-libs",
+    "dependency-conflict"
+  ],
+  "profile": "general",
+  "mode": "reason",
+  "reasoning": "Android native library conflicts are platform-specific and require understanding APK packaging, ABI splits, and Gradle's merge strategy. Mode 'reason' for diagnosis and resolution strategy.",
+  "command": "./websearch --no-cache -m reason \"How to resolve Gradle build failure where two Android libraries include different versions of the same native .so file and merging native libs causes UnsatisfiedLinkError at runtime\""
+}

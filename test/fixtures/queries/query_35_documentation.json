@@ -1,0 +1,18 @@
+{
+  "id": 35,
+  "category": "documentation",
+  "problem": "An organization is migrating services into an Istio service mesh and needs mTLS between meshed services, but during the migration period some legacy services are not yet in the mesh. The configuration must allow meshed services to accept both plaintext (from legacy) and mTLS (from mesh peers) traffic, then transition to strict mTLS once migration is complete, with cert-manager handling certificate lifecycle.",
+  "query": "How to configure Istio service mesh mTLS strict mode with cert-manager integration for automatic certificate rotation when services also need to accept traffic from legacy non-mesh services during migration",
+  "difficulty": "hard",
+  "tags": [
+    "istio",
+    "mtls",
+    "service-mesh",
+    "cert-manager",
+    "migration"
+  ],
+  "profile": "general",
+  "mode": "reason",
+  "reasoning": "Istio mTLS migration with mixed mesh/non-mesh traffic requires PeerAuthentication policies in PERMISSIVE mode during transition. Mode 'reason' because the migration path has ordering dependencies and security implications.",
+  "command": "./websearch --no-cache -m reason \"How to configure Istio service mesh mTLS strict mode with cert-manager integration for automatic certificate rotation when services also need to accept traffic from legacy non-mesh services during migration\""
+}

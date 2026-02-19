@@ -1,0 +1,17 @@
+{
+  "id": 3,
+  "category": "architecture",
+  "problem": "A team needs to reliably publish domain events from a PostgreSQL-backed microservice to a message broker, and must choose between implementing the transactional outbox pattern with a polling publisher versus setting up Change Data Capture with Debezium, each having different operational and consistency tradeoffs.",
+  "query": "What are the tradeoffs between using the outbox pattern versus CDC with Debezium for reliable event publishing in a microservices system with PostgreSQL",
+  "difficulty": "hard",
+  "tags": [
+    "microservices",
+    "event-driven",
+    "postgresql",
+    "reliability"
+  ],
+  "profile": "general",
+  "mode": "reason",
+  "reasoning": "Architectural tradeoff analysis between two competing patterns. Mode 'reason' chosen because the answer requires weighing multiple dimensions: operational complexity, latency, consistency guarantees, and failure modes.",
+  "command": "./websearch --no-cache -m reason \"What are the tradeoffs between using the outbox pattern versus CDC with Debezium for reliable event publishing in a microservices system with PostgreSQL\""
+}

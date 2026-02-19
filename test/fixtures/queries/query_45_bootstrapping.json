@@ -1,0 +1,18 @@
+{
+  "id": 45,
+  "category": "bootstrapping",
+  "problem": "A data engineering team needs to set up a project that combines dbt-core for data transformations, Apache Airflow for orchestration, and Great Expectations for data quality checks. The challenge is structuring the repository so that Airflow DAGs can import shared Python utility modules and configuration without resorting to sys.path hacks, since Airflow's DAG loader has its own import mechanism.",
+  "query": "What is the recommended way to bootstrap a Python data pipeline project with dbt-core, Apache Airflow, and Great Expectations where the DAG definitions can import shared utility modules and configs without path hacks or sys.path manipulation",
+  "difficulty": "hard",
+  "tags": [
+    "python",
+    "bootstrapping",
+    "dbt",
+    "airflow",
+    "project-structure"
+  ],
+  "profile": "general",
+  "mode": "reason",
+  "reasoning": "Multi-tool data pipeline bootstrapping spans dbt, Airflow, and Great Expectations — none covered by the python profile's domain filters. Mode 'reason' because structuring a project to avoid sys.path hacks with Airflow's DAG loader requires understanding Airflow's import mechanism.",
+  "command": "./websearch --no-cache -m reason \"What is the recommended way to bootstrap a Python data pipeline project with dbt-core, Apache Airflow, and Great Expectations where the DAG definitions can import shared utility modules and configs without path hacks or sys.path manipulation\""
+}

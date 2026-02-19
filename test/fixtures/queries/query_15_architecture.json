@@ -1,0 +1,17 @@
+{
+  "id": 15,
+  "category": "architecture",
+  "problem": "A multi-tenant SaaS platform on PostgreSQL must choose a data isolation strategy where some tenants require strict data residency (data must stay in specific geographic regions) and others have compliance requirements mandating complete logical separation, making a single shared-table approach with row-level security insufficient for all cases.",
+  "query": "How to design a multi-tenant SaaS data isolation strategy using PostgreSQL row-level security versus schema-per-tenant when tenants have different compliance requirements and some need data residency guarantees",
+  "difficulty": "hard",
+  "tags": [
+    "postgresql",
+    "multi-tenant",
+    "security",
+    "architecture"
+  ],
+  "profile": "general",
+  "mode": "research",
+  "reasoning": "Complex architectural question spanning database design, compliance, and data residency. Mode 'research' for comprehensive multi-source analysis — this needs perspectives from database architects, compliance frameworks, and real-world SaaS case studies.",
+  "command": "./websearch --no-cache -m research \"How to design a multi-tenant SaaS data isolation strategy using PostgreSQL row-level security versus schema-per-tenant when tenants have different compliance requirements and some need data residency guarantees\""
+}

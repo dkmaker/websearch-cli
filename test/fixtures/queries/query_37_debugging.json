@@ -1,0 +1,18 @@
+{
+  "id": 37,
+  "category": "debugging",
+  "problem": "A gRPC server-streaming RPC from a Go server to a Python client silently loses messages at high throughput — the server logs show all messages as sent, but the Python client's iterator yields fewer messages. No errors are raised on either side, suggesting flow control backpressure or client-side receive buffer issues are silently discarding messages.",
+  "query": "gRPC streaming call between Go server and Python client silently drops messages under high throughput without any error and the client receives fewer messages than the server reports sending",
+  "difficulty": "hard",
+  "tags": [
+    "grpc",
+    "streaming",
+    "go",
+    "python",
+    "reliability"
+  ],
+  "profile": "general",
+  "mode": "reason",
+  "reasoning": "Silent message drops in gRPC streaming could be flow control, buffer overflow, or client-side recv loop issues. Mode 'reason' for systematic debugging across the Go server and Python client stack.",
+  "command": "./websearch --no-cache -m reason \"gRPC streaming call between Go server and Python client silently drops messages under high throughput without any error and the client receives fewer messages than the server reports sending\""
+}

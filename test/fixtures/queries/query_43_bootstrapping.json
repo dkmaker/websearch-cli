@@ -1,0 +1,19 @@
+{
+  "id": 43,
+  "category": "bootstrapping",
+  "problem": "A developer is bootstrapping a FastAPI project with async SQLAlchemy and Alembic migrations, and needs pytest fixtures that create an isolated test database, run migrations against it, wrap each test in a transaction that rolls back after the test, and properly override FastAPI's dependency injection to use the test database session — all with async/await throughout.",
+  "query": "How to configure a new Python FastAPI project with SQLAlchemy async, Alembic migrations, pytest-asyncio fixtures, and proper dependency injection so that tests use an isolated test database with automatic rollback between tests",
+  "difficulty": "hard",
+  "tags": [
+    "python",
+    "bootstrapping",
+    "fastapi",
+    "sqlalchemy",
+    "alembic",
+    "testing"
+  ],
+  "profile": "general",
+  "mode": "reason",
+  "reasoning": "Multi-framework Python setup spanning FastAPI, async SQLAlchemy, Alembic, and pytest. The python profile's domain filters would miss FastAPI docs, SQLAlchemy docs, and pytest docs. Mode 'reason' because the async session/transaction rollback pattern with dependency injection override has subtle gotchas.",
+  "command": "./websearch --no-cache -m reason \"How to configure a new Python FastAPI project with SQLAlchemy async, Alembic migrations, pytest-asyncio fixtures, and proper dependency injection so that tests use an isolated test database with automatic rollback between tests\""
+}
