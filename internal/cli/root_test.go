@@ -62,6 +62,19 @@ func TestSelfPrimerWithProfiles(t *testing.T) {
 	}
 }
 
+func TestSelfPrimerWithBothFlags(t *testing.T) {
+	output := buildSelfPrimer("pplx-key", "brave-key", true, true)
+	if !strings.Contains(output, "Examples:") {
+		t.Error("expected Examples section")
+	}
+	if !strings.Contains(output, "Profiles:") {
+		t.Error("expected Profiles section")
+	}
+	if !strings.Contains(output, "General-purpose") {
+		t.Error("expected profile descriptions")
+	}
+}
+
 func TestResolveProvider(t *testing.T) {
 	tests := []struct {
 		name         string

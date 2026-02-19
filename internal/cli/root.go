@@ -326,7 +326,9 @@ func buildSelfPrimer(perplexityKey, braveKey string, showExamples, showProfiles 
 	if showProfiles {
 		sb.WriteString("\nProfiles:\n")
 		profiles, err := profile.LoadAllBuiltin()
-		if err == nil {
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "warning: could not load profiles: %v\n", err)
+		} else {
 			for _, p := range profiles {
 				line := fmt.Sprintf("  %-9s %s/%-8s %s", p.Name, capitalize(p.Provider), p.Mode, p.Description)
 				if len(p.DomainFilter) > 0 {
@@ -342,12 +344,14 @@ func buildSelfPrimer(perplexityKey, braveKey string, showExamples, showProfiles 
 }
 
 func formatProfileNames(names []string) string {
-	for i, n := range names {
+	formatted := make([]string, len(names))
+	copy(formatted, names)
+	for i, n := range formatted {
 		if n == "general" {
-			names[i] = n + "*"
+			formatted[i] = n + "*"
 		}
 	}
-	return strings.Join(names, ", ")
+	return strings.Join(formatted, ", ")
 }
 
 func capitalize(s string) string {
