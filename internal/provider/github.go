@@ -1,3 +1,4 @@
+// internal/provider/github.go
 package provider
 
 import (
@@ -180,7 +181,7 @@ func (g *GitHub) searchRepos(ctx context.Context, query string, opts SearchOptio
 		if r.Language != "" {
 			meta = append(meta, "Language: "+r.Language)
 		}
-		if r.UpdatedAt != "" {
+		if len(r.UpdatedAt) >= 10 {
 			meta = append(meta, "Updated: "+r.UpdatedAt[:10])
 		}
 		if len(r.Topics) > 0 {
@@ -295,7 +296,7 @@ func (g *GitHub) searchIssues(ctx context.Context, query string, opts SearchOpti
 		if issue.Comments > 0 {
 			meta = append(meta, fmt.Sprintf("Comments: %d", issue.Comments))
 		}
-		if issue.UpdatedAt != "" {
+		if len(issue.UpdatedAt) >= 10 {
 			meta = append(meta, "Updated: "+issue.UpdatedAt[:10])
 		}
 		if len(meta) > 0 {
