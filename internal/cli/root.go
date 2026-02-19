@@ -101,9 +101,17 @@ func run(cmd *cobra.Command, args []string) error {
 		fmt.Fprintln(os.Stderr, warning)
 	}
 
-	// Validate mode against provider
+	// Validate mode against provider. If the mode came from the profile
+	// (not explicitly set by user) and is incompatible with the resolved
+	// provider, auto-adjust to the provider's default mode.
 	if err := validateMode(mode, providerName); err != nil {
-		return err
+		if flagMode != "" {
+			// User explicitly requested this mode — error
+			return err
+		}
+		// Mode came from profile, auto-adjust
+		mode = defaultModeForProvider(providerName)
+		fmt.Fprintf(os.Stderr, "warning: mode adjusted to %q for %s provider\n", mode, providerName)
 	}
 
 	// Build search options
@@ -235,4 +243,14 @@ func validateMode(mode, providerName string) error {
 		}
 	}
 	return nil
+}
+
+// defaultModeForProvider returns the default search mode for a provider.
+func defaultModeForProvider(providerName string) string {
+	switch providerName {
+	case "brave":
+		return "web"
+	default:
+		return "ask"
+	}
 }
