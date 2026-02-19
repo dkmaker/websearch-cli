@@ -224,3 +224,70 @@ func TestSelfPrimerGitHub(t *testing.T) {
 		t.Error("expected repos* mode")
 	}
 }
+
+func TestDetectDeflection(t *testing.T) {
+	tests := []struct {
+		name    string
+		content string
+		want    bool
+	}{
+		{
+			name:    "exact prefix match",
+			content: "The search results provided do not contain information about this topic.",
+			want:    true,
+		},
+		{
+			name:    "case insensitive match",
+			content: "the search results provided do not contain relevant data.",
+			want:    true,
+		},
+		{
+			name:    "prefix with leading whitespace",
+			content: "  The search results do not contain specific information about...",
+			want:    true,
+		},
+		{
+			name:    "available search results don't",
+			content: "The available search results don't address this specific issue.",
+			want:    true,
+		},
+		{
+			name:    "not enough information",
+			content: "I don't have enough information to answer this question.",
+			want:    true,
+		},
+		{
+			name:    "normal response",
+			content: "Here is the answer to your question about Go generics...",
+			want:    false,
+		},
+		{
+			name:    "empty content",
+			content: "",
+			want:    false,
+		},
+		{
+			name:    "deflection phrase mid-sentence",
+			content: "Based on my analysis, the search results provided do not contain much.",
+			want:    false,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			result := detectDeflection(tt.content)
+			if tt.want && result == "" {
+				t.Error("expected deflection warning, got empty string")
+			}
+			if !tt.want && result != "" {
+				t.Errorf("expected no deflection warning, got %q", result)
+			}
+			if tt.want && result != "" {
+				expected := "warning: response may not address the query (search context insufficient)"
+				if result != expected {
+					t.Errorf("got warning %q, want %q", result, expected)
+				}
+			}
+		})
+	}
+}

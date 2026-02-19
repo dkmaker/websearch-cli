@@ -161,6 +161,18 @@ func run(cmd *cobra.Command, args []string) error {
 			var result provider.Result
 			if err := json.Unmarshal(data, &result); err == nil {
 				result.Cached = true
+
+				// Empty result detection for cached results
+				if strings.TrimSpace(result.Content) == "" {
+					fmt.Fprintln(os.Stderr, "warning: search returned no results")
+					os.Exit(2)
+				}
+
+				// Deflection detection for cached results
+				if warning := detectDeflection(result.Content); warning != "" {
+					fmt.Fprintln(os.Stderr, warning)
+				}
+
 				return outputResult(&result)
 			}
 		}
@@ -181,6 +193,17 @@ func run(cmd *cobra.Command, args []string) error {
 	result, err := prov.Search(context.Background(), query, opts)
 	if err != nil {
 		return fmt.Errorf("search failed: %w", err)
+	}
+
+	// Empty result detection — exit code 2
+	if strings.TrimSpace(result.Content) == "" {
+		fmt.Fprintln(os.Stderr, "warning: search returned no results")
+		os.Exit(2)
+	}
+
+	// Deflection detection — stderr warning only, still exit 0
+	if warning := detectDeflection(result.Content); warning != "" {
+		fmt.Fprintln(os.Stderr, warning)
 	}
 
 	// Cache result
@@ -375,6 +398,28 @@ func formatProfileNames(names []string) string {
 		}
 	}
 	return strings.Join(formatted, ", ")
+}
+
+// deflectionPrefixes are known phrases that indicate the model deflected
+// rather than providing a substantive answer.
+var deflectionPrefixes = []string{
+	"The search results provided do not contain",
+	"The search results do not contain",
+	"The available search results don't",
+	"I don't have enough information",
+}
+
+// detectDeflection checks the beginning of a response for known deflection
+// patterns. Returns a warning string if detected, empty string otherwise.
+func detectDeflection(content string) string {
+	trimmed := strings.TrimSpace(content)
+	lower := strings.ToLower(trimmed)
+	for _, prefix := range deflectionPrefixes {
+		if strings.HasPrefix(lower, strings.ToLower(prefix)) {
+			return "warning: response may not address the query (search context insufficient)"
+		}
+	}
+	return ""
 }
 
 func capitalize(s string) string {
