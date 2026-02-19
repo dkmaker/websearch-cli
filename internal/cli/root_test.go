@@ -7,7 +7,7 @@ import (
 )
 
 func TestSelfPrimer(t *testing.T) {
-	output := buildSelfPrimer("pplx-key", "brave-key", false, false)
+	output := buildSelfPrimer("pplx-key", "brave-key", "", false, false)
 
 	// Must contain version
 	if !strings.Contains(output, "websearch v") {
@@ -39,21 +39,21 @@ func TestSelfPrimer(t *testing.T) {
 }
 
 func TestSelfPrimerNoKey(t *testing.T) {
-	output := buildSelfPrimer("pplx-key", "", false, false)
+	output := buildSelfPrimer("pplx-key", "", "", false, false)
 	if !strings.Contains(output, "brave (no key)") {
 		t.Error("expected brave (no key)")
 	}
 }
 
 func TestSelfPrimerWithExamples(t *testing.T) {
-	output := buildSelfPrimer("pplx-key", "", true, false)
+	output := buildSelfPrimer("pplx-key", "", "", true, false)
 	if !strings.Contains(output, "Examples:") {
 		t.Error("expected Examples section")
 	}
 }
 
 func TestSelfPrimerWithProfiles(t *testing.T) {
-	output := buildSelfPrimer("pplx-key", "", false, true)
+	output := buildSelfPrimer("pplx-key", "", "", false, true)
 	if !strings.Contains(output, "Profiles:") {
 		t.Error("expected Profiles section heading")
 	}
@@ -63,7 +63,7 @@ func TestSelfPrimerWithProfiles(t *testing.T) {
 }
 
 func TestSelfPrimerWithBothFlags(t *testing.T) {
-	output := buildSelfPrimer("pplx-key", "brave-key", true, true)
+	output := buildSelfPrimer("pplx-key", "brave-key", "", true, true)
 	if !strings.Contains(output, "Examples:") {
 		t.Error("expected Examples section")
 	}
@@ -113,7 +113,7 @@ func TestResolveProvider(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, _, err := resolveProvider(tt.profileProv, tt.flagProv, tt.perplexKey, tt.braveKey)
+			got, _, err := resolveProvider(tt.profileProv, tt.flagProv, tt.perplexKey, tt.braveKey, "")
 			if (err != nil) != tt.wantErr {
 				t.Errorf("error = %v, wantErr %v", err, tt.wantErr)
 				return
@@ -144,5 +144,65 @@ func TestValidateMode(t *testing.T) {
 				t.Errorf("validateMode(%q, %q) error = %v, wantErr %v", tt.mode, tt.provider, err, tt.wantErr)
 			}
 		})
+	}
+}
+
+func TestResolveProviderGitHub(t *testing.T) {
+	// GitHub with token
+	got, _, err := resolveProvider("github", "", "", "", "ghp_token")
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if got != "github" {
+		t.Errorf("got %q, want github", got)
+	}
+
+	// GitHub without token (should still work — unauthenticated OK for repos/issues)
+	got, _, err = resolveProvider("github", "", "", "", "")
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if got != "github" {
+		t.Errorf("got %q, want github", got)
+	}
+
+	// Flag override to github
+	got, _, err = resolveProvider("perplexity", "github", "pplx-key", "", "")
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if got != "github" {
+		t.Errorf("got %q, want github", got)
+	}
+}
+
+func TestValidateModeGitHub(t *testing.T) {
+	tests := []struct {
+		mode    string
+		wantErr bool
+	}{
+		{"repos", false},
+		{"code", false},
+		{"issues", false},
+		{"web", true},
+		{"ask", true},
+	}
+	for _, tt := range tests {
+		t.Run(tt.mode+"_github", func(t *testing.T) {
+			err := validateMode(tt.mode, "github")
+			if (err != nil) != tt.wantErr {
+				t.Errorf("validateMode(%q, github) error = %v, wantErr %v", tt.mode, err, tt.wantErr)
+			}
+		})
+	}
+}
+
+func TestSelfPrimerGitHub(t *testing.T) {
+	output := buildSelfPrimer("", "", "ghp_token", false, false)
+	if !strings.Contains(output, "github (ready)") {
+		t.Error("expected github (ready)")
+	}
+	if !strings.Contains(output, "repos*") {
+		t.Error("expected repos* mode")
 	}
 }

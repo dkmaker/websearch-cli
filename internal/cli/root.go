@@ -40,7 +40,7 @@ var (
 var rootCmd = &cobra.Command{
 	Use:   "websearch [flags] <query>",
 	Short: "Web search CLI for AI agents",
-	Long:  "A CLI tool for AI agents to perform web searches via Perplexity and Brave APIs using profile-based configuration.",
+	Long:  "A CLI tool for AI agents to perform web searches via Perplexity, Brave, and GitHub APIs using profile-based configuration.",
 	Args: func(cmd *cobra.Command, args []string) error {
 		if flagListProfiles || flagShowExamples || flagShowProfiles {
 			return nil
@@ -62,7 +62,7 @@ func init() {
 	rootCmd.Flags().StringVarP(&flagProfile, "profile", "p", "general", "Profile name")
 	rootCmd.Flags().StringVarP(&flagMode, "mode", "m", "", "Search mode override")
 	rootCmd.Flags().BoolVar(&flagJSON, "json", false, "Output as JSON")
-	rootCmd.Flags().StringVar(&flagProvider, "provider", "", "Provider override (perplexity, brave)")
+	rootCmd.Flags().StringVar(&flagProvider, "provider", "", "Provider override (perplexity, brave, github)")
 	rootCmd.Flags().IntVarP(&flagMaxResults, "max-results", "n", 0, "Max result count")
 	rootCmd.Flags().IntVar(&flagMaxTokens, "max-tokens", 0, "Max response tokens")
 	rootCmd.Flags().BoolVar(&flagIncludeSources, "include-sources", false, "Include citations/sources")
@@ -85,7 +85,8 @@ func run(cmd *cobra.Command, args []string) error {
 	if len(args) == 0 {
 		perplexityKey := os.Getenv("PERPLEXITY_API_KEY")
 		braveKey := os.Getenv("BRAVE_API_KEY")
-		fmt.Print(buildSelfPrimer(perplexityKey, braveKey, flagShowExamples, flagShowProfiles))
+		githubKey := os.Getenv("GITHUB_TOKEN")
+		fmt.Print(buildSelfPrimer(perplexityKey, braveKey, githubKey, flagShowExamples, flagShowProfiles))
 		return nil
 	}
 
@@ -114,9 +115,10 @@ func run(cmd *cobra.Command, args []string) error {
 	// Get API keys
 	perplexityKey := os.Getenv("PERPLEXITY_API_KEY")
 	braveKey := os.Getenv("BRAVE_API_KEY")
+	githubKey := os.Getenv("GITHUB_TOKEN")
 
 	// Resolve provider
-	providerName, warning, err := resolveProvider(prof.Provider, flagProvider, perplexityKey, braveKey)
+	providerName, warning, err := resolveProvider(prof.Provider, flagProvider, perplexityKey, braveKey, githubKey)
 	if err != nil {
 		return err
 	}
@@ -171,6 +173,8 @@ func run(cmd *cobra.Command, args []string) error {
 		prov = provider.NewPerplexity(perplexityKey, "")
 	case "brave":
 		prov = provider.NewBrave(braveKey, "")
+	case "github":
+		prov = provider.NewGitHub(githubKey, "")
 	}
 
 	// Execute search
@@ -217,9 +221,9 @@ func listProfiles() error {
 
 // resolveProvider determines which provider to use based on profile preference,
 // flag override, and available API keys.
-func resolveProvider(profileProv, flagProv, perplexityKey, braveKey string) (string, string, error) {
-	if perplexityKey == "" && braveKey == "" {
-		return "", "", fmt.Errorf("no API keys found. Set PERPLEXITY_API_KEY or BRAVE_API_KEY")
+func resolveProvider(profileProv, flagProv, perplexityKey, braveKey, githubKey string) (string, string, error) {
+	if perplexityKey == "" && braveKey == "" && profileProv != "github" && flagProv != "github" {
+		return "", "", fmt.Errorf("no API keys found. Set PERPLEXITY_API_KEY, BRAVE_API_KEY, or GITHUB_TOKEN")
 	}
 
 	preferred := profileProv
@@ -238,6 +242,8 @@ func resolveProvider(profileProv, flagProv, perplexityKey, braveKey string) (str
 			return "brave", "", nil
 		}
 		return "perplexity", "warning: BRAVE_API_KEY not set, falling back to Perplexity", nil
+	case "github":
+		return "github", "", nil
 	default:
 		if perplexityKey != "" {
 			return "perplexity", "", nil
@@ -254,6 +260,7 @@ func validateMode(mode, providerName string) error {
 
 	perplexityModes := map[string]bool{"ask": true, "search": true, "reason": true, "research": true}
 	braveModes := map[string]bool{"web": true}
+	githubModes := map[string]bool{"repos": true, "code": true, "issues": true}
 
 	switch providerName {
 	case "perplexity":
@@ -264,6 +271,10 @@ func validateMode(mode, providerName string) error {
 		if !braveModes[mode] {
 			return fmt.Errorf("mode %q requires Perplexity. Set PERPLEXITY_API_KEY", mode)
 		}
+	case "github":
+		if !githubModes[mode] {
+			return fmt.Errorf("mode %q not supported by GitHub (supported: repos, code, issues)", mode)
+		}
 	}
 	return nil
 }
@@ -273,12 +284,14 @@ func defaultModeForProvider(providerName string) string {
 	switch providerName {
 	case "brave":
 		return "web"
+	case "github":
+		return "repos"
 	default:
 		return "ask"
 	}
 }
 
-func buildSelfPrimer(perplexityKey, braveKey string, showExamples, showProfiles bool) string {
+func buildSelfPrimer(perplexityKey, braveKey, githubKey string, showExamples, showProfiles bool) string {
 	var sb strings.Builder
 
 	// Header
@@ -293,11 +306,16 @@ func buildSelfPrimer(perplexityKey, braveKey string, showExamples, showProfiles 
 	if braveKey != "" {
 		bStatus = "ready"
 	}
-	sb.WriteString(fmt.Sprintf("Providers: perplexity (%s), brave (%s)\n", pStatus, bStatus))
+	gStatus := "no key"
+	if githubKey != "" {
+		gStatus = "ready"
+	}
+	sb.WriteString(fmt.Sprintf("Providers: perplexity (%s), brave (%s), github (%s)\n", pStatus, bStatus, gStatus))
 
 	// Modes
 	sb.WriteString("Modes [perplexity]: ask*, search, reason, research\n")
 	sb.WriteString("Modes [brave]: web*\n")
+	sb.WriteString("Modes [github]: repos*, code, issues\n")
 
 	// Profiles
 	names := profile.ListBuiltin()
@@ -320,6 +338,8 @@ func buildSelfPrimer(perplexityKey, braveKey string, showExamples, showProfiles 
 		sb.WriteString("  websearch --provider brave \"local restaurants\"            # brave web search\n")
 		sb.WriteString("  websearch -p python \"fastapi middleware\"                  # python profile\n")
 		sb.WriteString("  websearch --json --include-sources \"kubernetes basics\"    # JSON with sources\n")
+		sb.WriteString("  websearch -p github \"cobra CLI framework\"                  # github repos\n")
+		sb.WriteString("  websearch -p github -m code \"http.ListenAndServe lang:go\"   # github code\n")
 	}
 
 	// Optional: profile details
