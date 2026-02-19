@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"strings"
 	"time"
 
 	"github.com/dkmaker/websearch/internal/cache"
@@ -32,6 +33,8 @@ var (
 	flagIncludeSources bool
 	flagNoCache        bool
 	flagListProfiles   bool
+	flagShowExamples   bool
+	flagShowProfiles   bool
 )
 
 var rootCmd = &cobra.Command{
@@ -39,8 +42,11 @@ var rootCmd = &cobra.Command{
 	Short: "Web search CLI for AI agents",
 	Long:  "A CLI tool for AI agents to perform web searches via Perplexity and Brave APIs using profile-based configuration.",
 	Args: func(cmd *cobra.Command, args []string) error {
-		if flagListProfiles {
+		if flagListProfiles || flagShowExamples || flagShowProfiles {
 			return nil
+		}
+		if len(args) == 0 {
+			return nil // will trigger self-primer in run()
 		}
 		if len(args) != 1 {
 			return fmt.Errorf("requires exactly 1 query argument")
@@ -62,6 +68,8 @@ func init() {
 	rootCmd.Flags().BoolVar(&flagIncludeSources, "include-sources", false, "Include citations/sources")
 	rootCmd.Flags().BoolVar(&flagNoCache, "no-cache", false, "Bypass response cache")
 	rootCmd.Flags().BoolVar(&flagListProfiles, "list-profiles", false, "List available profiles")
+	rootCmd.Flags().BoolVar(&flagShowExamples, "show-examples", false, "Show usage examples")
+	rootCmd.Flags().BoolVar(&flagShowProfiles, "show-profiles", false, "Show profile details")
 }
 
 func Execute() error {
@@ -71,6 +79,14 @@ func Execute() error {
 func run(cmd *cobra.Command, args []string) error {
 	if flagListProfiles {
 		return listProfiles()
+	}
+
+	// Self-primer: no query provided
+	if len(args) == 0 {
+		perplexityKey := os.Getenv("PERPLEXITY_API_KEY")
+		braveKey := os.Getenv("BRAVE_API_KEY")
+		fmt.Print(buildSelfPrimer(perplexityKey, braveKey, flagShowExamples, flagShowProfiles))
+		return nil
 	}
 
 	query := args[0]
@@ -260,4 +276,83 @@ func defaultModeForProvider(providerName string) string {
 	default:
 		return "ask"
 	}
+}
+
+func buildSelfPrimer(perplexityKey, braveKey string, showExamples, showProfiles bool) string {
+	var sb strings.Builder
+
+	// Header
+	sb.WriteString(fmt.Sprintf("websearch v%s — Web search CLI for AI agents\n\n", appVersion))
+
+	// Provider status
+	pStatus := "no key"
+	if perplexityKey != "" {
+		pStatus = "ready"
+	}
+	bStatus := "no key"
+	if braveKey != "" {
+		bStatus = "ready"
+	}
+	sb.WriteString(fmt.Sprintf("Providers: perplexity (%s), brave (%s)\n", pStatus, bStatus))
+
+	// Modes
+	sb.WriteString("Modes [perplexity]: ask*, search, reason, research\n")
+	sb.WriteString("Modes [brave]: web*\n")
+
+	// Profiles
+	names := profile.ListBuiltin()
+	sb.WriteString(fmt.Sprintf("Profiles: %s\n", formatProfileNames(names)))
+
+	// Output & Cache
+	sb.WriteString("Output: markdown (default), json (--json)\n")
+	sb.WriteString("Cache: 60m TTL (--no-cache to bypass)\n")
+
+	// Usage
+	sb.WriteString("\nUsage: websearch [flags] \"query\"\n")
+	sb.WriteString("Key flags: -p profile, -m mode, --provider, --json, --include-sources, --no-cache\n")
+	sb.WriteString("More: --show-examples, --show-profiles, --help\n")
+
+	// Optional: examples
+	if showExamples {
+		sb.WriteString("\nExamples:\n")
+		sb.WriteString("  websearch \"what is Go generics\"                          # general ask\n")
+		sb.WriteString("  websearch -m research \"AI trends 2026\"                   # deep research\n")
+		sb.WriteString("  websearch --provider brave \"local restaurants\"            # brave web search\n")
+		sb.WriteString("  websearch -p python \"fastapi middleware\"                  # python profile\n")
+		sb.WriteString("  websearch --json --include-sources \"kubernetes basics\"    # JSON with sources\n")
+	}
+
+	// Optional: profile details
+	if showProfiles {
+		sb.WriteString("\nProfiles:\n")
+		profiles, err := profile.LoadAllBuiltin()
+		if err == nil {
+			for _, p := range profiles {
+				line := fmt.Sprintf("  %-9s %s/%-8s %s", p.Name, capitalize(p.Provider), p.Mode, p.Description)
+				if len(p.DomainFilter) > 0 {
+					line += fmt.Sprintf(" (filters: %s)", strings.Join(p.DomainFilter, ", "))
+				}
+				sb.WriteString(line + "\n")
+			}
+		}
+		sb.WriteString("\nCustom profiles: ~/.config/websearch/profiles/<name>.yaml\n")
+	}
+
+	return sb.String()
+}
+
+func formatProfileNames(names []string) string {
+	for i, n := range names {
+		if n == "general" {
+			names[i] = n + "*"
+		}
+	}
+	return strings.Join(names, ", ")
+}
+
+func capitalize(s string) string {
+	if s == "" {
+		return s
+	}
+	return strings.ToUpper(s[:1]) + s[1:]
 }

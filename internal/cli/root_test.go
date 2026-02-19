@@ -2,8 +2,65 @@
 package cli
 
 import (
+	"strings"
 	"testing"
 )
+
+func TestSelfPrimer(t *testing.T) {
+	output := buildSelfPrimer("pplx-key", "brave-key", false, false)
+
+	// Must contain version
+	if !strings.Contains(output, "websearch v") {
+		t.Error("expected version in primer")
+	}
+	// Must show both providers as ready
+	if !strings.Contains(output, "perplexity (ready)") {
+		t.Error("expected perplexity (ready)")
+	}
+	if !strings.Contains(output, "brave (ready)") {
+		t.Error("expected brave (ready)")
+	}
+	// Must show modes
+	if !strings.Contains(output, "ask*") {
+		t.Error("expected ask* (default mode)")
+	}
+	// Must show profiles
+	if !strings.Contains(output, "general*") {
+		t.Error("expected general* (default profile)")
+	}
+	// Must show usage
+	if !strings.Contains(output, "Usage:") {
+		t.Error("expected Usage line")
+	}
+	// Must NOT contain examples or profile details
+	if strings.Contains(output, "Examples:") {
+		t.Error("base primer should not contain examples")
+	}
+}
+
+func TestSelfPrimerNoKey(t *testing.T) {
+	output := buildSelfPrimer("pplx-key", "", false, false)
+	if !strings.Contains(output, "brave (no key)") {
+		t.Error("expected brave (no key)")
+	}
+}
+
+func TestSelfPrimerWithExamples(t *testing.T) {
+	output := buildSelfPrimer("pplx-key", "", true, false)
+	if !strings.Contains(output, "Examples:") {
+		t.Error("expected Examples section")
+	}
+}
+
+func TestSelfPrimerWithProfiles(t *testing.T) {
+	output := buildSelfPrimer("pplx-key", "", false, true)
+	if !strings.Contains(output, "Profiles:") {
+		t.Error("expected Profiles section heading")
+	}
+	if !strings.Contains(output, "General-purpose") {
+		t.Error("expected profile descriptions")
+	}
+}
 
 func TestResolveProvider(t *testing.T) {
 	tests := []struct {
