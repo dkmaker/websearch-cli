@@ -25,8 +25,8 @@ func TestFormatMarkdownNoSources(t *testing.T) {
 	if strings.Contains(out, "example.com") {
 		t.Error("sources should not appear when includeSources is false")
 	}
-	if !strings.Contains(out, "--include-sources") {
-		t.Error("expected hint about --include-sources")
+	if strings.Contains(out, "<!--") {
+		t.Error("should not contain HTML comment hint")
 	}
 }
 
@@ -104,7 +104,57 @@ func TestFormatMarkdownNoSourcesField(t *testing.T) {
 	if !strings.Contains(out, "No sources here.") {
 		t.Error("expected content")
 	}
-	if strings.Contains(out, "--include-sources") {
+	if strings.Contains(out, "<!--") {
 		t.Error("no hint expected when result has no sources")
+	}
+}
+
+func TestFormatMarkdownStripsCitationRefs(t *testing.T) {
+	result := &provider.Result{
+		Content: "Go is a language [1] with great concurrency [2, 3] support.",
+		Sources: []provider.Source{
+			{Title: "S1", URL: "https://example.com/1"},
+		},
+	}
+	out := FormatMarkdown(result, false)
+	if strings.Contains(out, "[1]") {
+		t.Error("expected [1] to be stripped")
+	}
+	if strings.Contains(out, "[2, 3]") {
+		t.Error("expected [2, 3] to be stripped")
+	}
+	if !strings.Contains(out, "Go is a language with great concurrency support.") {
+		t.Errorf("expected clean text, got: %s", out)
+	}
+}
+
+func TestFormatMarkdownKeepsCitationRefsWithSources(t *testing.T) {
+	result := &provider.Result{
+		Content: "Go is a language [1] with great support.",
+		Sources: []provider.Source{
+			{Title: "S1", URL: "https://example.com/1"},
+		},
+	}
+	out := FormatMarkdown(result, true)
+	if !strings.Contains(out, "[1]") {
+		t.Error("expected [1] to be preserved when sources included")
+	}
+}
+
+func TestFormatJSONStripsCitationRefs(t *testing.T) {
+	result := &provider.Result{
+		Content:  "Answer [1] here [2, 3].",
+		Provider: "perplexity",
+		Mode:     "ask",
+		Sources: []provider.Source{
+			{Title: "S1", URL: "https://example.com"},
+		},
+	}
+	out, err := FormatJSON(result, false)
+	if err != nil {
+		t.Fatalf("FormatJSON error: %v", err)
+	}
+	if strings.Contains(out, "[1]") {
+		t.Error("expected [1] to be stripped from JSON content")
 	}
 }

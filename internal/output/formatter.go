@@ -4,17 +4,24 @@ package output
 import (
 	"encoding/json"
 	"fmt"
+	"regexp"
 	"strings"
 
 	"github.com/dkmaker/websearch/internal/provider"
 )
+
+var citationRefRe = regexp.MustCompile(`\s*\[(\d+(?:,\s*\d+)*)\]`)
 
 // FormatMarkdown renders a provider.Result as markdown text.
 // When includeSources is false and sources exist, a hint comment is appended.
 func FormatMarkdown(result *provider.Result, includeSources bool) string {
 	var sb strings.Builder
 
-	sb.WriteString(result.Content)
+	content := result.Content
+	if !includeSources {
+		content = citationRefRe.ReplaceAllString(content, "")
+	}
+	sb.WriteString(content)
 
 	if includeSources && len(result.Sources) > 0 {
 		sb.WriteString("\n\n---\nSources:\n")
@@ -25,8 +32,6 @@ func FormatMarkdown(result *provider.Result, includeSources bool) string {
 				sb.WriteString(fmt.Sprintf("- %s\n", s.URL))
 			}
 		}
-	} else if !includeSources && len(result.Sources) > 0 {
-		sb.WriteString("\n<!-- run with --include-sources for citations -->")
 	}
 
 	return sb.String()
@@ -43,8 +48,12 @@ type jsonOutput struct {
 // FormatJSON renders a provider.Result as pretty-printed JSON.
 // Sources are only included when includeSources is true.
 func FormatJSON(result *provider.Result, includeSources bool) (string, error) {
+	content := result.Content
+	if !includeSources {
+		content = citationRefRe.ReplaceAllString(content, "")
+	}
 	out := jsonOutput{
-		Content:  result.Content,
+		Content:  content,
 		Provider: result.Provider,
 		Mode:     result.Mode,
 		Cached:   result.Cached,
