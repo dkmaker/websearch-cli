@@ -157,22 +157,40 @@ func TestResolveProviderGitHub(t *testing.T) {
 		t.Errorf("got %q, want github", got)
 	}
 
-	// GitHub without token (should still work — unauthenticated OK for repos/issues)
-	got, _, err = resolveProvider("github", "", "", "", "")
+	// GitHub without token (should still work — unauthenticated OK for repos/issues, but warn)
+	got, warning, err := resolveProvider("github", "", "", "", "")
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
 	if got != "github" {
 		t.Errorf("got %q, want github", got)
+	}
+	if !strings.Contains(warning, "GITHUB_TOKEN not set") {
+		t.Errorf("expected warning about GITHUB_TOKEN, got %q", warning)
 	}
 
-	// Flag override to github
-	got, _, err = resolveProvider("perplexity", "github", "pplx-key", "", "")
+	// Flag override to github without token — should warn
+	got, warning, err = resolveProvider("perplexity", "github", "pplx-key", "", "")
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
 	if got != "github" {
 		t.Errorf("got %q, want github", got)
+	}
+	if !strings.Contains(warning, "GITHUB_TOKEN not set") {
+		t.Errorf("expected warning about GITHUB_TOKEN, got %q", warning)
+	}
+
+	// Flag override to github with token — no warning
+	got, warning, err = resolveProvider("perplexity", "github", "pplx-key", "", "ghp_token")
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if got != "github" {
+		t.Errorf("got %q, want github", got)
+	}
+	if warning != "" {
+		t.Errorf("expected no warning with token, got %q", warning)
 	}
 }
 

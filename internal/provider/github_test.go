@@ -178,6 +178,7 @@ func TestGitHubSearchIssues(t *testing.T) {
 				"title":          "Bug: search returns empty",
 				"html_url":       "https://github.com/owner/repo/issues/42",
 				"state":          "open",
+				"body":           "When searching for items, the result set is empty despite matching entries existing.",
 				"comments":       5,
 				"updated_at":     "2026-02-19T10:00:00Z",
 				"repository_url": "https://api.github.com/repos/owner/repo",
@@ -191,6 +192,7 @@ func TestGitHubSearchIssues(t *testing.T) {
 				"title":          "Feature: add search",
 				"html_url":       "https://github.com/owner/repo/issues/15",
 				"state":          "closed",
+				"body":           "It would be great to have a search feature.",
 				"comments":       12,
 				"updated_at":     "2026-01-05T10:00:00Z",
 				"repository_url": "https://api.github.com/repos/owner/repo",
@@ -232,5 +234,139 @@ func TestGitHubSearchIssues(t *testing.T) {
 	}
 	if !strings.Contains(result.Content, "bug") {
 		t.Error("expected label in content")
+	}
+}
+
+func TestGitHubSearchReposEmptyResults(t *testing.T) {
+	mockResp := map[string]interface{}{
+		"total_count":        0,
+		"incomplete_results": false,
+		"items":              []map[string]interface{}{},
+	}
+
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(mockResp)
+	}))
+	defer server.Close()
+
+	p := NewGitHub("", server.URL)
+	_, err := p.Search(context.Background(), "nonexistent-query-xyz", SearchOptions{
+		Mode:       "repos",
+		MaxResults: 10,
+	})
+	if err == nil {
+		t.Fatal("expected error for empty repos results")
+	}
+	if !strings.Contains(err.Error(), "no results found") {
+		t.Errorf("expected 'no results found' error, got: %v", err)
+	}
+}
+
+func TestGitHubSearchIssuesEmptyResults(t *testing.T) {
+	mockResp := map[string]interface{}{
+		"total_count":        0,
+		"incomplete_results": false,
+		"items":              []map[string]interface{}{},
+	}
+
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(mockResp)
+	}))
+	defer server.Close()
+
+	p := NewGitHub("", server.URL)
+	_, err := p.Search(context.Background(), "nonexistent-query-xyz", SearchOptions{
+		Mode:       "issues",
+		MaxResults: 10,
+	})
+	if err == nil {
+		t.Fatal("expected error for empty issues results")
+	}
+	if !strings.Contains(err.Error(), "no results found") {
+		t.Errorf("expected 'no results found' error, got: %v", err)
+	}
+}
+
+func TestGitHubSearchIssuesIncludesBody(t *testing.T) {
+	mockResp := map[string]interface{}{
+		"total_count":        1,
+		"incomplete_results": false,
+		"items": []map[string]interface{}{
+			{
+				"number":         99,
+				"title":          "Issue with body",
+				"html_url":       "https://github.com/owner/repo/issues/99",
+				"state":          "open",
+				"body":           "This is the issue body with detailed description of the problem.",
+				"comments":       3,
+				"updated_at":     "2026-02-19T10:00:00Z",
+				"repository_url": "https://api.github.com/repos/owner/repo",
+				"labels":         []map[string]interface{}{},
+			},
+		},
+	}
+
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(mockResp)
+	}))
+	defer server.Close()
+
+	p := NewGitHub("", server.URL)
+	result, err := p.Search(context.Background(), "issue body test", SearchOptions{
+		Mode:       "issues",
+		MaxResults: 10,
+	})
+	if err != nil {
+		t.Fatalf("Search error: %v", err)
+	}
+	if !strings.Contains(result.Content, "detailed description") {
+		t.Error("expected issue body content in output")
+	}
+}
+
+func TestGitHubSearchIssuesBodyTruncation(t *testing.T) {
+	// Create a body longer than 500 characters
+	longBody := strings.Repeat("This is a long body. ", 30) // 630 chars
+	mockResp := map[string]interface{}{
+		"total_count":        1,
+		"incomplete_results": false,
+		"items": []map[string]interface{}{
+			{
+				"number":         1,
+				"title":          "Long body issue",
+				"html_url":       "https://github.com/owner/repo/issues/1",
+				"state":          "open",
+				"body":           longBody,
+				"comments":       0,
+				"updated_at":     "2026-02-19T10:00:00Z",
+				"repository_url": "https://api.github.com/repos/owner/repo",
+				"labels":         []map[string]interface{}{},
+			},
+		},
+	}
+
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(mockResp)
+	}))
+	defer server.Close()
+
+	p := NewGitHub("", server.URL)
+	result, err := p.Search(context.Background(), "long body", SearchOptions{
+		Mode:       "issues",
+		MaxResults: 10,
+	})
+	if err != nil {
+		t.Fatalf("Search error: %v", err)
+	}
+	if !strings.Contains(result.Content, "...") {
+		t.Error("expected truncation indicator '...' in long body")
+	}
+	// The body in the output should not contain the full longBody
+	if strings.Contains(result.Content, longBody) {
+		t.Error("expected body to be truncated, but found full body in output")
 	}
 }
