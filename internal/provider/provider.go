@@ -38,11 +38,13 @@ func (o SearchOptions) Validate() error {
 
 // Result holds the response from a search provider.
 type Result struct {
-	Content  string   `json:"content"`
-	Sources  []Source `json:"sources,omitempty"`
-	Provider string   `json:"provider"`
-	Mode     string   `json:"mode"`
-	Cached   bool     `json:"cached"`
+	Content      string   `json:"content"`
+	Sources      []Source `json:"sources,omitempty"`
+	Provider     string   `json:"provider"`
+	Mode         string   `json:"mode"`
+	Cached       bool     `json:"cached"`
+	FinishReason string   `json:"finish_reason,omitempty"` // "stop" or "length" from API
+	ModeAdjusted bool     `json:"mode_adjusted"`           // was mode changed from what was requested
 }
 
 // Source represents a citation/reference.

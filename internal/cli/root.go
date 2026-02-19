@@ -35,6 +35,7 @@ var (
 	flagListProfiles   bool
 	flagShowExamples   bool
 	flagShowProfiles   bool
+	flagNoMetadata     bool
 )
 
 var rootCmd = &cobra.Command{
@@ -70,6 +71,7 @@ func init() {
 	rootCmd.Flags().BoolVar(&flagListProfiles, "list-profiles", false, "List available profiles")
 	rootCmd.Flags().BoolVar(&flagShowExamples, "show-examples", false, "Show usage examples")
 	rootCmd.Flags().BoolVar(&flagShowProfiles, "show-profiles", false, "Show profile details")
+	rootCmd.Flags().BoolVar(&flagNoMetadata, "no-metadata", false, "Omit response metadata from output")
 }
 
 func Execute() error {
@@ -129,6 +131,7 @@ func run(cmd *cobra.Command, args []string) error {
 	// Validate mode against provider. If the mode came from the profile
 	// (not explicitly set by user) and is incompatible with the resolved
 	// provider, auto-adjust to the provider's default mode.
+	modeAdjusted := false
 	if err := validateMode(mode, providerName); err != nil {
 		if flagMode != "" {
 			// User explicitly requested this mode — error
@@ -136,6 +139,7 @@ func run(cmd *cobra.Command, args []string) error {
 		}
 		// Mode came from profile, auto-adjust
 		mode = defaultModeForProvider(providerName)
+		modeAdjusted = true
 		fmt.Fprintf(os.Stderr, "warning: mode adjusted to %q for %s provider\n", mode, providerName)
 	}
 
@@ -161,6 +165,7 @@ func run(cmd *cobra.Command, args []string) error {
 			var result provider.Result
 			if err := json.Unmarshal(data, &result); err == nil {
 				result.Cached = true
+				result.ModeAdjusted = modeAdjusted
 				return outputResult(&result)
 			}
 		}
@@ -183,6 +188,9 @@ func run(cmd *cobra.Command, args []string) error {
 		return fmt.Errorf("search failed: %w", err)
 	}
 
+	// Set mode adjustment metadata
+	result.ModeAdjusted = modeAdjusted
+
 	// Cache result
 	if !flagNoCache {
 		if data, err := json.Marshal(result); err == nil {
@@ -194,14 +202,15 @@ func run(cmd *cobra.Command, args []string) error {
 }
 
 func outputResult(result *provider.Result) error {
+	includeMetadata := !flagNoMetadata
 	if flagJSON {
-		out, err := output.FormatJSON(result, flagIncludeSources)
+		out, err := output.FormatJSON(result, flagIncludeSources, includeMetadata)
 		if err != nil {
 			return err
 		}
 		fmt.Println(out)
 	} else {
-		fmt.Print(output.FormatMarkdown(result, flagIncludeSources))
+		fmt.Print(output.FormatMarkdown(result, flagIncludeSources, includeMetadata))
 	}
 	return nil
 }
