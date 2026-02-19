@@ -91,6 +91,8 @@ func (g *GitHub) Search(ctx context.Context, query string, opts SearchOptions) (
 		return nil, err
 	}
 
+	query = g.prepareQuery(query, opts.Mode)
+
 	switch opts.Mode {
 	case "repos":
 		return g.searchRepos(ctx, query, opts)
@@ -337,4 +339,17 @@ func repoNameFromURL(apiURL string) string {
 		return apiURL[idx+len(prefix):]
 	}
 	return ""
+}
+
+// prepareQuery applies mode-specific query transformations for the GitHub API.
+func (g *GitHub) prepareQuery(query string, mode string) string {
+	switch mode {
+	case "issues":
+		// GitHub /search/issues requires is:issue or is:pull-request qualifier.
+		// Default to is:issue when the user hasn't specified either.
+		if !strings.Contains(query, "is:issue") && !strings.Contains(query, "is:pull-request") {
+			query = query + " is:issue"
+		}
+	}
+	return query
 }
