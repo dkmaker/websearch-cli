@@ -254,5 +254,69 @@ func (g *GitHub) searchCode(ctx context.Context, query string, opts SearchOption
 }
 
 func (g *GitHub) searchIssues(ctx context.Context, query string, opts SearchOptions) (*Result, error) {
-	return nil, fmt.Errorf("issues search not yet implemented")
+	endpoint := g.buildURL("/search/issues", query, opts.MaxResults)
+	body, err := g.doRequest(ctx, endpoint, "")
+	if err != nil {
+		return nil, err
+	}
+
+	var resp githubSearchResponse
+	if err := json.Unmarshal(body, &resp); err != nil {
+		return nil, fmt.Errorf("parsing response: %w", err)
+	}
+
+	var issues []githubIssue
+	if err := json.Unmarshal(resp.Items, &issues); err != nil {
+		return nil, fmt.Errorf("parsing issues: %w", err)
+	}
+
+	result := &Result{
+		Provider: "github",
+		Mode:     "issues",
+	}
+
+	var sb strings.Builder
+	for i, issue := range issues {
+		if i > 0 {
+			sb.WriteString("\n\n")
+		}
+		// Extract repo name from repository_url: https://api.github.com/repos/owner/repo
+		repoName := repoNameFromURL(issue.RepositoryURL)
+		sb.WriteString(fmt.Sprintf("**%s#%d** %s (%s)", repoName, issue.Number, issue.Title, issue.State))
+
+		var meta []string
+		if len(issue.Labels) > 0 {
+			var labelNames []string
+			for _, l := range issue.Labels {
+				labelNames = append(labelNames, l.Name)
+			}
+			meta = append(meta, "Labels: "+strings.Join(labelNames, ", "))
+		}
+		if issue.Comments > 0 {
+			meta = append(meta, fmt.Sprintf("Comments: %d", issue.Comments))
+		}
+		if issue.UpdatedAt != "" {
+			meta = append(meta, "Updated: "+issue.UpdatedAt[:10])
+		}
+		if len(meta) > 0 {
+			sb.WriteString("\n  " + strings.Join(meta, " | "))
+		}
+
+		result.Sources = append(result.Sources, Source{
+			Title: fmt.Sprintf("%s#%d", repoName, issue.Number),
+			URL:   issue.HTMLURL,
+		})
+	}
+	result.Content = sb.String()
+	return result, nil
+}
+
+func repoNameFromURL(apiURL string) string {
+	// https://api.github.com/repos/owner/repo -> owner/repo
+	const prefix = "/repos/"
+	idx := strings.Index(apiURL, prefix)
+	if idx >= 0 {
+		return apiURL[idx+len(prefix):]
+	}
+	return ""
 }

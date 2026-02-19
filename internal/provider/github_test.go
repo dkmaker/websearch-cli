@@ -166,3 +166,70 @@ func TestGitHubSearchCodeRequiresAuth(t *testing.T) {
 		t.Errorf("expected GITHUB_TOKEN in error, got: %v", err)
 	}
 }
+
+func TestGitHubSearchIssues(t *testing.T) {
+	mockResp := map[string]interface{}{
+		"total_count":        2,
+		"incomplete_results": false,
+		"items": []map[string]interface{}{
+			{
+				"number":         42,
+				"title":          "Bug: search returns empty",
+				"html_url":       "https://github.com/owner/repo/issues/42",
+				"state":          "open",
+				"comments":       5,
+				"updated_at":     "2026-02-19T10:00:00Z",
+				"repository_url": "https://api.github.com/repos/owner/repo",
+				"labels": []map[string]interface{}{
+					{"name": "bug"},
+					{"name": "priority-high"},
+				},
+			},
+			{
+				"number":         15,
+				"title":          "Feature: add search",
+				"html_url":       "https://github.com/owner/repo/issues/15",
+				"state":          "closed",
+				"comments":       12,
+				"updated_at":     "2026-01-05T10:00:00Z",
+				"repository_url": "https://api.github.com/repos/owner/repo",
+				"labels": []map[string]interface{}{
+					{"name": "enhancement"},
+				},
+			},
+		},
+	}
+
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.URL.Path != "/search/issues" {
+			t.Errorf("expected /search/issues, got %s", r.URL.Path)
+		}
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(mockResp)
+	}))
+	defer server.Close()
+
+	p := NewGitHub("", server.URL)
+	result, err := p.Search(context.Background(), "search bug", SearchOptions{
+		Mode:       "issues",
+		MaxResults: 10,
+	})
+	if err != nil {
+		t.Fatalf("Search error: %v", err)
+	}
+	if result.Mode != "issues" {
+		t.Errorf("expected mode 'issues', got %q", result.Mode)
+	}
+	if len(result.Sources) != 2 {
+		t.Errorf("expected 2 sources, got %d", len(result.Sources))
+	}
+	if !strings.Contains(result.Content, "owner/repo#42") {
+		t.Error("expected owner/repo#42 in content")
+	}
+	if !strings.Contains(result.Content, "open") {
+		t.Error("expected state in content")
+	}
+	if !strings.Contains(result.Content, "bug") {
+		t.Error("expected label in content")
+	}
+}
