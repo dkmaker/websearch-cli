@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
+	"strings"
 	"testing"
 )
 
@@ -74,5 +75,50 @@ func TestBraveSearch(t *testing.T) {
 	}
 	if result.Content == "" {
 		t.Error("expected non-empty content")
+	}
+}
+
+func TestBraveSearchHTMLEntities(t *testing.T) {
+	mockResp := map[string]interface{}{
+		"web": map[string]interface{}{
+			"results": []map[string]interface{}{
+				{
+					"title":       "Go &amp; Rust &mdash; A Comparison",
+					"url":         "https://example.com/1",
+					"description": "Find the best &quot;Go&quot; tips &amp; tricks. Use &#39;generics&#39; for &lt;type&gt; safety.",
+				},
+			},
+		},
+	}
+
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(mockResp)
+	}))
+	defer server.Close()
+
+	p := NewBrave("test-key", server.URL)
+	result, err := p.Search(context.Background(), "test", SearchOptions{Mode: "web"})
+	if err != nil {
+		t.Fatalf("Search error: %v", err)
+	}
+
+	// Content should have decoded HTML entities
+	if strings.Contains(result.Content, "&amp;") {
+		t.Errorf("content still contains &amp;: %s", result.Content)
+	}
+	if strings.Contains(result.Content, "&quot;") {
+		t.Errorf("content still contains &quot;: %s", result.Content)
+	}
+	if strings.Contains(result.Content, "&#39;") {
+		t.Errorf("content still contains &#39;: %s", result.Content)
+	}
+	if !strings.Contains(result.Content, `"Go"`) {
+		t.Errorf("expected decoded quotes in content: %s", result.Content)
+	}
+
+	// Source title should also be decoded
+	if result.Sources[0].Title != "Go & Rust — A Comparison" {
+		t.Errorf("expected decoded title, got %q", result.Sources[0].Title)
 	}
 }

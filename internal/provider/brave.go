@@ -5,6 +5,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"html"
 	"io"
 	"net/http"
 	"net/url"
@@ -110,9 +111,11 @@ func (b *Brave) Search(ctx context.Context, query string, opts SearchOptions) (*
 		if i > 0 {
 			sb.WriteString("\n\n")
 		}
-		sb.WriteString(fmt.Sprintf("**%s**\n%s", r.Title, r.Description))
+		title := html.UnescapeString(r.Title)
+		desc := html.UnescapeString(r.Description)
+		sb.WriteString(fmt.Sprintf("**%s**\n%s", title, desc))
 		result.Sources = append(result.Sources, Source{
-			Title: r.Title,
+			Title: title,
 			URL:   r.URL,
 			Date:  r.PageAge,
 		})
