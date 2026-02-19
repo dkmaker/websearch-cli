@@ -74,6 +74,7 @@ type githubIssue struct {
 	Title     string `json:"title"`
 	HTMLURL   string `json:"html_url"`
 	State     string `json:"state"`
+	Body      string `json:"body"`
 	Comments  int    `json:"comments"`
 	UpdatedAt string `json:"updated_at"`
 	Labels    []struct {
@@ -163,6 +164,10 @@ func (g *GitHub) searchRepos(ctx context.Context, query string, opts SearchOptio
 	var repos []githubRepo
 	if err := json.Unmarshal(resp.Items, &repos); err != nil {
 		return nil, fmt.Errorf("parsing repos: %w", err)
+	}
+
+	if len(repos) == 0 {
+		return nil, fmt.Errorf("no results found for query")
 	}
 
 	result := &Result{
@@ -271,6 +276,10 @@ func (g *GitHub) searchIssues(ctx context.Context, query string, opts SearchOpti
 		return nil, fmt.Errorf("parsing issues: %w", err)
 	}
 
+	if len(issues) == 0 {
+		return nil, fmt.Errorf("no results found for query")
+	}
+
 	result := &Result{
 		Provider: "github",
 		Mode:     "issues",
@@ -301,6 +310,14 @@ func (g *GitHub) searchIssues(ctx context.Context, query string, opts SearchOpti
 		}
 		if len(meta) > 0 {
 			sb.WriteString("\n  " + strings.Join(meta, " | "))
+		}
+
+		// Include issue body (first 500 chars) for richer context
+		if body := strings.TrimSpace(issue.Body); body != "" {
+			if len(body) > 500 {
+				body = body[:500] + "..."
+			}
+			sb.WriteString("\n  " + strings.ReplaceAll(body, "\n", "\n  "))
 		}
 
 		result.Sources = append(result.Sources, Source{

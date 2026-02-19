@@ -243,6 +243,9 @@ func resolveProvider(profileProv, flagProv, perplexityKey, braveKey, githubKey s
 		}
 		return "perplexity", "warning: BRAVE_API_KEY not set, falling back to Perplexity", nil
 	case "github":
+		if githubKey == "" {
+			return "github", "warning: GITHUB_TOKEN not set; GitHub searches will be rate-limited and code search will fail", nil
+		}
 		return "github", "", nil
 	default:
 		if perplexityKey != "" {
