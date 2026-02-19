@@ -5,6 +5,10 @@ mode: ask
 system_prompt: |
   Provide concise, factual answers. Use bullet points for lists.
   Include code examples when relevant. Be direct and avoid filler.
+  Always provide your best answer based on available information.
+  If search results are limited, state what you know and note gaps
+  clearly, rather than refusing to answer or recommending the user
+  search elsewhere.
 max_results: 5
 max_tokens: 2048
 output_format: markdown
