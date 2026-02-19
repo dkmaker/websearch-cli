@@ -234,3 +234,95 @@ func TestGitHubSearchIssues(t *testing.T) {
 		t.Error("expected label in content")
 	}
 }
+
+func TestGitHubPrepareQuery(t *testing.T) {
+	g := NewGitHub("", "")
+
+	tests := []struct {
+		name     string
+		query    string
+		mode     string
+		expected string
+	}{
+		{
+			name:     "issues mode appends is:issue",
+			query:    "repo:owner/repo bug",
+			mode:     "issues",
+			expected: "repo:owner/repo bug is:issue",
+		},
+		{
+			name:     "issues mode preserves existing is:issue",
+			query:    "repo:owner/repo is:issue bug",
+			mode:     "issues",
+			expected: "repo:owner/repo is:issue bug",
+		},
+		{
+			name:     "issues mode preserves is:pull-request",
+			query:    "repo:owner/repo is:pull-request",
+			mode:     "issues",
+			expected: "repo:owner/repo is:pull-request",
+		},
+		{
+			name:     "repos mode unchanged",
+			query:    "go web framework",
+			mode:     "repos",
+			expected: "go web framework",
+		},
+		{
+			name:     "code mode unchanged",
+			query:    "http.ListenAndServe",
+			mode:     "code",
+			expected: "http.ListenAndServe",
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			result := g.prepareQuery(tt.query, tt.mode)
+			if result != tt.expected {
+				t.Errorf("prepareQuery(%q, %q) = %q, want %q",
+					tt.query, tt.mode, result, tt.expected)
+			}
+		})
+	}
+}
+
+func TestGitHubSearchIssuesAppendsIsIssue(t *testing.T) {
+	mockResp := map[string]interface{}{
+		"total_count":        1,
+		"incomplete_results": false,
+		"items": []map[string]interface{}{
+			{
+				"number":         1,
+				"title":          "Test issue",
+				"html_url":       "https://github.com/owner/repo/issues/1",
+				"state":          "open",
+				"comments":       0,
+				"updated_at":     "2026-02-19T10:00:00Z",
+				"repository_url": "https://api.github.com/repos/owner/repo",
+				"labels":         []map[string]interface{}{},
+			},
+		},
+	}
+
+	var capturedQuery string
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		capturedQuery = r.URL.Query().Get("q")
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(mockResp)
+	}))
+	defer server.Close()
+
+	p := NewGitHub("", server.URL)
+	_, err := p.Search(context.Background(), "deadlock goroutine", SearchOptions{
+		Mode:       "issues",
+		MaxResults: 10,
+	})
+	if err != nil {
+		t.Fatalf("Search error: %v", err)
+	}
+
+	if !strings.Contains(capturedQuery, "is:issue") {
+		t.Errorf("expected query to contain 'is:issue', got %q", capturedQuery)
+	}
+}
