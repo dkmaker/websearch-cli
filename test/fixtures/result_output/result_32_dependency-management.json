@@ -1,0 +1,27 @@
+{
+  "query_id": 32,
+  "category": "dependency-management",
+  "difficulty": "hard",
+  "provider": "perplexity",
+  "mode": "reason",
+  "profile": "general",
+  "command_executed": "./websearch --no-cache -m reason \"How to set up a Nix flake for a polyglot project with Python, Rust, and Node.js dependencies where the Rust crate needs to link against a system library provided by a Nix package\"",
+  "raw_response_file": "raw_32_dependency-management.md",
+  "execution": {
+    "success": true,
+    "had_errors": false,
+    "stderr": "",
+    "response_length_words": 295,
+    "timeout": false
+  },
+  "evaluation": {
+    "relevance": 4,
+    "accuracy": 4,
+    "depth": 3,
+    "actionability": 4,
+    "overall_score": 3.8,
+    "summary": "3.8/5.0 - Working dev-shell flake example with correct openssl/pkg-config pattern, but shallow on nativeBuildInputs distinction and production packaging",
+    "key_strengths": "Provides a complete, immediately usable flake.nix with rust-overlay, all three toolchains, and openssl plus pkg-config in buildInputs — the standard correct approach for linking C libraries in Nix dev shells.",
+    "key_weaknesses": "Does not address the nativeBuildInputs vs buildInputs distinction (important for correctness), omits openssl-sys-specific env vars like OPENSSL_DIR, and misses rustPlatform.buildRustPackage for reproducible production builds beyond dev shells."
+  }
+}

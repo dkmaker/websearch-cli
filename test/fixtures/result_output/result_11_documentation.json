@@ -1,0 +1,27 @@
+{
+  "query_id": 11,
+  "category": "documentation",
+  "difficulty": "hard",
+  "provider": "brave",
+  "mode": "web",
+  "profile": "general",
+  "command_executed": "./websearch --no-cache --provider brave \"Terraform AWS provider assume_role external_id cross-account Terraform Cloud dynamic credentials configuration\"",
+  "raw_response_file": "raw_11_documentation.md",
+  "execution": {
+    "success": true,
+    "had_errors": false,
+    "stderr": "warning: mode adjusted to \"web\" for brave provider",
+    "response_length_words": 200,
+    "timeout": false
+  },
+  "evaluation": {
+    "relevance": 3,
+    "accuracy": 3,
+    "depth": 2,
+    "actionability": 2,
+    "overall_score": 2.5,
+    "summary": "2.5/5.0 - Results touch on assume_role and dynamic credentials but miss the external_id + Terraform Cloud interaction",
+    "key_strengths": "Surfaces authoritative sources including HashiCorp official docs and the AWS Provider registry page, covering the general assume_role and dynamic credentials landscape.",
+    "key_weaknesses": "No result directly addresses the external_id parameter in the context of Terraform Cloud dynamic credentials, and snippets lack actionable configuration examples for local vs remote runner auth flow reconciliation."
+  }
+}

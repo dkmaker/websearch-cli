@@ -1,0 +1,27 @@
+{
+  "query_id": 24,
+  "category": "best-practices",
+  "difficulty": "hard",
+  "provider": "perplexity",
+  "mode": "reason",
+  "profile": "general",
+  "command_executed": "./websearch --no-cache -m reason \"What is the recommended pattern for database migration rollbacks in a blue-green deployment where the new schema must be backward compatible with the old application version still serving traffic\"",
+  "raw_response_file": "raw_24_best-practices.md",
+  "execution": {
+    "success": true,
+    "had_errors": false,
+    "stderr": "",
+    "response_length_words": 310,
+    "timeout": false
+  },
+  "evaluation": {
+    "relevance": 5,
+    "accuracy": 5,
+    "depth": 4,
+    "actionability": 4,
+    "overall_score": 4.5,
+    "summary": "4.5/5.0 - Precise expand-contract pattern explanation with rollback stages and a code example, but lacks tooling guidance",
+    "key_strengths": "Immediately identifies the expand-contract pattern as the canonical solution, clearly separates it into expand and contract phases, and provides three distinct rollback strategies with timing guidance specific to blue-green traffic shift stages.",
+    "key_weaknesses": "No mention of migration tooling (Flyway, Liquibase, Alembic) or deeper multi-step migration scenarios; the code example illustrates dual-write but does not address how the blue version handles a column that does not yet exist."
+  }
+}

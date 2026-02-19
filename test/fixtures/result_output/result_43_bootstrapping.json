@@ -1,0 +1,27 @@
+{
+  "query_id": 43,
+  "category": "bootstrapping",
+  "difficulty": "hard",
+  "provider": "perplexity",
+  "mode": "reason",
+  "profile": "general",
+  "command_executed": "./websearch --no-cache -m reason \"How to configure a new Python FastAPI project with SQLAlchemy async, Alembic migrations, pytest-asyncio fixtures, and proper dependency injection so that tests use an isolated test database with automatic rollback between tests\"",
+  "raw_response_file": "raw_43_bootstrapping.md",
+  "execution": {
+    "success": true,
+    "had_errors": false,
+    "stderr": "",
+    "response_length_words": 553,
+    "timeout": false
+  },
+  "evaluation": {
+    "relevance": 4,
+    "accuracy": 3,
+    "depth": 4,
+    "actionability": 3,
+    "overall_score": 3.5,
+    "summary": "3.5/5.0 - Covers all four frameworks with working code but test fixtures have accuracy gaps the response itself acknowledges",
+    "key_strengths": "Provides concrete, well-parameterized async engine setup, a working Alembic async env.py pattern, and a pydantic-settings config example covering the full production stack.",
+    "key_weaknesses": "Test section uses sync TestClient instead of the required httpx AsyncClient, and the begin_nested rollback pattern has known async SQLAlchemy caveats not explained; the response explicitly admits the pytest fixture content was not sourced from search results."
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "query_id": 47,
+  "category": "bootstrapping",
+  "difficulty": "hard",
+  "provider": "perplexity",
+  "mode": "reason",
+  "profile": "nodejs",
+  "command_executed": "./websearch --no-cache -p nodejs -m reason \"What is the correct tsconfig.json configuration for a TypeScript library that needs to emit both ESM and CJS with declaration files and source maps where the ESM output uses .js extensions in import paths and works with Node.js native ESM loader\"",
+  "raw_response_file": "raw_47_bootstrapping.md",
+  "execution": {
+    "success": true,
+    "had_errors": false,
+    "stderr": "",
+    "response_length_words": 230,
+    "timeout": false
+  },
+  "evaluation": {
+    "relevance": 4,
+    "accuracy": 4,
+    "depth": 3,
+    "actionability": 4,
+    "overall_score": 3.8,
+    "summary": "3.8/5.0 - Correct dual tsconfig approach with working configs, but omits package.json exports field and .js-in-source import requirement",
+    "key_strengths": "Correctly prescribes module:ESNext with moduleResolution:NodeNext for native ESM loader compatibility and provides copy-pasteable tsconfig files with separate outDir paths for ESM and CJS output.",
+    "key_weaknesses": "Omits the critical package.json exports field configuration needed for dual-package publishing, and does not mention that TypeScript source files must explicitly use .js extensions in their import statements."
+  }
+}

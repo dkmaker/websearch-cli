@@ -1,0 +1,27 @@
+{
+  "query_id": 34,
+  "category": "debugging",
+  "difficulty": "medium",
+  "provider": "brave",
+  "mode": "web",
+  "profile": "general",
+  "command_executed": "./websearch --no-cache --provider brave \"Prometheus scrape target UP but Grafana gaps time series data missing garbage collection pause application metrics\"",
+  "raw_response_file": "raw_34_debugging.md",
+  "execution": {
+    "success": true,
+    "had_errors": false,
+    "stderr": "warning: mode adjusted to \"web\" for brave provider",
+    "response_length_words": 180,
+    "timeout": false
+  },
+  "evaluation": {
+    "relevance": 3,
+    "accuracy": 4,
+    "depth": 2,
+    "actionability": 2,
+    "overall_score": 2.8,
+    "summary": "2.8/5.0 - One directly relevant GC result found, but response is too shallow for a complete diagnosis",
+    "key_strengths": "The DevOps Stack Exchange result directly identifies the Java GC pause root cause and provides a concrete mitigation (G1GC with bounded pause time); the Grafana docs result surfaces the absent_over_time() alerting technique.",
+    "key_weaknesses": "No coverage of Prometheus staleness marker mechanics, scrape_timeout tuning, or language-agnostic mitigations; the majority of returned sources are only tangentially related to the stated problem."
+  }
+}

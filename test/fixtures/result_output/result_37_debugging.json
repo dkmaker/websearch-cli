@@ -1,0 +1,27 @@
+{
+  "query_id": 37,
+  "category": "debugging",
+  "difficulty": "hard",
+  "provider": "perplexity",
+  "mode": "reason",
+  "profile": "general",
+  "command_executed": "./websearch --no-cache -m reason \"gRPC streaming call between Go server and Python client silently drops messages under high throughput without any error and the client receives fewer messages than the server reports sending\"",
+  "raw_response_file": "raw_37_debugging.md",
+  "execution": {
+    "success": true,
+    "had_errors": false,
+    "stderr": "",
+    "response_length_words": 267,
+    "timeout": false
+  },
+  "evaluation": {
+    "relevance": 2,
+    "accuracy": 3,
+    "depth": 2,
+    "actionability": 2,
+    "overall_score": 2.3,
+    "summary": "2.3/5.0 - Response explicitly admits it cannot address the problem and only lists generic investigation areas without actionable detail",
+    "key_strengths": "The areas listed for investigation (flow control, HTTP/2 window sizes, timeouts, gRPC version compatibility) are technically valid and correctly scoped to the problem domain.",
+    "key_weaknesses": "Response provides no concrete code examples, specific gRPC configuration options, diagnostic commands, or root-cause analysis; it acknowledges the search results were insufficient and offers no real resolution path."
+  }
+}

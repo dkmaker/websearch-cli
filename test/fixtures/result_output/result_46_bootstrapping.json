@@ -1,0 +1,27 @@
+{
+  "query_id": 46,
+  "category": "bootstrapping",
+  "difficulty": "hard",
+  "provider": "perplexity",
+  "mode": "reason",
+  "profile": "general",
+  "command_executed": "./websearch --no-cache -m reason \"How to set up a TypeScript monorepo with project references and composite builds where shared packages are consumed by both a Next.js app and a NestJS API without duplicating type declarations or breaking incremental compilation\"",
+  "raw_response_file": "raw_46_bootstrapping.md",
+  "execution": {
+    "success": true,
+    "had_errors": false,
+    "stderr": "",
+    "response_length_words": 430,
+    "timeout": false
+  },
+  "evaluation": {
+    "relevance": 4,
+    "accuracy": 4,
+    "depth": 3,
+    "actionability": 4,
+    "overall_score": 3.8,
+    "summary": "3.8/5.0 - Solid composite build setup with code examples, but does not resolve the core Next.js vs NestJS tsconfig conflict",
+    "key_strengths": "Provides correct and copy-paste-ready tsconfig configurations covering composite builds, declaration emit, declarationMap, incremental flags, and workspace setup with clear build commands.",
+    "key_weaknesses": "Fails to address the stated core tension: conflicting jsx settings and module targets between Next.js and NestJS; no guidance on how to structure tsconfig inheritance to satisfy both consumers without breakage."
+  }
+}

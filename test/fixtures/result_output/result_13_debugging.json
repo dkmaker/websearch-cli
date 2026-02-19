@@ -1,0 +1,27 @@
+{
+  "query_id": 13,
+  "category": "debugging",
+  "difficulty": "hard",
+  "provider": "perplexity",
+  "mode": "reason",
+  "profile": "general",
+  "command_executed": "./websearch --no-cache -m reason \"Docker container runs fine locally but gets OOMKilled in Kubernetes even though memory limits are set to 2Gi and the Java app has -Xmx set to 1536m with G1GC\"",
+  "raw_response_file": "raw_13_debugging.md",
+  "execution": {
+    "success": true,
+    "had_errors": false,
+    "stderr": "",
+    "response_length_words": 285,
+    "timeout": false
+  },
+  "evaluation": {
+    "relevance": 3,
+    "accuracy": 4,
+    "depth": 3,
+    "actionability": 3,
+    "overall_score": 3.3,
+    "summary": "3.3/5.0 - Correctly identifies off-heap memory as the culprit but misses key JVM container-awareness flags and memory breakdown",
+    "key_strengths": "Accurately identifies off-heap/direct buffer memory as a cause of OOMKilled beyond the heap limit, and provides useful kubectl commands to confirm the OOM status and monitor usage.",
+    "key_weaknesses": "Misses critical JVM flags for container environments (-XX:+UseContainerSupport, -XX:MaxMetaspaceSize) and native memory tracking (NMT) commands that are essential for diagnosing exactly where the 512MB gap is consumed; solutions are too vague without concrete JVM tuning parameters."
+  }
+}

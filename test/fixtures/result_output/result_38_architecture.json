@@ -1,0 +1,27 @@
+{
+  "query_id": 38,
+  "category": "architecture",
+  "difficulty": "hard",
+  "provider": "perplexity",
+  "mode": "reason",
+  "profile": "general",
+  "command_executed": "./websearch --no-cache -m reason \"How to implement zero-downtime schema evolution for Protobuf messages in a system using Kafka where producers and consumers are deployed independently and messages must remain backward and forward compatible\"",
+  "raw_response_file": "raw_38_architecture.md",
+  "execution": {
+    "success": true,
+    "had_errors": false,
+    "stderr": "",
+    "response_length_words": 465,
+    "timeout": false
+  },
+  "evaluation": {
+    "relevance": 5,
+    "accuracy": 4,
+    "depth": 4,
+    "actionability": 4,
+    "overall_score": 4.3,
+    "summary": "4.3/5.0 - Well-structured three-phase migration strategy with schema registry and deployment patterns, missing concrete .proto code examples",
+    "key_strengths": "Directly addresses independent producer/consumer deployment with a clear three-phase migration strategy and enforces schema governance via Schema Registry validation before Kafka ingestion.",
+    "key_weaknesses": "Lacks concrete .proto file snippets illustrating reserved fields or type-safe evolution, and does not name or configure specific schema registry tooling such as Confluent Schema Registry."
+  }
+}

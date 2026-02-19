@@ -1,0 +1,27 @@
+{
+  "query_id": 25,
+  "category": "debugging",
+  "difficulty": "hard",
+  "provider": "perplexity",
+  "mode": "reason",
+  "profile": "general",
+  "command_executed": "./websearch --no-cache -m reason \"TypeScript compiler emits Type instantiation is excessively deep and possibly infinite when using a recursive conditional type for deep partial with mapped types on a complex nested API response type\"",
+  "raw_response_file": "raw_25_debugging.md",
+  "execution": {
+    "success": true,
+    "had_errors": false,
+    "stderr": "",
+    "response_length_words": 389,
+    "timeout": false
+  },
+  "evaluation": {
+    "relevance": 4,
+    "accuracy": 4,
+    "depth": 3,
+    "actionability": 3,
+    "overall_score": 3.5,
+    "summary": "3.5/5.0 - Correctly identifies root causes and offers a depth-limiting approach, but misses TypeScript 4.5+ tail-call optimization and contains a subtle code error",
+    "key_strengths": "Clearly explains the unbounded recursion root cause and provides a concrete depth-counter tuple pattern with a code example and structured debugging strategies.",
+    "key_weaknesses": "The depth-counter code snippet has a logic error (Depth[Exclude<D, D>] resolves to never), and the response omits the important TypeScript 4.5+ tail-call recursion optimization and intermediate type alias caching techniques."
+  }
+}

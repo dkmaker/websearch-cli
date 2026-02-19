@@ -1,0 +1,27 @@
+{
+  "query_id": 30,
+  "category": "best-practices",
+  "difficulty": "medium",
+  "provider": "github",
+  "mode": "repos",
+  "profile": "github",
+  "command_executed": "./websearch --no-cache -p github \"circuit breaker Go HTTP resilience half-open state language:go\"",
+  "raw_response_file": "raw_30_best-practices.md",
+  "execution": {
+    "success": false,
+    "had_errors": true,
+    "stderr": "Error: search failed: no results found for query\n",
+    "response_length_words": 0,
+    "timeout": false
+  },
+  "evaluation": {
+    "relevance": 0,
+    "accuracy": 0,
+    "depth": 0,
+    "actionability": 0,
+    "overall_score": 0.0,
+    "summary": "0.0/5.0 - Command failed with no results returned from GitHub search",
+    "key_strengths": "None; the search returned no results.",
+    "key_weaknesses": "The GitHub provider returned an error indicating no results were found, likely due to overly specific query terms or a GitHub search API limitation with the combined filters."
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "query_id": 48,
+  "category": "bootstrapping",
+  "difficulty": "medium",
+  "provider": "brave",
+  "mode": "web",
+  "profile": "general",
+  "command_executed": "./websearch --no-cache --provider brave \"vite-tsconfig-paths vitest path aliases tsconfig.json resolve production build test setup TypeScript\"",
+  "raw_response_file": "raw_48_bootstrapping.md",
+  "execution": {
+    "success": true,
+    "had_errors": false,
+    "stderr": "warning: mode adjusted to \"web\" for brave provider",
+    "response_length_words": 195,
+    "timeout": false
+  },
+  "evaluation": {
+    "relevance": 4,
+    "accuracy": 4,
+    "depth": 2,
+    "actionability": 3,
+    "overall_score": 3.3,
+    "summary": "3.3/5.0 - Correctly surfaces vite-tsconfig-paths plugin and official Vitest docs, but lacks step-by-step integration guide",
+    "key_strengths": "All five sources are highly on-topic, including the official Vitest error guide and the vite-tsconfig-paths npm/GitHub pages, giving the developer immediate pointers to the right plugin.",
+    "key_weaknesses": "Results are shallow snippets with no synthesized walkthrough; missing a complete example showing tsconfig.json paths section paired with the viteconfig plugin setup."
+  }
+}

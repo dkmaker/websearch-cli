@@ -1,0 +1,27 @@
+{
+  "query_id": 23,
+  "category": "documentation",
+  "difficulty": "hard",
+  "provider": "brave",
+  "mode": "web",
+  "profile": "general",
+  "command_executed": "./websearch --no-cache --provider brave \"nginx ingress controller annotations websocket upgrade sticky sessions gRPC-Web CORS preflight kubernetes\"",
+  "raw_response_file": "raw_23_documentation.md",
+  "execution": {
+    "success": true,
+    "had_errors": false,
+    "stderr": "warning: mode adjusted to \"web\" for brave provider",
+    "response_length_words": 125,
+    "timeout": false
+  },
+  "evaluation": {
+    "relevance": 2,
+    "accuracy": 3,
+    "depth": 1,
+    "actionability": 1,
+    "overall_score": 1.8,
+    "summary": "1.8/5.0 - Returns link titles and snippets only; covers WebSocket and sticky sessions but entirely omits gRPC-Web and CORS preflight",
+    "key_strengths": "Identifies relevant resources for WebSocket configuration and the nginx.ingress.kubernetes.io/affinity-mode annotation for sticky sessions, pointing to official ingress-nginx docs.",
+    "key_weaknesses": "Brave web mode returns only bare titles and description snippets with no actual YAML examples, and provides zero coverage of gRPC-Web or CORS preflight annotations which are half the stated problem."
+  }
+}

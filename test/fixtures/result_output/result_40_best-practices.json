@@ -1,0 +1,27 @@
+{
+  "query_id": 40,
+  "category": "best-practices",
+  "difficulty": "medium",
+  "provider": "github",
+  "mode": "code",
+  "profile": "github",
+  "command_executed": "./websearch --no-cache -p github -m code \"structured logging context propagation trace ID middleware gRPC interceptor language:go\"",
+  "raw_response_file": "raw_40_best-practices.md",
+  "execution": {
+    "success": true,
+    "had_errors": false,
+    "stderr": "",
+    "response_length_words": 250,
+    "timeout": false
+  },
+  "evaluation": {
+    "relevance": 2,
+    "accuracy": 3,
+    "depth": 1,
+    "actionability": 1,
+    "overall_score": 1.8,
+    "summary": "1.8/5.0 - Tangentially related code fragments with no complete trace propagation patterns",
+    "key_strengths": "Results are from real-world Go repositories and one entry (GriffinCanCode/AgentOS) directly describes trace context propagation via HTTP headers and gRPC metadata.",
+    "key_weaknesses": "All snippets are tiny isolated fragments (imports, config fields, comments) with no complete implementation of middleware, context injection, or gRPC interceptor logic, making them nearly unusable for solving the stated problem."
+  }
+}

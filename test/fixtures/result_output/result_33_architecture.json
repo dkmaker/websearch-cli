@@ -1,0 +1,27 @@
+{
+  "query_id": 33,
+  "category": "architecture",
+  "difficulty": "hard",
+  "provider": "perplexity",
+  "mode": "reason",
+  "profile": "general",
+  "command_executed": "./websearch --no-cache -m reason \"How to design a plugin system in Go that allows dynamically loading third-party code at runtime without using CGO or the plugin package considering the limitations of Go's static linking\"",
+  "raw_response_file": "raw_33_architecture.md",
+  "execution": {
+    "success": true,
+    "had_errors": false,
+    "stderr": "",
+    "response_length_words": 265,
+    "timeout": false
+  },
+  "evaluation": {
+    "relevance": 3,
+    "accuracy": 4,
+    "depth": 2,
+    "actionability": 3,
+    "overall_score": 3.0,
+    "summary": "3.0/5.0 - Covers go-plugin RPC approach accurately but omits WASM, embedded interpreters, and comparative tradeoff analysis",
+    "key_strengths": "Accurately describes the HashiCorp go-plugin subprocess/RPC model with correct details about gRPC support, process isolation, and production usage in Vault.",
+    "key_weaknesses": "Completely omits the other major alternatives mentioned in the query (WASM runtimes like Wazero, embedded interpreters like Yaegi/Starlark), provides no code examples, and makes no attempt to compare tradeoffs between approaches."
+  }
+}

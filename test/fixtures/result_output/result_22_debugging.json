@@ -1,0 +1,27 @@
+{
+  "query_id": 22,
+  "category": "debugging",
+  "difficulty": "hard",
+  "provider": "perplexity",
+  "mode": "reason",
+  "profile": "general",
+  "command_executed": "./websearch --no-cache -m reason \"Kubernetes pod DNS resolution fails intermittently with SERVFAIL for external domains but cluster-internal service discovery works fine and CoreDNS pods show no errors in logs\"",
+  "raw_response_file": "raw_22_debugging.md",
+  "execution": {
+    "success": true,
+    "had_errors": false,
+    "stderr": "",
+    "response_length_words": 371,
+    "timeout": false
+  },
+  "evaluation": {
+    "relevance": 4,
+    "accuracy": 4,
+    "depth": 3,
+    "actionability": 4,
+    "overall_score": 3.8,
+    "summary": "3.8/5.0 - Good coverage of forwarding and ndots causes with actionable commands, but misses conntrack table exhaustion entirely",
+    "key_strengths": "Clearly explains why internal resolution works while external fails, and provides concrete kubectl commands and dnsConfig YAML for ndots tuning.",
+    "key_weaknesses": "Completely omits conntrack UDP table exhaustion and source port reuse, which is the primary intermittent cause of this well-known Kubernetes DNS issue; also lacks conntrack diagnostic commands."
+  }
+}

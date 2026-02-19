@@ -1,0 +1,27 @@
+{
+  "query_id": 35,
+  "category": "documentation",
+  "difficulty": "hard",
+  "provider": "perplexity",
+  "mode": "reason",
+  "profile": "general",
+  "command_executed": "./websearch --no-cache -m reason \"How to configure Istio service mesh mTLS strict mode with cert-manager integration for automatic certificate rotation when services also need to accept traffic from legacy non-mesh services during migration\"",
+  "raw_response_file": "raw_35_documentation.md",
+  "execution": {
+    "success": true,
+    "had_errors": false,
+    "stderr": "",
+    "response_length_words": 286,
+    "timeout": false
+  },
+  "evaluation": {
+    "relevance": 4,
+    "accuracy": 4,
+    "depth": 3,
+    "actionability": 3,
+    "overall_score": 3.5,
+    "summary": "3.5/5.0 - Correct PERMISSIVE-to-STRICT migration strategy with cert-manager/istio-csr integration, but lacks granular rollout guidance",
+    "key_strengths": "Accurately describes the phased migration approach using PeerAuthentication PERMISSIVE mode as a bridge, and correctly covers istio-csr as the integration point for cert-manager with a working IstioOperator YAML.",
+    "key_weaknesses": "Missing namespace-scoped or per-port PeerAuthentication examples for gradual rollout, no DestinationRule client-side mTLS config, no cert-manager Issuer YAML, and no guidance on identifying/monitoring which services still use plaintext during migration."
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "query_id": 7,
+  "category": "debugging",
+  "difficulty": "hard",
+  "provider": "perplexity",
+  "mode": "reason",
+  "profile": "general",
+  "command_executed": "./websearch --no-cache -m reason \"React hydration mismatch errors appearing only in production when using Next.js App Router with streaming SSR and Suspense boundaries around data-fetching components\"",
+  "raw_response_file": "raw_07_debugging.md",
+  "execution": {
+    "success": true,
+    "had_errors": false,
+    "stderr": "",
+    "response_length_words": 230,
+    "timeout": false
+  },
+  "evaluation": {
+    "relevance": 3,
+    "accuracy": 4,
+    "depth": 2,
+    "actionability": 2,
+    "overall_score": 2.8,
+    "summary": "2.8/5.0 - Accurate generic hydration advice but explicitly fails to address the production-only streaming SSR / Suspense boundary root cause",
+    "key_strengths": "Technically accurate on common hydration causes and generic mitigations; honest in flagging that search results did not cover the specific production-only/Suspense streaming edge case.",
+    "key_weaknesses": "No code examples, no analysis of how streaming chunk ordering or Suspense fallback timing causes production-only divergence, and no debugging strategy for narrowing down the root cause."
+  }
+}

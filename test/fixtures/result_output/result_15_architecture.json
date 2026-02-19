@@ -1,0 +1,27 @@
+{
+  "query_id": 15,
+  "category": "architecture",
+  "difficulty": "hard",
+  "provider": "perplexity",
+  "mode": "research",
+  "profile": "general",
+  "command_executed": "./websearch --no-cache -m research \"How to design a multi-tenant SaaS data isolation strategy using PostgreSQL row-level security versus schema-per-tenant when tenants have different compliance requirements and some need data residency guarantees\"",
+  "raw_response_file": "raw_15_architecture.md",
+  "execution": {
+    "success": true,
+    "had_errors": false,
+    "stderr": "",
+    "response_length_words": 3520,
+    "timeout": false
+  },
+  "evaluation": {
+    "relevance": 5,
+    "accuracy": 5,
+    "depth": 5,
+    "actionability": 5,
+    "overall_score": 5.0,
+    "summary": "5.0/5.0 - Comprehensive deep-research response covering RLS mechanics, schema-per-tenant trade-offs, 5 compliance frameworks, 5 isolation tiers, geographic sharding, and growth phase strategies with code examples",
+    "key_strengths": "Exhaustive coverage of every dimension of the problem: technically precise RLS and schema-per-tenant mechanics, accurate compliance framework requirements (GDPR, HIPAA, PCI-DSS, CCPA, China), concrete tiered isolation strategy with five tiers, geographic sharding patterns for data residency, and actionable code examples with indexing guidance. Backed by 43 sources.",
+    "key_weaknesses": "Response length may exceed typical LLM context windows if used downstream; could benefit from a concise decision matrix or flowchart summary to accelerate architectural decision-making without re-reading the full document."
+  }
+}

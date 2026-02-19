@@ -1,0 +1,27 @@
+{
+  "query_id": 36,
+  "category": "best-practices",
+  "difficulty": "hard",
+  "provider": "perplexity",
+  "mode": "reason",
+  "profile": "general",
+  "command_executed": "./websearch --no-cache -m reason \"What is the recommended approach for handling database connection pool exhaustion in a high-concurrency Go application using pgxpool when some queries are long-running analytics mixed with fast OLTP queries\"",
+  "raw_response_file": "raw_36_best-practices.md",
+  "execution": {
+    "success": true,
+    "had_errors": false,
+    "stderr": "",
+    "response_length_words": 279,
+    "timeout": false
+  },
+  "evaluation": {
+    "relevance": 3,
+    "accuracy": 3,
+    "depth": 2,
+    "actionability": 2,
+    "overall_score": 2.5,
+    "summary": "2.5/5.0 - Identifies separate pools as the key strategy but lacks concrete implementation detail and admits insufficient search results for the specific scenario",
+    "key_strengths": "Correctly identifies the primary solution (separate connection pools per workload type) and references real pgxpool lifecycle hooks like AfterRelease and ShouldPing.",
+    "key_weaknesses": "No code examples showing how to configure two pgxpool.Pool instances with workload-appropriate MaxConns, AcquireTimeout, or MaxConnLifetime settings; the response self-acknowledges it could not find specific tuning recommendations."
+  }
+}

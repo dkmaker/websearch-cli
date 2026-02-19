@@ -1,0 +1,27 @@
+{
+  "query_id": 44,
+  "category": "bootstrapping",
+  "difficulty": "hard",
+  "provider": "perplexity",
+  "mode": "reason",
+  "profile": "python",
+  "command_executed": "./websearch --no-cache -p python -m reason \"How to set up a Python project with src layout that has both Cython extensions and pure Python modules where pip install -e works for development and the compiled extensions are correctly discovered at import time\"",
+  "raw_response_file": "raw_44_bootstrapping.md",
+  "execution": {
+    "success": true,
+    "had_errors": false,
+    "stderr": "",
+    "response_length_words": 430,
+    "timeout": false
+  },
+  "evaluation": {
+    "relevance": 4,
+    "accuracy": 4,
+    "depth": 4,
+    "actionability": 5,
+    "overall_score": 4.3,
+    "summary": "4.3/5.0 - Complete working setup with correct editable_mode=compat flag and build_ext_inplace, though limited discussion of strict editable mode failure modes",
+    "key_strengths": "Provides a fully copy-pasteable solution including project structure, pyproject.toml, setup.py with build_ext_inplace subclass, and the critical 'pip install -e . --config-settings editable_mode=compat' invocation that makes editable installs work with compiled extensions.",
+    "key_weaknesses": "Does not explain why strict editable mode (PEP 660) fails for compiled extensions or mention alternative modern build backends like scikit-build-core or meson-python that handle this scenario more robustly."
+  }
+}

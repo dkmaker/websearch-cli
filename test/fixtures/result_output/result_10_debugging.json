@@ -1,0 +1,27 @@
+{
+  "query_id": 10,
+  "category": "debugging",
+  "difficulty": "hard",
+  "provider": "perplexity",
+  "mode": "reason",
+  "profile": "general",
+  "command_executed": "./websearch --no-cache -m reason \"PostgreSQL query that was fast with sequential scan now takes 30 seconds after ANALYZE because the planner switched to a nested loop join with an index scan on a large partitioned table\"",
+  "raw_response_file": "raw_10_debugging.md",
+  "execution": {
+    "success": true,
+    "had_errors": false,
+    "stderr": "",
+    "response_length_words": 325,
+    "timeout": false
+  },
+  "evaluation": {
+    "relevance": 4,
+    "accuracy": 4,
+    "depth": 3,
+    "actionability": 3,
+    "overall_score": 3.5,
+    "summary": "3.5/5.0 - Correct diagnosis of planner regression with basic remediation steps, but shallow on partitioned table specifics and diagnostic tooling",
+    "key_strengths": "Correctly identifies why nested loop joins degrade on large outer relations after ANALYZE and provides the immediate workaround of SET enable_nestloop = off with a clear explanation of I/O cost differences.",
+    "key_weaknesses": "Missing concrete diagnostic steps like EXPLAIN (ANALYZE, BUFFERS) and per-column statistics tuning (ALTER COLUMN SET STATISTICS), and does not address partitioned table-specific considerations like partition pruning or per-partition statistics."
+  }
+}

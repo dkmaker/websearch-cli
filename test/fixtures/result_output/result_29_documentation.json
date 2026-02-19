@@ -1,0 +1,27 @@
+{
+  "query_id": 29,
+  "category": "documentation",
+  "difficulty": "hard",
+  "provider": "brave",
+  "mode": "web",
+  "profile": "general",
+  "command_executed": "./websearch --no-cache --provider brave \"AWS CDK custom resource Lambda provider framework Create Update Delete lifecycle PhysicalResourceId\"",
+  "raw_response_file": "raw_29_documentation.md",
+  "execution": {
+    "success": true,
+    "had_errors": false,
+    "stderr": "warning: mode adjusted to \"web\" for brave provider",
+    "response_length_words": 200,
+    "timeout": false
+  },
+  "evaluation": {
+    "relevance": 4,
+    "accuracy": 4,
+    "depth": 2,
+    "actionability": 2,
+    "overall_score": 3.0,
+    "summary": "3.0/5.0 - Finds relevant CDK custom resource docs but returns only brief snippets lacking lifecycle event handling detail",
+    "key_strengths": "Results surface the correct AWS CDK official documentation pages and PyPI package reference, and the ProviderProps snippet demonstrates a minimal working PhysicalResourceId return pattern.",
+    "key_weaknesses": "The response is made up of short excerpt snippets only, with no detailed explanation of how to correctly handle Create vs Update vs Delete lifecycle events or the consequences of changing PhysicalResourceId on updates, leaving the developer without actionable guidance."
+  }
+}

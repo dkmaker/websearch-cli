@@ -1,0 +1,27 @@
+{
+  "query_id": 45,
+  "category": "bootstrapping",
+  "difficulty": "hard",
+  "provider": "perplexity",
+  "mode": "reason",
+  "profile": "general",
+  "command_executed": "./websearch --no-cache -m reason \"What is the recommended way to bootstrap a Python data pipeline project with dbt-core, Apache Airflow, and Great Expectations where the DAG definitions can import shared utility modules and configs without path hacks or sys.path manipulation\"",
+  "raw_response_file": "raw_45_bootstrapping.md",
+  "execution": {
+    "success": true,
+    "had_errors": false,
+    "stderr": "",
+    "response_length_words": 230,
+    "timeout": false
+  },
+  "evaluation": {
+    "relevance": 2,
+    "accuracy": 3,
+    "depth": 1,
+    "actionability": 1,
+    "overall_score": 1.8,
+    "summary": "1.8/5.0 - Search sources lacked specific content; response is transparent but provides no actionable guidance",
+    "key_strengths": "The response is honest about the gap in retrieved sources and correctly identifies the specific sub-topics that would need to be covered to answer the question fully.",
+    "key_weaknesses": "No concrete project structure, no code examples, no explanation of Airflow's DAG import mechanism or how installable packages solve it; the reader walks away with nothing actionable."
+  }
+}

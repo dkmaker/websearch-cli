@@ -1,0 +1,27 @@
+{
+  "query_id": 39,
+  "category": "debugging",
+  "difficulty": "hard",
+  "provider": "perplexity",
+  "mode": "reason",
+  "profile": "general",
+  "command_executed": "./websearch --no-cache -m reason \"AWS Lambda function with provisioned concurrency still shows cold start latency spikes at exactly the provisioned limit when using SnapStart with a Spring Boot 3 application that initializes database connection pool during init phase\"",
+  "raw_response_file": "raw_39_debugging.md",
+  "execution": {
+    "success": true,
+    "had_errors": false,
+    "stderr": "warning: response may not address the query (search context insufficient)",
+    "response_length_words": 230,
+    "timeout": false
+  },
+  "evaluation": {
+    "relevance": 2,
+    "accuracy": 3,
+    "depth": 2,
+    "actionability": 2,
+    "overall_score": 2.3,
+    "summary": "2.3/5.0 - Generic cold start advice given; SnapStart CRaC lifecycle and stale connection pool issue entirely unaddressed",
+    "key_strengths": "Correctly identifies that traffic exceeding provisioned concurrency causes latency spikes and notes that init-phase connection pool initialization contributes to cold start latency.",
+    "key_weaknesses": "Completely fails to address SnapStart-specific behavior: no mention of CRaC hooks (beforeCheckpoint/afterRestore) needed to refresh DB connections after snapshot restore, which is the core of the problem."
+  }
+}

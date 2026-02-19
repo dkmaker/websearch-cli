@@ -1,0 +1,27 @@
+{
+  "query_id": 26,
+  "category": "dependency-management",
+  "difficulty": "hard",
+  "provider": "perplexity",
+  "mode": "reason",
+  "profile": "general",
+  "command_executed": "./websearch --no-cache -m reason \"How to resolve Gradle build failure where two Android libraries include different versions of the same native .so file and merging native libs causes UnsatisfiedLinkError at runtime\"",
+  "raw_response_file": "raw_26_dependency-management.md",
+  "execution": {
+    "success": true,
+    "had_errors": false,
+    "stderr": "",
+    "response_length_words": 270,
+    "timeout": false
+  },
+  "evaluation": {
+    "relevance": 3,
+    "accuracy": 3,
+    "depth": 2,
+    "actionability": 2,
+    "overall_score": 2.5,
+    "summary": "2.5/5.0 - Admits search results missed the specific scenario; generic root causes with no Gradle DSL examples",
+    "key_strengths": "Honestly acknowledges the search results did not cover the specific native .so merging conflict, and correctly identifies plausible root cause categories (architecture mismatch, classloader conflicts).",
+    "key_weaknesses": "No concrete Gradle configuration code (packagingOptions, pickFirst/exclude, abiFilters, ABI splits); the four suggested remediation steps are too vague to act on without significant additional research."
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "query_id": 6,
+  "category": "best-practices",
+  "difficulty": "hard",
+  "provider": "perplexity",
+  "mode": "reason",
+  "profile": "general",
+  "command_executed": "./websearch --no-cache -m reason \"How should I structure error handling in a Rust async application using tokio where errors can originate from network IO, database queries, and serialization\"",
+  "raw_response_file": "raw_06_best-practices.md",
+  "execution": {
+    "success": true,
+    "had_errors": false,
+    "stderr": "",
+    "response_length_words": 382,
+    "timeout": false
+  },
+  "evaluation": {
+    "relevance": 4,
+    "accuracy": 4,
+    "depth": 3,
+    "actionability": 4,
+    "overall_score": 3.8,
+    "summary": "3.8/5.0 - Solid coverage of custom error enums and anyhow, but omits thiserror and sqlx/diesel specifics",
+    "key_strengths": "Correctly demonstrates From trait implementations for error conversion, the ? operator pattern, and anyhow::Context for ergonomic propagation with working code examples.",
+    "key_weaknesses": "Notably absent is the thiserror crate which is the standard recommendation for typed error enums in Rust; also lacks sqlx/diesel-specific From impl examples and discussion of tokio::JoinError handling."
+  }
+}

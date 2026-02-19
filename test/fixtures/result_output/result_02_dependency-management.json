@@ -1,0 +1,27 @@
+{
+  "query_id": 2,
+  "category": "dependency-management",
+  "difficulty": "hard",
+  "provider": "github",
+  "mode": "issues",
+  "profile": "github",
+  "command_executed": "./websearch --no-cache -p github -m issues \"go modules incompatible major version transitive dependency conflict replace directive\"",
+  "raw_response_file": "raw_02_dependency-management.md",
+  "execution": {
+    "success": true,
+    "had_errors": false,
+    "stderr": "",
+    "response_length_words": 300,
+    "timeout": false
+  },
+  "evaluation": {
+    "relevance": 1,
+    "accuracy": 1,
+    "depth": 1,
+    "actionability": 1,
+    "overall_score": 1.0,
+    "summary": "1.0/5.0 - Search returned almost entirely off-topic GitHub issues with no relation to Go module version conflicts",
+    "key_strengths": "The one golang/go issue returned (golang/go#26420) is from the correct repository and the tool executed without errors after the is:issue qualifier fix was applied.",
+    "key_weaknesses": "Nine of ten results are completely unrelated to Go modules (Angular CLI, Ceylon language, Python packaging, miscellaneous open threads); none address major version transitive dependency conflicts or replace directives."
+  }
+}

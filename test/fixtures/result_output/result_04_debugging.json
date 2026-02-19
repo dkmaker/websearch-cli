@@ -1,0 +1,27 @@
+{
+  "query_id": 4,
+  "category": "debugging",
+  "difficulty": "hard",
+  "provider": "perplexity",
+  "mode": "reason",
+  "profile": "nodejs",
+  "command_executed": "./websearch --no-cache -p nodejs -m reason \"Node.js process crashes with SIGABRT and no stack trace after upgrading from v18 to v22 when using native addons compiled with node-gyp\"",
+  "raw_response_file": "raw_04_debugging.md",
+  "execution": {
+    "success": true,
+    "had_errors": false,
+    "stderr": "",
+    "response_length_words": 248,
+    "timeout": false
+  },
+  "evaluation": {
+    "relevance": 2,
+    "accuracy": 3,
+    "depth": 1,
+    "actionability": 1,
+    "overall_score": 1.8,
+    "summary": "1.8/5.0 - Response self-admits failure to address the core problem and provides no actionable diagnostic steps",
+    "key_strengths": "Correctly identifies that node-gyp header fetching and ABI differences between major Node.js versions are relevant factors, and honestly acknowledges the gaps in the search results.",
+    "key_weaknesses": "Provides zero actionable guidance: no mention of N-API, ABI version numbers, rebuild commands, or native debugging tools like gdb/lldb to capture the missing C++ stack trace."
+  }
+}

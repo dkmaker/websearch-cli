@@ -1,0 +1,27 @@
+{
+  "query_id": 50,
+  "category": "bootstrapping",
+  "difficulty": "hard",
+  "provider": "perplexity",
+  "mode": "reason",
+  "profile": "general",
+  "command_executed": "./websearch --no-cache -m reason \"What is the correct way to initialize a TypeScript Express API project with strict ESM mode, tsx for development, esbuild for production bundling, and OpenAPI schema generation from Zod validators that stays in sync with route handlers\"",
+  "raw_response_file": "raw_50_bootstrapping.md",
+  "execution": {
+    "success": true,
+    "had_errors": false,
+    "stderr": "",
+    "response_length_words": 290,
+    "timeout": false
+  },
+  "evaluation": {
+    "relevance": 3,
+    "accuracy": 3,
+    "depth": 2,
+    "actionability": 2,
+    "overall_score": 2.5,
+    "summary": "2.5/5.0 - Covers the right tools superficially but skips all the hard ESM integration details",
+    "key_strengths": "Provides a working skeleton covering all four requested tools (tsx, esbuild, ESM tsconfig, Zod/OpenAPI) with correct package install commands and a valid package.json scripts block.",
+    "key_weaknesses": "Misses the core difficulty entirely: no esbuild ESM output flags, no zod-to-openapi registry/route integration, no guidance on strict ESM import extensions, and deflects to unrelated frameworks (Hono/Elysia) rather than solving the Express problem."
+  }
+}

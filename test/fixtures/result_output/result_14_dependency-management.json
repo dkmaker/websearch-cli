@@ -1,0 +1,27 @@
+{
+  "query_id": 14,
+  "category": "dependency-management",
+  "difficulty": "hard",
+  "provider": "perplexity",
+  "mode": "reason",
+  "profile": "general",
+  "command_executed": "./websearch --no-cache -m reason \"Python package installed via pip shows ImportError for a C extension module that exists in site-packages but was compiled against a different version of libssl than what is available in the Alpine Docker image\"",
+  "raw_response_file": "raw_14_dependency-management.md",
+  "execution": {
+    "success": true,
+    "had_errors": false,
+    "stderr": "",
+    "response_length_words": 277,
+    "timeout": false
+  },
+  "evaluation": {
+    "relevance": 4,
+    "accuracy": 4,
+    "depth": 3,
+    "actionability": 4,
+    "overall_score": 3.8,
+    "summary": "3.8/5.0 - Correct diagnosis with actionable Dockerfile snippets, but falls back to general knowledge and contains a misleading manylinux suggestion for Alpine",
+    "key_strengths": "Correctly identifies the musl vs glibc and libssl version mismatch root cause, and provides four concrete solutions with Dockerfile/pip code snippets in a clear priority order.",
+    "key_weaknesses": "Manylinux wheels are glibc-only and do not work on Alpine/musl, making that suggestion misleading; also missing diagnostic steps (ldd, musllinux wheels per PEP 656) and multi-stage build patterns."
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "query_id": 19,
+  "category": "debugging",
+  "difficulty": "hard",
+  "provider": "perplexity",
+  "mode": "reason",
+  "profile": "general",
+  "command_executed": "./websearch --no-cache -m reason \"Webpack 5 Module Federation remote container loads but shared singleton React dependency causes Invalid hook call error only when the remote component uses useContext from a provider defined in the host\"",
+  "raw_response_file": "raw_19_debugging.md",
+  "execution": {
+    "success": true,
+    "had_errors": false,
+    "stderr": "",
+    "response_length_words": 299,
+    "timeout": false
+  },
+  "evaluation": {
+    "relevance": 4,
+    "accuracy": 4,
+    "depth": 3,
+    "actionability": 4,
+    "overall_score": 3.8,
+    "summary": "3.8/5.0 - Correct singleton+eager fix with working config example, but omits the bootstrap async chunk workaround often required alongside these settings",
+    "key_strengths": "Accurately identifies the dual React instance root cause and provides a concrete, copy-paste ModuleFederationPlugin config with singleton and eager flags properly explained for both host and remote.",
+    "key_weaknesses": "Omits the commonly required bootstrap.js async chunk pattern (moving app entry to a dynamically-imported bootstrap file) and provides no guidance on verifying which React instance is active at runtime or how to detect version mismatch warnings in webpack output."
+  }
+}

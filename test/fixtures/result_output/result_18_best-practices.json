@@ -1,0 +1,27 @@
+{
+  "query_id": 18,
+  "category": "best-practices",
+  "difficulty": "hard",
+  "provider": "perplexity",
+  "mode": "reason",
+  "profile": "general",
+  "command_executed": "./websearch --no-cache -m reason \"What are the security implications of using JWT access tokens stored in httpOnly cookies versus in-memory with refresh token rotation for a single-page application with a BFF pattern\"",
+  "raw_response_file": "raw_18_best-practices.md",
+  "execution": {
+    "success": true,
+    "had_errors": false,
+    "stderr": "",
+    "response_length_words": 310,
+    "timeout": false
+  },
+  "evaluation": {
+    "relevance": 4,
+    "accuracy": 4,
+    "depth": 3,
+    "actionability": 3,
+    "overall_score": 3.5,
+    "summary": "3.5/5.0 - Solid XSS/CSRF tradeoff analysis but misses BFF-specific architecture benefits and concrete implementation guidance",
+    "key_strengths": "Accurately covers the core security tradeoffs between httpOnly cookie and in-memory approaches, including XSS resistance, CSRF risk, debugger access vectors, and the value of refresh token rotation limiting exposure windows.",
+    "key_weaknesses": "Does not explore the BFF pattern's key architectural advantage of keeping tokens fully server-side so the browser never holds them, and provides no concrete implementation steps, headers, or decision criteria."
+  }
+}

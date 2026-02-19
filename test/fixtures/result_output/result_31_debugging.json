@@ -1,0 +1,27 @@
+{
+  "query_id": 31,
+  "category": "debugging",
+  "difficulty": "hard",
+  "provider": "perplexity",
+  "mode": "reason",
+  "profile": "general",
+  "command_executed": "./websearch --no-cache -m reason \"Elasticsearch query returns different relevance scores for the same document across repeated searches when using function_score with random_score and the index has multiple shards with uneven document distribution\"",
+  "raw_response_file": "raw_31_debugging.md",
+  "execution": {
+    "success": true,
+    "had_errors": false,
+    "stderr": "",
+    "response_length_words": 280,
+    "timeout": false
+  },
+  "evaluation": {
+    "relevance": 4,
+    "accuracy": 5,
+    "depth": 3,
+    "actionability": 4,
+    "overall_score": 4.0,
+    "summary": "4.0/5.0 - Accurate fix for random_score seed issue with working JSON example, but shard IDF variance mitigation (DFS query-then-fetch) is missing",
+    "key_strengths": "Correctly identifies Lucene internal document ID reuse as the root cause of random_score instability and provides a concrete, immediately usable JSON configuration fix with clear field recommendations.",
+    "key_weaknesses": "The shard-level IDF variance problem — a core part of the stated issue — is only briefly acknowledged without actionable remediation such as using search_type=dfs_query_then_fetch or rebalancing shards."
+  }
+}

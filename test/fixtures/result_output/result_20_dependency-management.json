@@ -1,0 +1,27 @@
+{
+  "query_id": 20,
+  "category": "dependency-management",
+  "difficulty": "hard",
+  "provider": "perplexity",
+  "mode": "reason",
+  "profile": "general",
+  "command_executed": "./websearch --no-cache -m reason \"How to handle diamond dependency problem in Rust cargo workspace where two crates depend on different versions of serde with incompatible derive macro output\"",
+  "raw_response_file": "raw_20_dependency-management.md",
+  "execution": {
+    "success": true,
+    "had_errors": false,
+    "stderr": "",
+    "response_length_words": 230,
+    "timeout": false
+  },
+  "evaluation": {
+    "relevance": 4,
+    "accuracy": 4,
+    "depth": 3,
+    "actionability": 4,
+    "overall_score": 3.8,
+    "summary": "3.8/5.0 - Practical solutions with working examples, but oversimplifies cargo's version resolution and skimps on derive macro incompatibility mechanics",
+    "key_strengths": "Provides concrete, directly usable solutions including the [patch] table pattern and a precise cargo tree invocation for diagnosing the conflict.",
+    "key_weaknesses": "Incorrectly implies cargo always errors on version conflicts (two different major versions can coexist); missing coverage of workspace.dependencies inheritance and bridging patterns for types that must cross the version boundary."
+  }
+}

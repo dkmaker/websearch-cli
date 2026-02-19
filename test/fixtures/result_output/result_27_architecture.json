@@ -1,0 +1,27 @@
+{
+  "query_id": 27,
+  "category": "architecture",
+  "difficulty": "hard",
+  "provider": "perplexity",
+  "mode": "reason",
+  "profile": "general",
+  "command_executed": "./websearch --no-cache -m reason \"How to implement a saga orchestrator pattern for a distributed transaction spanning three microservices where compensating actions themselves can fail and need retry with idempotency guarantees\"",
+  "raw_response_file": "raw_27_architecture.md",
+  "execution": {
+    "success": true,
+    "had_errors": false,
+    "stderr": "",
+    "response_length_words": 497,
+    "timeout": false
+  },
+  "evaluation": {
+    "relevance": 5,
+    "accuracy": 5,
+    "depth": 4,
+    "actionability": 4,
+    "overall_score": 4.5,
+    "summary": "4.5/5.0 - Comprehensive orchestrator design with outbox pattern, idempotency journal tables, retry strategy, and DLQ; lacks code-level schema examples",
+    "key_strengths": "Precisely addresses failing compensating actions with a complete mechanism stack: outbox+CDC for reliable delivery, idempotency via journal tables, exponential backoff retries, and dead-letter queue escalation with a concrete three-service flow example.",
+    "key_weaknesses": "No code or schema examples for the saga execution log table or idempotency journal table, and the retry/backoff strategy is described conceptually without concrete parameters or pseudocode."
+  }
+}

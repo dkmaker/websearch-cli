@@ -1,0 +1,27 @@
+{
+  "query_id": 16,
+  "category": "debugging",
+  "difficulty": "medium",
+  "provider": "github",
+  "mode": "issues",
+  "profile": "github",
+  "command_executed": "./websearch --no-cache -p github -m issues \"resource not accessible by integration GITHUB_TOKEN pull_request fork permissions\"",
+  "raw_response_file": "raw_16_debugging.md",
+  "execution": {
+    "success": true,
+    "had_errors": false,
+    "stderr": "",
+    "response_length_words": 500,
+    "timeout": false
+  },
+  "evaluation": {
+    "relevance": 5,
+    "accuracy": 4,
+    "depth": 3,
+    "actionability": 3,
+    "overall_score": 3.8,
+    "summary": "3.8/5.0 - Highly relevant issue collection confirming fork GITHUB_TOKEN problem, but most entries truncated before workarounds",
+    "key_strengths": "All 10 results are directly on-topic, showing real-world occurrences of the exact error across multiple projects with accurate error messages and context confirming the root cause.",
+    "key_weaknesses": "Most issue entries are truncated before revealing resolution details or workarounds (pull_request_target, workflow_run patterns), limiting actionability without clicking through to linked issues."
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "query_id": 12,
+  "category": "best-practices",
+  "difficulty": "hard",
+  "provider": "perplexity",
+  "mode": "reason",
+  "profile": "general",
+  "command_executed": "./websearch --no-cache -m reason \"What is the correct way to implement graceful shutdown in a Go HTTP server that also runs background goroutines consuming from Kafka with manual offset commits\"",
+  "raw_response_file": "raw_12_best-practices.md",
+  "execution": {
+    "success": true,
+    "had_errors": false,
+    "stderr": "",
+    "response_length_words": 429,
+    "timeout": false
+  },
+  "evaluation": {
+    "relevance": 4,
+    "accuracy": 3,
+    "depth": 4,
+    "actionability": 3,
+    "overall_score": 3.5,
+    "summary": "3.5/5.0 - Good structure with signal handling and errgroup patterns, but incomplete offset commit handling and minor ordering inconsistencies",
+    "key_strengths": "Covers the three key shutdown components (signal handling, HTTP drain, Kafka goroutine WaitGroup) with concrete code examples and mentions containerized environment considerations.",
+    "key_weaknesses": "The Kafka consumer code does not show actual offset commit logic during shutdown, and the stated shutdown ordering at the end contradicts best practice (HTTP should drain before stopping Kafka consumers, not after)."
+  }
+}

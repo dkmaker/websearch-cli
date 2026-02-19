@@ -1,0 +1,27 @@
+{
+  "query_id": 3,
+  "category": "architecture",
+  "difficulty": "hard",
+  "provider": "perplexity",
+  "mode": "reason",
+  "profile": "general",
+  "command_executed": "./websearch --no-cache -m reason \"What are the tradeoffs between using the outbox pattern versus CDC with Debezium for reliable event publishing in a microservices system with PostgreSQL\"",
+  "raw_response_file": "raw_03_architecture.md",
+  "execution": {
+    "success": true,
+    "had_errors": false,
+    "stderr": "",
+    "response_length_words": 281,
+    "timeout": false
+  },
+  "evaluation": {
+    "relevance": 3,
+    "accuracy": 4,
+    "depth": 3,
+    "actionability": 2,
+    "overall_score": 3.0,
+    "summary": "3.0/5.0 - Accurate reframing of outbox+CDC as complementary, but skips polling publisher tradeoffs and actionable decision guidance",
+    "key_strengths": "Correctly identifies that outbox and Debezium are typically complementary rather than competing, and accurately covers CDC advantages like low latency, event ordering, and WAL efficiency.",
+    "key_weaknesses": "Completely omits the polling publisher approach tradeoffs (simplicity, no Kafka dependency, easier ops) and provides no actionable guidance for teams deciding between the two delivery mechanisms."
+  }
+}

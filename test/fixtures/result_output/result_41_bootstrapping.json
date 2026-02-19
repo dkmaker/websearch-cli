@@ -1,0 +1,27 @@
+{
+  "query_id": 41,
+  "category": "bootstrapping",
+  "difficulty": "medium",
+  "provider": "github",
+  "mode": "repos",
+  "profile": "github",
+  "command_executed": "./websearch --no-cache -p github \"pyproject.toml setuptools console_scripts optional-dependencies editable install template\"",
+  "raw_response_file": "raw_41_bootstrapping.md",
+  "execution": {
+    "success": false,
+    "had_errors": true,
+    "stderr": "Error: search failed: no results found for query\n",
+    "response_length_words": 0,
+    "timeout": false
+  },
+  "evaluation": {
+    "relevance": 0,
+    "accuracy": 0,
+    "depth": 0,
+    "actionability": 0,
+    "overall_score": 0.0,
+    "summary": "0.0/5.0 - Command failed with no results returned from GitHub provider",
+    "key_strengths": "None — the search returned no results.",
+    "key_weaknesses": "GitHub provider returned no results for a multi-keyword query combining pyproject.toml, setuptools, console_scripts, optional-dependencies, editable install, and template; the query may be too broad or the provider may not support this query style."
+  }
+}

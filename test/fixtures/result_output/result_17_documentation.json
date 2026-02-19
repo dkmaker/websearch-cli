@@ -1,0 +1,27 @@
+{
+  "query_id": 17,
+  "category": "documentation",
+  "difficulty": "hard",
+  "provider": "perplexity",
+  "mode": "reason",
+  "profile": "general",
+  "command_executed": "./websearch --no-cache -m reason \"How to set up Vite library mode to output both ESM and CJS bundles with correct package.json exports map that works with Node.js conditional exports and TypeScript moduleResolution bundler\"",
+  "raw_response_file": "raw_17_documentation.md",
+  "execution": {
+    "success": true,
+    "had_errors": false,
+    "stderr": "",
+    "response_length_words": 350,
+    "timeout": false
+  },
+  "evaluation": {
+    "relevance": 5,
+    "accuracy": 4,
+    "depth": 3,
+    "actionability": 4,
+    "overall_score": 4.0,
+    "summary": "4.0/5.0 - Complete three-file setup with working configs, but omits type declaration generation tooling",
+    "key_strengths": "Directly addresses all four query elements (Vite lib mode, dual formats, package.json exports map, TypeScript moduleResolution bundler) with concrete, copy-pasteable code blocks for each config file.",
+    "key_weaknesses": "Missing coverage of vite-plugin-dts for generating .d.ts declaration files and the nuances around .d.mts vs .d.ts for proper ESM type resolution, which are critical for TypeScript consumers to actually receive types."
+  }
+}

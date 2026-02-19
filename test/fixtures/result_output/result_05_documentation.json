@@ -1,0 +1,27 @@
+{
+  "query_id": 5,
+  "category": "documentation",
+  "difficulty": "hard",
+  "provider": "perplexity",
+  "mode": "reason",
+  "profile": "general",
+  "command_executed": "./websearch --no-cache -m reason \"What is the correct way to configure OpenTelemetry auto-instrumentation for a Python FastAPI app that uses SQLAlchemy async sessions and celery workers\"",
+  "raw_response_file": "raw_05_documentation.md",
+  "execution": {
+    "success": true,
+    "had_errors": false,
+    "stderr": "",
+    "response_length_words": 270,
+    "timeout": false
+  },
+  "evaluation": {
+    "relevance": 2,
+    "accuracy": 3,
+    "depth": 2,
+    "actionability": 2,
+    "overall_score": 2.3,
+    "summary": "2.3/5.0 - Covers only basic FastAPI OTel setup while explicitly failing to address async SQLAlchemy and Celery context propagation, which are the core of the question",
+    "key_strengths": "The FastAPI instrumentation boilerplate code is technically correct and the production BatchSpanProcessor tuning parameters are a useful addition. The response is transparent about what it cannot answer.",
+    "key_weaknesses": "Completely omits async SQLAlchemy session instrumentation and Celery distributed trace context propagation — the two hardest and most important parts of the question — leaving the developer no closer to solving their problem."
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "query_id": 49,
+  "category": "bootstrapping",
+  "difficulty": "hard",
+  "provider": "perplexity",
+  "mode": "reason",
+  "profile": "general",
+  "command_executed": "./websearch --no-cache -m reason \"How to set up a new TypeScript AWS CDK project with multiple stacks that share constructs where each stack has its own integration tests using jest and the CDK assertions library and synth runs in parallel during CI\"",
+  "raw_response_file": "raw_49_bootstrapping.md",
+  "execution": {
+    "success": true,
+    "had_errors": false,
+    "stderr": "",
+    "response_length_words": 474,
+    "timeout": false
+  },
+  "evaluation": {
+    "relevance": 4,
+    "accuracy": 4,
+    "depth": 3,
+    "actionability": 4,
+    "overall_score": 3.8,
+    "summary": "3.8/5.0 - Correct patterns for multi-stack CDK with shared constructs and parallel CI, but misses project layout and Jest configuration depth",
+    "key_strengths": "Provides working TypeScript code for shared constructs, stack instantiation, CDK assertions-based tests, and a ready-to-use GitHub Actions matrix strategy for parallel synth.",
+    "key_weaknesses": "Omits recommended directory layout, tsconfig/jest path configuration, and per-stack test file organization; the response itself notes that testing and CI examples are supplemental rather than sourced from documentation."
+  }
+}

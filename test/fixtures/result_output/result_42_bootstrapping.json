@@ -1,0 +1,27 @@
+{
+  "query_id": 42,
+  "category": "bootstrapping",
+  "difficulty": "hard",
+  "provider": "perplexity",
+  "mode": "reason",
+  "profile": "general",
+  "command_executed": "./websearch --no-cache -m reason \"What is the correct way to bootstrap a Python monorepo with multiple packages that share a common virtual environment using uv or poetry workspaces where packages depend on each other with path dependencies\"",
+  "raw_response_file": "raw_42_bootstrapping.md",
+  "execution": {
+    "success": true,
+    "had_errors": false,
+    "stderr": "",
+    "response_length_words": 210,
+    "timeout": false
+  },
+  "evaluation": {
+    "relevance": 1,
+    "accuracy": 2,
+    "depth": 1,
+    "actionability": 1,
+    "overall_score": 1.3,
+    "summary": "1.3/5.0 - Response explicitly admits it cannot answer the question; redirects to unrelated tools (Pants, Earthly) instead of uv/poetry workspaces",
+    "key_strengths": "The response is honest about not having relevant search results and correctly identifies the gap rather than fabricating an answer.",
+    "key_weaknesses": "Fails entirely to address uv workspaces, poetry workspaces, path dependencies, or pyproject.toml configuration; provides no actionable guidance for the actual developer problem."
+  }
+}

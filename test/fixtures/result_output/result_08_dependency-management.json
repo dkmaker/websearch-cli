@@ -1,0 +1,27 @@
+{
+  "query_id": 8,
+  "category": "dependency-management",
+  "difficulty": "hard",
+  "provider": "perplexity",
+  "mode": "reason",
+  "profile": "general",
+  "command_executed": "./websearch --no-cache -m reason \"How to migrate a large monorepo from Yarn 1 workspaces to pnpm workspaces without breaking hoisted dependency resolution that packages implicitly rely on\"",
+  "raw_response_file": "raw_08_dependency-management.md",
+  "execution": {
+    "success": true,
+    "had_errors": false,
+    "stderr": "",
+    "response_length_words": 380,
+    "timeout": false
+  },
+  "evaluation": {
+    "relevance": 4,
+    "accuracy": 4,
+    "depth": 3,
+    "actionability": 3,
+    "overall_score": 3.5,
+    "summary": "3.5/5.0 - Correct conceptual steps for migration but lacks concrete commands, config examples, and key transitional options like shamefully-hoist",
+    "key_strengths": "Correctly identifies the phantom dependency problem as the core blocker and provides a logically ordered migration sequence including pnpm import and the workspace protocol. The CKEditor case study adds real-world credibility.",
+    "key_weaknesses": "Missing concrete tooling for phantom dependency detection (e.g., depcheck), no example pnpm-workspace.yaml or .npmrc content, and no mention of the shamefully-hoist=true escape hatch that is critical for incremental large-monorepo migrations."
+  }
+}

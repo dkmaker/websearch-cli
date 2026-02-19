@@ -1,0 +1,27 @@
+{
+  "query_id": 1,
+  "category": "debugging",
+  "difficulty": "hard",
+  "provider": "perplexity",
+  "mode": "reason",
+  "profile": "general",
+  "command_executed": "./websearch --no-cache -m reason \"Why does my Go program deadlock when using sync.WaitGroup inside a goroutine that also writes to an unbuffered channel with no concurrent reader\"",
+  "raw_response_file": "raw_01_debugging.md",
+  "execution": {
+    "success": true,
+    "had_errors": false,
+    "stderr": "",
+    "response_length_words": 279,
+    "timeout": false
+  },
+  "evaluation": {
+    "relevance": 5,
+    "accuracy": 5,
+    "depth": 4,
+    "actionability": 4,
+    "overall_score": 4.5,
+    "summary": "4.5/5.0 - Precise deadlock chain-of-thought diagnosis with three fix strategies, but no runnable code examples",
+    "key_strengths": "Correctly identifies the exact three-step circular dependency (sender blocks on unbuffered channel, wg.Done() never executes, wg.Wait() blocks forever) and offers three distinct fix options covering all common resolutions.",
+    "key_weaknesses": "All three fix options are described in prose only with no concrete Go code snippets, which reduces the ability for a developer to immediately copy and apply a working solution."
+  }
+}

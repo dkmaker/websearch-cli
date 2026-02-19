@@ -1,0 +1,27 @@
+{
+  "query_id": 21,
+  "category": "architecture",
+  "difficulty": "hard",
+  "provider": "perplexity",
+  "mode": "research",
+  "profile": "general",
+  "command_executed": "./websearch --no-cache -m research \"What is the best strategy for implementing CQRS with event sourcing in a system where read models need to be eventually consistent within 100ms and the event store receives 10k events per second\"",
+  "raw_response_file": "raw_21_architecture.md",
+  "execution": {
+    "success": true,
+    "had_errors": false,
+    "stderr": "",
+    "response_length_words": 4718,
+    "timeout": false
+  },
+  "evaluation": {
+    "relevance": 5,
+    "accuracy": 5,
+    "depth": 5,
+    "actionability": 5,
+    "overall_score": 5.0,
+    "summary": "5.0/5.0 - Comprehensive reference architecture with working code, precise thresholds, and operational guidance for CQRS/ES at 10k events/sec with sub-100ms consistency",
+    "key_strengths": "Exceptionally thorough coverage with working SQL schemas, PostgreSQL LISTEN/NOTIFY trigger code, consistent hashing partitioning strategy, monitoring queries, and a concrete recommended implementation section with specific numeric targets (batch size 100-200, lag alert at 50k events). 54 sources cited, all technically accurate.",
+    "key_weaknesses": "Minor gap: does not compare managed event store solutions (EventStoreDB, AWS EventBridge, Azure Event Hubs) as alternatives to the PostgreSQL-centric approach, which some teams may prefer."
+  }
+}
