@@ -34,6 +34,9 @@ func FormatMarkdown(result *provider.Result, includeSources bool, includeMetadat
 		content = citationRefRe.ReplaceAllString(content, "")
 	}
 	sb.WriteString(content)
+	if !strings.HasSuffix(content, "\n") {
+		sb.WriteString("\n")
+	}
 
 	if includeSources && len(result.Sources) > 0 {
 		sb.WriteString("\n\n---\nSources:\n")
