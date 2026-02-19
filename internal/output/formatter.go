@@ -13,9 +13,21 @@ import (
 var citationRefRe = regexp.MustCompile(`\s*\[(\d+(?:,\s*\d+)*)\]`)
 
 // FormatMarkdown renders a provider.Result as markdown text.
+// When includeMetadata is true, YAML frontmatter is prepended.
 // When includeSources is false and sources exist, a hint comment is appended.
-func FormatMarkdown(result *provider.Result, includeSources bool) string {
+func FormatMarkdown(result *provider.Result, includeSources bool, includeMetadata bool) string {
 	var sb strings.Builder
+
+	if includeMetadata {
+		sb.WriteString("---\n")
+		sb.WriteString(fmt.Sprintf("provider: %s\n", result.Provider))
+		sb.WriteString(fmt.Sprintf("mode: %s\n", result.Mode))
+		sb.WriteString(fmt.Sprintf("mode_adjusted: %v\n", result.ModeAdjusted))
+		sb.WriteString(fmt.Sprintf("truncated: %v\n", result.FinishReason == "length"))
+		sb.WriteString(fmt.Sprintf("sources_count: %d\n", len(result.Sources)))
+		sb.WriteString(fmt.Sprintf("cached: %v\n", result.Cached))
+		sb.WriteString("---\n\n")
+	}
 
 	content := result.Content
 	if !includeSources {
@@ -38,16 +50,20 @@ func FormatMarkdown(result *provider.Result, includeSources bool) string {
 }
 
 type jsonOutput struct {
-	Content  string            `json:"content"`
-	Provider string            `json:"provider"`
-	Mode     string            `json:"mode"`
-	Cached   bool              `json:"cached"`
-	Sources  []provider.Source  `json:"sources,omitempty"`
+	Content      string           `json:"content"`
+	Provider     string           `json:"provider"`
+	Mode         string           `json:"mode"`
+	Cached       bool             `json:"cached"`
+	ModeAdjusted bool             `json:"mode_adjusted"`
+	Truncated    bool             `json:"truncated"`
+	SourcesCount int              `json:"sources_count"`
+	Sources      []provider.Source `json:"sources,omitempty"`
 }
 
 // FormatJSON renders a provider.Result as pretty-printed JSON.
 // Sources are only included when includeSources is true.
-func FormatJSON(result *provider.Result, includeSources bool) (string, error) {
+// When includeMetadata is true, extra metadata fields are included.
+func FormatJSON(result *provider.Result, includeSources bool, includeMetadata bool) (string, error) {
 	content := result.Content
 	if !includeSources {
 		content = citationRefRe.ReplaceAllString(content, "")
@@ -57,6 +73,11 @@ func FormatJSON(result *provider.Result, includeSources bool) (string, error) {
 		Provider: result.Provider,
 		Mode:     result.Mode,
 		Cached:   result.Cached,
+	}
+	if includeMetadata {
+		out.ModeAdjusted = result.ModeAdjusted
+		out.Truncated = result.FinishReason == "length"
+		out.SourcesCount = len(result.Sources)
 	}
 	if includeSources {
 		out.Sources = result.Sources

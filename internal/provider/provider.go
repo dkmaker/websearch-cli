@@ -43,7 +43,8 @@ type Result struct {
 	Provider     string   `json:"provider"`
 	Mode         string   `json:"mode"`
 	Cached       bool     `json:"cached"`
-	FinishReason string   `json:"finish_reason,omitempty"`
+	FinishReason string   `json:"finish_reason,omitempty"` // "stop" or "length" from API
+	ModeAdjusted bool     `json:"mode_adjusted"`           // was mode changed from what was requested
 }
 
 // Source represents a citation/reference.
