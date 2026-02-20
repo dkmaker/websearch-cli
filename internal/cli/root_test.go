@@ -2,6 +2,7 @@
 package cli
 
 import (
+	"os"
 	"strings"
 	"testing"
 )
@@ -326,6 +327,50 @@ func TestGitHubQualifiersWithNonGitHubProviderErrors(t *testing.T) {
 	providerName := "perplexity"
 	if !(!q.IsEmpty() && providerName != "github") {
 		t.Error("expected validation to trigger for non-github provider with qualifiers")
+	}
+}
+
+func TestReadStdin(t *testing.T) {
+	r, w, err := os.Pipe()
+	if err != nil {
+		t.Fatal(err)
+	}
+	w.WriteString("piped context")
+	w.Close()
+
+	content, err := readStdin(r)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if content != "piped context" {
+		t.Errorf("got %q, want %q", content, "piped context")
+	}
+}
+
+func TestReadStdinEmpty(t *testing.T) {
+	r, w, _ := os.Pipe()
+	w.Close()
+
+	content, err := readStdin(r)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if content != "" {
+		t.Errorf("got %q, want empty", content)
+	}
+}
+
+func TestReadStdinTrimsWhitespace(t *testing.T) {
+	r, w, _ := os.Pipe()
+	w.WriteString("  hello world  \n\n")
+	w.Close()
+
+	content, err := readStdin(r)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if content != "hello world" {
+		t.Errorf("got %q, want %q", content, "hello world")
 	}
 }
 

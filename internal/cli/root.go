@@ -5,6 +5,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"io"
 	"os"
 	"strings"
 	"time"
@@ -65,7 +66,7 @@ var (
 var rootCmd = &cobra.Command{
 	Use:   "websearch [flags] <query>",
 	Short: "Web search CLI for AI agents",
-	Long:  "A CLI tool for AI agents to perform web searches via Perplexity, Brave, and GitHub APIs using profile-based configuration.",
+	Long:  "A CLI tool for AI agents to perform web searches via Perplexity, Brave, and GitHub APIs using profile-based configuration.\n\nSupports piped input: pipe content to prepend context to your query (Perplexity and Brave only).\nExample: cat doc.txt | websearch \"summarize this\"",
 	Args: func(cmd *cobra.Command, args []string) error {
 		if flagListProfiles || flagShowExamples || flagShowProfiles {
 			return nil
@@ -129,8 +130,14 @@ func run(cmd *cobra.Command, args []string) error {
 		return listProfiles()
 	}
 
-	// Self-primer: no query provided
-	if len(args) == 0 {
+	// Read piped stdin
+	stdinContent, err := readStdin(os.Stdin)
+	if err != nil {
+		return err
+	}
+
+	// Self-primer: no query provided and no stdin
+	if len(args) == 0 && stdinContent == "" {
 		perplexityKey := os.Getenv("PERPLEXITY_API_KEY")
 		braveKey := os.Getenv("BRAVE_API_KEY")
 		githubKey := getGitHubToken()
@@ -138,7 +145,16 @@ func run(cmd *cobra.Command, args []string) error {
 		return nil
 	}
 
-	query := args[0]
+	// Build query from args and/or stdin
+	var query string
+	switch {
+	case len(args) > 0 && stdinContent != "":
+		query = stdinContent + "\n" + args[0]
+	case len(args) > 0:
+		query = args[0]
+	default:
+		query = stdinContent
+	}
 
 	// Load profile
 	prof, err := profile.Load(flagProfile)
@@ -194,6 +210,16 @@ func run(cmd *cobra.Command, args []string) error {
 		mode = defaultModeForProvider(providerName)
 		modeAdjusted = true
 		fmt.Fprintf(os.Stderr, "warning: mode adjusted to %q for %s provider\n", mode, providerName)
+	}
+
+	// Piped input not supported for GitHub provider
+	if providerName == "github" && stdinContent != "" {
+		fmt.Fprintln(os.Stderr, "warning: piped input ignored for GitHub provider")
+		if len(args) > 0 {
+			query = args[0]
+		} else {
+			return fmt.Errorf("GitHub provider does not support piped input without a query argument")
+		}
 	}
 
 	ghQualifiers := buildGitHubQualifiers()
@@ -427,6 +453,7 @@ func buildSelfPrimer(perplexityKey, braveKey, githubKey string, showExamples, sh
 	sb.WriteString("GitHub flags: --gh-language, --gh-stars, --gh-sort, --gh-user, --gh-org, --gh-repo, --gh-topic,\n")
 	sb.WriteString("  --gh-license, --gh-archived, --gh-fork, --gh-pushed, --gh-created, --gh-in,\n")
 	sb.WriteString("  --gh-filename, --gh-extension, --gh-path (code), --gh-state, --gh-label, --gh-author, --gh-assignee (issues)\n")
+	sb.WriteString("Pipe input: cat file.txt | websearch \"summarize\" (Perplexity/Brave only)\n")
 	sb.WriteString("More: --show-examples, --show-profiles, --help\n")
 
 	// Optional: examples
@@ -534,6 +561,23 @@ func buildGitHubQualifiers() provider.GitHubQualifiers {
 		Assignee:  flagGHAssignee,
 		In:        flagGHIn,
 	}
+}
+
+// readStdin reads all content from the given file if it is a pipe.
+// Returns empty string if stdin is a terminal or empty.
+func readStdin(r *os.File) (string, error) {
+	info, err := r.Stat()
+	if err != nil {
+		return "", nil
+	}
+	if info.Mode()&os.ModeCharDevice != 0 {
+		return "", nil
+	}
+	data, err := io.ReadAll(r)
+	if err != nil {
+		return "", fmt.Errorf("reading stdin: %w", err)
+	}
+	return strings.TrimSpace(string(data)), nil
 }
 
 // getGitHubToken returns the GitHub token, checking GH_TOKEN first then GITHUB_TOKEN.

@@ -52,6 +52,13 @@ websearch --json "kubernetes networking"
 # Override provider
 websearch --provider brave "local pizza restaurants"
 
+# Pipe content as context
+cat document.txt | websearch "summarize the key points"
+git diff | websearch "review this code change"
+
+# Stdin as the full query
+echo "explain quantum computing" | websearch
+
 # Skip cache
 websearch --no-cache "breaking news today"
 

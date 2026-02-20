@@ -36,6 +36,7 @@ internal/
 - **Mode auto-adjustment:** When provider changes from profile default, incompatible modes auto-adjust (unless user explicitly set `--mode`)
 - **Output:** Errors to stderr, results to stdout. Sources stripped by default for token efficiency.
 - **GitHub qualifier flags:** `--gh-*` prefixed flags (20 total) map directly to GitHub search API qualifiers. GitHub-specific — error if used with other providers. Repos mode defaults to `sort=stars`.
+- **Pipe input:** Stdin is read when piped and prepended to the query. Perplexity/Brave only — ignored with warning for GitHub.
 
 ## Commands
 
