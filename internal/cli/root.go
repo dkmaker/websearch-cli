@@ -219,7 +219,7 @@ func run(cmd *cobra.Command, args []string) error {
 	// Purge stale entries in background
 	go responseCache.Purge()
 
-	cacheKey := cache.Key(query, flagProfile, mode, providerName)
+	cacheKey := cache.Key(query, flagProfile, mode, providerName, ghQualifiers.CacheKey())
 
 	if !flagNoCache {
 		if data, ok := responseCache.Get(cacheKey); ok {
