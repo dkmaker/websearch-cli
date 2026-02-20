@@ -651,3 +651,99 @@ func TestGitHubSearchIssuesAppendsIsIssue(t *testing.T) {
 		t.Errorf("expected query to contain 'is:issue', got %q", capturedQuery)
 	}
 }
+
+func TestGitHubSearchReposWithQualifiers(t *testing.T) {
+	mockResp := map[string]interface{}{
+		"total_count": 1, "incomplete_results": false,
+		"items": []map[string]interface{}{
+			{"full_name": "spf13/cobra", "html_url": "https://github.com/spf13/cobra",
+				"description": "A Commander for modern Go CLI interactions",
+				"stargazers_count": 38000, "language": "Go",
+				"updated_at": "2026-02-19T10:00:00Z", "topics": []string{"cli", "go"}},
+		},
+	}
+
+	var capturedQuery, capturedSort string
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		capturedQuery = r.URL.Query().Get("q")
+		capturedSort = r.URL.Query().Get("sort")
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(mockResp)
+	}))
+	defer server.Close()
+
+	p := NewGitHub("", server.URL)
+	result, err := p.Search(context.Background(), "cli framework", SearchOptions{
+		Mode:       "repos",
+		MaxResults: 10,
+		GitHub: GitHubQualifiers{
+			Language: "go",
+			Stars:    ">1000",
+			Topic:    "cli",
+		},
+	})
+	if err != nil {
+		t.Fatalf("Search error: %v", err)
+	}
+
+	if !strings.Contains(capturedQuery, "language:go") {
+		t.Errorf("expected language:go in query, got %q", capturedQuery)
+	}
+	if !strings.Contains(capturedQuery, "stars:>1000") {
+		t.Errorf("expected stars:>1000 in query, got %q", capturedQuery)
+	}
+	if !strings.Contains(capturedQuery, "topic:cli") {
+		t.Errorf("expected topic:cli in query, got %q", capturedQuery)
+	}
+
+	if capturedSort != "stars" {
+		t.Errorf("expected sort=stars, got %q", capturedSort)
+	}
+
+	if !strings.Contains(result.Content, "spf13/cobra") {
+		t.Error("expected cobra in content")
+	}
+}
+
+func TestGitHubSearchIssuesWithQualifiers(t *testing.T) {
+	mockResp := map[string]interface{}{
+		"total_count": 1, "incomplete_results": false,
+		"items": []map[string]interface{}{
+			{"number": 1, "title": "Bug report", "html_url": "https://github.com/test/repo/issues/1",
+				"state": "open", "body": "Details here", "comments": 2,
+				"updated_at": "2026-02-19T10:00:00Z",
+				"repository_url": "https://api.github.com/repos/test/repo",
+				"labels": []map[string]interface{}{{"name": "bug"}}},
+		},
+	}
+
+	var capturedQuery string
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		capturedQuery = r.URL.Query().Get("q")
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(mockResp)
+	}))
+	defer server.Close()
+
+	p := NewGitHub("", server.URL)
+	_, err := p.Search(context.Background(), "crash", SearchOptions{
+		Mode:   "issues",
+		GitHub: GitHubQualifiers{State: "open", Label: "bug", Repo: "test/repo"},
+	})
+	if err != nil {
+		t.Fatalf("Search error: %v", err)
+	}
+
+	if !strings.Contains(capturedQuery, "is:open") {
+		t.Errorf("expected is:open in query, got %q", capturedQuery)
+	}
+	if !strings.Contains(capturedQuery, "label:bug") {
+		t.Errorf("expected label:bug in query, got %q", capturedQuery)
+	}
+	if !strings.Contains(capturedQuery, "repo:test/repo") {
+		t.Errorf("expected repo:test/repo in query, got %q", capturedQuery)
+	}
+	if !strings.Contains(capturedQuery, "is:issue") {
+		t.Errorf("expected is:issue auto-appended, got %q", capturedQuery)
+	}
+}
