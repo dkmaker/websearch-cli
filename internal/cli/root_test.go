@@ -165,8 +165,8 @@ func TestResolveProviderGitHub(t *testing.T) {
 	if got != "github" {
 		t.Errorf("got %q, want github", got)
 	}
-	if !strings.Contains(warning, "GITHUB_TOKEN not set") {
-		t.Errorf("expected warning about GITHUB_TOKEN, got %q", warning)
+	if !strings.Contains(warning, "not set") {
+		t.Errorf("expected warning about token not set, got %q", warning)
 	}
 
 	// Flag override to github without token — should warn
@@ -177,8 +177,8 @@ func TestResolveProviderGitHub(t *testing.T) {
 	if got != "github" {
 		t.Errorf("got %q, want github", got)
 	}
-	if !strings.Contains(warning, "GITHUB_TOKEN not set") {
-		t.Errorf("expected warning about GITHUB_TOKEN, got %q", warning)
+	if !strings.Contains(warning, "not set") {
+		t.Errorf("expected warning about token not set, got %q", warning)
 	}
 
 	// Flag override to github with token — no warning

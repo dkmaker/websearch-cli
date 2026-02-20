@@ -224,7 +224,7 @@ func formatStars(count int) string {
 
 func (g *GitHub) searchCode(ctx context.Context, query string, opts SearchOptions) (*Result, error) {
 	if g.token == "" {
-		return nil, fmt.Errorf("code search requires authentication. Set GITHUB_TOKEN")
+		return nil, fmt.Errorf("code search requires authentication. Set GH_TOKEN or GITHUB_TOKEN")
 	}
 
 	endpoint := g.buildURL("/search/code", query, opts.MaxResults, "")

@@ -133,7 +133,7 @@ func run(cmd *cobra.Command, args []string) error {
 	if len(args) == 0 {
 		perplexityKey := os.Getenv("PERPLEXITY_API_KEY")
 		braveKey := os.Getenv("BRAVE_API_KEY")
-		githubKey := os.Getenv("GITHUB_TOKEN")
+		githubKey := getGitHubToken()
 		fmt.Print(buildSelfPrimer(perplexityKey, braveKey, githubKey, flagShowExamples, flagShowProfiles))
 		return nil
 	}
@@ -170,7 +170,7 @@ func run(cmd *cobra.Command, args []string) error {
 	// Get API keys
 	perplexityKey := os.Getenv("PERPLEXITY_API_KEY")
 	braveKey := os.Getenv("BRAVE_API_KEY")
-	githubKey := os.Getenv("GITHUB_TOKEN")
+	githubKey := getGitHubToken()
 
 	// Resolve provider
 	providerName, warning, err := resolveProvider(prof.Provider, flagProvider, perplexityKey, braveKey, githubKey)
@@ -316,7 +316,7 @@ func listProfiles() error {
 // flag override, and available API keys.
 func resolveProvider(profileProv, flagProv, perplexityKey, braveKey, githubKey string) (string, string, error) {
 	if perplexityKey == "" && braveKey == "" && profileProv != "github" && flagProv != "github" {
-		return "", "", fmt.Errorf("no API keys found. Set PERPLEXITY_API_KEY, BRAVE_API_KEY, or GITHUB_TOKEN")
+		return "", "", fmt.Errorf("no API keys found. Set PERPLEXITY_API_KEY, BRAVE_API_KEY, or GH_TOKEN")
 	}
 
 	preferred := profileProv
@@ -337,7 +337,7 @@ func resolveProvider(profileProv, flagProv, perplexityKey, braveKey, githubKey s
 		return "perplexity", "warning: BRAVE_API_KEY not set, falling back to Perplexity", nil
 	case "github":
 		if githubKey == "" {
-			return "github", "warning: GITHUB_TOKEN not set; GitHub searches will be rate-limited and code search will fail", nil
+			return "github", "warning: GH_TOKEN/GITHUB_TOKEN not set; GitHub searches will be rate-limited and code search will fail", nil
 		}
 		return "github", "", nil
 	default:
@@ -534,6 +534,14 @@ func buildGitHubQualifiers() provider.GitHubQualifiers {
 		Assignee:  flagGHAssignee,
 		In:        flagGHIn,
 	}
+}
+
+// getGitHubToken returns the GitHub token, checking GH_TOKEN first then GITHUB_TOKEN.
+func getGitHubToken() string {
+	if token := os.Getenv("GH_TOKEN"); token != "" {
+		return token
+	}
+	return os.Getenv("GITHUB_TOKEN")
 }
 
 func capitalize(s string) string {

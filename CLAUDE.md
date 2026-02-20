@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-Go CLI tool (`websearch`) for AI agents to search the web via Perplexity and Brave APIs. Profile-based configuration abstracts provider selection, modes, and formatting.
+Go CLI tool (`websearch`) for AI agents to search the web via Perplexity, Brave, and GitHub APIs. Profile-based configuration abstracts provider selection, modes, and formatting.
 
 ## Tech Stack
 
@@ -20,9 +20,10 @@ internal/
   provider/provider.go         Provider interface, SearchOptions, Result, Source
   provider/perplexity.go       Perplexity API client (ask/search/reason/research)
   provider/brave.go            Brave Search API client (web)
+  provider/github.go           GitHub Search API client (repos/code/issues)
   profile/profile.go           Profile loading (builtin + user), merging
   profile/embed.go             embed.FS for builtin YAML profiles
-  profile/profiles/*.yaml      Built-in profiles (general, nodejs, python)
+  profile/profiles/*.yaml      Built-in profiles (general, github, nodejs, python)
   cache/cache.go               File-based SHA256-keyed cache, 60-min TTL
   output/formatter.go          Markdown and JSON formatters
 ```
@@ -34,6 +35,7 @@ internal/
 - **Provider resolution:** Profile preference -> flag override -> API key availability -> fallback with warning
 - **Mode auto-adjustment:** When provider changes from profile default, incompatible modes auto-adjust (unless user explicitly set `--mode`)
 - **Output:** Errors to stderr, results to stdout. Sources stripped by default for token efficiency.
+- **GitHub qualifier flags:** `--gh-*` prefixed flags (20 total) map directly to GitHub search API qualifiers. GitHub-specific — error if used with other providers. Repos mode defaults to `sort=stars`.
 
 ## Commands
 
@@ -49,6 +51,7 @@ go test ./internal/provider/...           # Test specific package
 
 - `PERPLEXITY_API_KEY` — Required for Perplexity provider
 - `BRAVE_API_KEY` — Required for Brave provider
+- `GH_TOKEN` / `GITHUB_TOKEN` — For GitHub provider (GH_TOKEN takes priority)
 - `XDG_CACHE_HOME` — Override cache directory (default: `~/.cache`)
 - `XDG_CONFIG_HOME` — Override user profile directory (default: `~/.config`)
 
@@ -67,6 +70,13 @@ go test ./internal/provider/...           # Test specific package
 - Auth: `X-Subscription-Token: <key>`
 - Max 20 results per request
 - Response fields: `web.results[].title`, `.url`, `.description`
+
+### GitHub
+
+- Endpoint: `GET https://api.github.com/search/{repositories,code,issues}`
+- Auth: `Authorization: Bearer <token>` (optional for repos/issues, required for code)
+- Modes: repos (default, sorted by stars), code (requires auth, text-match fragments), issues (auto-appends `is:issue`)
+- Qualifier flags: `--gh-language`, `--gh-stars`, `--gh-sort`, `--gh-label`, `--gh-state`, etc. (20 flags total)
 
 ## Testing
 

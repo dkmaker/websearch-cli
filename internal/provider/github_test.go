@@ -163,8 +163,8 @@ func TestGitHubSearchCodeRequiresAuth(t *testing.T) {
 	if err == nil {
 		t.Error("expected error for code search without token")
 	}
-	if !strings.Contains(err.Error(), "GITHUB_TOKEN") {
-		t.Errorf("expected GITHUB_TOKEN in error, got: %v", err)
+	if !strings.Contains(err.Error(), "GH_TOKEN") {
+		t.Errorf("expected GH_TOKEN in error, got: %v", err)
 	}
 }
 
