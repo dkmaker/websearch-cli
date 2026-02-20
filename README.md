@@ -1,8 +1,10 @@
 # websearch
 
-A Go CLI tool for AI agents to perform web searches via Perplexity and Brave APIs. Uses a profile system to abstract away provider selection, search modes, and result formatting — so agents just specify a profile and query.
+A Go CLI tool for AI agents to perform web searches via Perplexity, Brave, and GitHub APIs. Uses a profile system to abstract away provider selection, search modes, and result formatting — so agents just specify a profile and query.
 
 ## Installation
+
+Download a prebuilt binary from the [latest release](https://github.com/dkmaker/websearch-cli/releases/latest), or install with Go:
 
 ```bash
 go install github.com/dkmaker/websearch/cmd/websearch@latest
@@ -11,8 +13,8 @@ go install github.com/dkmaker/websearch/cmd/websearch@latest
 Or build from source:
 
 ```bash
-git clone https://github.com/dkmaker/websearch.git
-cd websearch
+git clone https://github.com/dkmaker/websearch-cli.git
+cd websearch-cli
 go build -o websearch ./cmd/websearch/
 ```
 
