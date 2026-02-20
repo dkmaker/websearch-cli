@@ -137,7 +137,7 @@ func (g *GitHub) doRequest(ctx context.Context, endpoint string, acceptHeader st
 	return body, nil
 }
 
-func (g *GitHub) buildURL(path string, query string, maxResults int) string {
+func (g *GitHub) buildURL(path string, query string, maxResults int, sort string) string {
 	params := url.Values{}
 	params.Set("q", query)
 	perPage := maxResults
@@ -148,11 +148,19 @@ func (g *GitHub) buildURL(path string, query string, maxResults int) string {
 		perPage = 100
 	}
 	params.Set("per_page", strconv.Itoa(perPage))
+	if sort != "" {
+		params.Set("sort", sort)
+		params.Set("order", "desc")
+	}
 	return g.baseURL + path + "?" + params.Encode()
 }
 
 func (g *GitHub) searchRepos(ctx context.Context, query string, opts SearchOptions) (*Result, error) {
-	endpoint := g.buildURL("/search/repositories", query, opts.MaxResults)
+	sort := opts.GitHub.Sort
+	if sort == "" {
+		sort = "stars"
+	}
+	endpoint := g.buildURL("/search/repositories", query, opts.MaxResults, sort)
 	body, err := g.doRequest(ctx, endpoint, "")
 	if err != nil {
 		return nil, err
@@ -219,7 +227,7 @@ func (g *GitHub) searchCode(ctx context.Context, query string, opts SearchOption
 		return nil, fmt.Errorf("code search requires authentication. Set GITHUB_TOKEN")
 	}
 
-	endpoint := g.buildURL("/search/code", query, opts.MaxResults)
+	endpoint := g.buildURL("/search/code", query, opts.MaxResults, "")
 	body, err := g.doRequest(ctx, endpoint, "application/vnd.github.text-match+json")
 	if err != nil {
 		return nil, err
@@ -262,7 +270,7 @@ func (g *GitHub) searchCode(ctx context.Context, query string, opts SearchOption
 }
 
 func (g *GitHub) searchIssues(ctx context.Context, query string, opts SearchOptions) (*Result, error) {
-	endpoint := g.buildURL("/search/issues", query, opts.MaxResults)
+	endpoint := g.buildURL("/search/issues", query, opts.MaxResults, "")
 	body, err := g.doRequest(ctx, endpoint, "")
 	if err != nil {
 		return nil, err

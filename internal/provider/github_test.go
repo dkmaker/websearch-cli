@@ -424,6 +424,73 @@ func TestGitHubPrepareQuery(t *testing.T) {
 	}
 }
 
+func TestGitHubReposSortByStars(t *testing.T) {
+	mockResp := map[string]interface{}{
+		"total_count": 1, "incomplete_results": false,
+		"items": []map[string]interface{}{
+			{"full_name": "test/repo", "html_url": "https://github.com/test/repo",
+				"description": "test", "stargazers_count": 100, "language": "Go",
+				"updated_at": "2026-02-19T10:00:00Z", "topics": []string{}},
+		},
+	}
+
+	var capturedSort, capturedOrder string
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		capturedSort = r.URL.Query().Get("sort")
+		capturedOrder = r.URL.Query().Get("order")
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(mockResp)
+	}))
+	defer server.Close()
+
+	p := NewGitHub("", server.URL)
+	_, err := p.Search(context.Background(), "test", SearchOptions{
+		Mode:       "repos",
+		MaxResults: 10,
+		GitHub:     GitHubQualifiers{Sort: "stars"},
+	})
+	if err != nil {
+		t.Fatalf("Search error: %v", err)
+	}
+	if capturedSort != "stars" {
+		t.Errorf("expected sort=stars, got %q", capturedSort)
+	}
+	if capturedOrder != "desc" {
+		t.Errorf("expected order=desc, got %q", capturedOrder)
+	}
+}
+
+func TestGitHubReposDefaultSortStars(t *testing.T) {
+	mockResp := map[string]interface{}{
+		"total_count": 1, "incomplete_results": false,
+		"items": []map[string]interface{}{
+			{"full_name": "test/repo", "html_url": "https://github.com/test/repo",
+				"description": "test", "stargazers_count": 100, "language": "Go",
+				"updated_at": "2026-02-19T10:00:00Z", "topics": []string{}},
+		},
+	}
+
+	var capturedSort string
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		capturedSort = r.URL.Query().Get("sort")
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(mockResp)
+	}))
+	defer server.Close()
+
+	p := NewGitHub("", server.URL)
+	_, err := p.Search(context.Background(), "test", SearchOptions{
+		Mode:       "repos",
+		MaxResults: 10,
+	})
+	if err != nil {
+		t.Fatalf("Search error: %v", err)
+	}
+	if capturedSort != "stars" {
+		t.Errorf("expected default sort=stars for repos, got %q", capturedSort)
+	}
+}
+
 func TestPrepareQueryWithQualifiers(t *testing.T) {
 	g := NewGitHub("", "")
 
