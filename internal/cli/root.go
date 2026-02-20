@@ -38,6 +38,30 @@ var (
 	flagNoMetadata     bool
 )
 
+// GitHub qualifier flags
+var (
+	flagGHLanguage  string
+	flagGHUser      string
+	flagGHOrg       string
+	flagGHRepo      string
+	flagGHStars     string
+	flagGHTopic     string
+	flagGHLicense   string
+	flagGHArchived  string
+	flagGHFork      string
+	flagGHPushed    string
+	flagGHCreated   string
+	flagGHSort      string
+	flagGHFilename  string
+	flagGHExtension string
+	flagGHPath      string
+	flagGHState     string
+	flagGHLabel     string
+	flagGHAuthor    string
+	flagGHAssignee  string
+	flagGHIn        string
+)
+
 var rootCmd = &cobra.Command{
 	Use:   "websearch [flags] <query>",
 	Short: "Web search CLI for AI agents",
@@ -72,6 +96,28 @@ func init() {
 	rootCmd.Flags().BoolVar(&flagShowExamples, "show-examples", false, "Show usage examples")
 	rootCmd.Flags().BoolVar(&flagShowProfiles, "show-profiles", false, "Show profile details")
 	rootCmd.Flags().BoolVar(&flagNoMetadata, "no-metadata", false, "Omit response metadata from output")
+
+	// GitHub qualifier flags
+	rootCmd.Flags().StringVar(&flagGHLanguage, "gh-language", "", "GitHub: filter by language (e.g., go, python)")
+	rootCmd.Flags().StringVar(&flagGHUser, "gh-user", "", "GitHub: filter by user/owner")
+	rootCmd.Flags().StringVar(&flagGHOrg, "gh-org", "", "GitHub: filter by organization")
+	rootCmd.Flags().StringVar(&flagGHRepo, "gh-repo", "", "GitHub: filter by repo (owner/name)")
+	rootCmd.Flags().StringVar(&flagGHStars, "gh-stars", "", "GitHub: filter by stars (e.g., >100, 10..50)")
+	rootCmd.Flags().StringVar(&flagGHTopic, "gh-topic", "", "GitHub: filter by topic")
+	rootCmd.Flags().StringVar(&flagGHLicense, "gh-license", "", "GitHub: filter by license (e.g., mit, apache-2.0)")
+	rootCmd.Flags().StringVar(&flagGHArchived, "gh-archived", "", "GitHub: filter archived repos (true/false)")
+	rootCmd.Flags().StringVar(&flagGHFork, "gh-fork", "", "GitHub: filter forks (true/only)")
+	rootCmd.Flags().StringVar(&flagGHPushed, "gh-pushed", "", "GitHub: filter by last push date (e.g., >2024-01-01)")
+	rootCmd.Flags().StringVar(&flagGHCreated, "gh-created", "", "GitHub: filter by creation date (e.g., >2024-01-01)")
+	rootCmd.Flags().StringVar(&flagGHSort, "gh-sort", "", "GitHub: sort repos by (stars, forks, updated)")
+	rootCmd.Flags().StringVar(&flagGHFilename, "gh-filename", "", "GitHub: filter code by filename")
+	rootCmd.Flags().StringVar(&flagGHExtension, "gh-extension", "", "GitHub: filter code by file extension")
+	rootCmd.Flags().StringVar(&flagGHPath, "gh-path", "", "GitHub: filter code by directory path")
+	rootCmd.Flags().StringVar(&flagGHState, "gh-state", "", "GitHub: filter issues by state (open/closed)")
+	rootCmd.Flags().StringVar(&flagGHLabel, "gh-label", "", "GitHub: filter issues by label")
+	rootCmd.Flags().StringVar(&flagGHAuthor, "gh-author", "", "GitHub: filter issues by author")
+	rootCmd.Flags().StringVar(&flagGHAssignee, "gh-assignee", "", "GitHub: filter issues by assignee")
+	rootCmd.Flags().StringVar(&flagGHIn, "gh-in", "", "GitHub: search in fields (name,description / title,body)")
 }
 
 func Execute() error {
@@ -150,6 +196,13 @@ func run(cmd *cobra.Command, args []string) error {
 		fmt.Fprintf(os.Stderr, "warning: mode adjusted to %q for %s provider\n", mode, providerName)
 	}
 
+	ghQualifiers := buildGitHubQualifiers()
+
+	// Validate --gh-* flags are only used with GitHub provider
+	if !ghQualifiers.IsEmpty() && providerName != "github" {
+		return fmt.Errorf("--gh-* flags are only supported with the GitHub provider (current: %s)", providerName)
+	}
+
 	// Build search options
 	opts := provider.SearchOptions{
 		Mode:         mode,
@@ -157,6 +210,7 @@ func run(cmd *cobra.Command, args []string) error {
 		MaxResults:   prof.MaxResults,
 		SystemPrompt: prof.SystemPrompt,
 		DomainFilter: prof.DomainFilter,
+		GitHub:       ghQualifiers,
 	}
 
 	// Check cache
@@ -452,6 +506,31 @@ const researchTokenScaleTarget = 16384
 // max_tokens is at or below the threshold.
 func shouldAutoScaleTokens(mode string, flagMaxTokens, profileMaxTokens int) bool {
 	return mode == "research" && flagMaxTokens == 0 && profileMaxTokens <= researchTokenScaleThreshold
+}
+
+func buildGitHubQualifiers() provider.GitHubQualifiers {
+	return provider.GitHubQualifiers{
+		Language:  flagGHLanguage,
+		User:      flagGHUser,
+		Org:       flagGHOrg,
+		Repo:      flagGHRepo,
+		Stars:     flagGHStars,
+		Topic:     flagGHTopic,
+		License:   flagGHLicense,
+		Archived:  flagGHArchived,
+		Fork:      flagGHFork,
+		Pushed:    flagGHPushed,
+		Created:   flagGHCreated,
+		Sort:      flagGHSort,
+		Filename:  flagGHFilename,
+		Extension: flagGHExtension,
+		Path:      flagGHPath,
+		State:     flagGHState,
+		Label:     flagGHLabel,
+		Author:    flagGHAuthor,
+		Assignee:  flagGHAssignee,
+		In:        flagGHIn,
+	}
 }
 
 func capitalize(s string) string {
