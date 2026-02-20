@@ -424,6 +424,9 @@ func buildSelfPrimer(perplexityKey, braveKey, githubKey string, showExamples, sh
 	// Usage
 	sb.WriteString("\nUsage: websearch [flags] \"query\"\n")
 	sb.WriteString("Key flags: -p profile, -m mode, --provider, --json, --include-sources, --no-cache\n")
+	sb.WriteString("GitHub flags: --gh-language, --gh-stars, --gh-sort, --gh-user, --gh-org, --gh-repo, --gh-topic,\n")
+	sb.WriteString("  --gh-license, --gh-archived, --gh-fork, --gh-pushed, --gh-created, --gh-in,\n")
+	sb.WriteString("  --gh-filename, --gh-extension, --gh-path (code), --gh-state, --gh-label, --gh-author, --gh-assignee (issues)\n")
 	sb.WriteString("More: --show-examples, --show-profiles, --help\n")
 
 	// Optional: examples
@@ -434,8 +437,8 @@ func buildSelfPrimer(perplexityKey, braveKey, githubKey string, showExamples, sh
 		sb.WriteString("  websearch --provider brave \"local restaurants\"            # brave web search\n")
 		sb.WriteString("  websearch -p python \"fastapi middleware\"                  # python profile\n")
 		sb.WriteString("  websearch --json --include-sources \"kubernetes basics\"    # JSON with sources\n")
-		sb.WriteString("  websearch -p github \"cobra CLI framework\"                  # github repos\n")
-		sb.WriteString("  websearch -p github -m code \"http.ListenAndServe lang:go\"   # github code\n")
+		sb.WriteString("  websearch -p github --gh-language go --gh-stars '>1000' \"web framework\"  # github repos with qualifiers\n")
+		sb.WriteString("  websearch -p github -m issues --gh-state open --gh-label bug \"crash\"     # github issues filtered\n")
 	}
 
 	// Optional: profile details
