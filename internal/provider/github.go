@@ -91,7 +91,7 @@ func (g *GitHub) Search(ctx context.Context, query string, opts SearchOptions) (
 		return nil, err
 	}
 
-	query = g.prepareQuery(query, opts.Mode)
+	query = g.prepareQuery(query, opts.Mode, opts.GitHub)
 
 	switch opts.Mode {
 	case "repos":
@@ -341,15 +341,86 @@ func repoNameFromURL(apiURL string) string {
 	return ""
 }
 
-// prepareQuery applies mode-specific query transformations for the GitHub API.
-func (g *GitHub) prepareQuery(query string, mode string) string {
-	switch mode {
-	case "issues":
-		// GitHub /search/issues requires is:issue or is:pull-request qualifier.
-		// Default to is:issue when the user hasn't specified either.
-		if !strings.Contains(query, "is:issue") && !strings.Contains(query, "is:pull-request") {
-			query = query + " is:issue"
+// prepareQuery builds the GitHub API query string from the free-text query
+// and structured qualifiers.
+func (g *GitHub) prepareQuery(query string, mode string, qualifiers GitHubQualifiers) string {
+	var parts []string
+	if query != "" {
+		parts = append(parts, query)
+	}
+
+	// Common qualifiers (all modes)
+	if qualifiers.Language != "" {
+		parts = append(parts, "language:"+qualifiers.Language)
+	}
+	if qualifiers.User != "" {
+		parts = append(parts, "user:"+qualifiers.User)
+	}
+	if qualifiers.Org != "" {
+		parts = append(parts, "org:"+qualifiers.Org)
+	}
+	if qualifiers.Repo != "" {
+		parts = append(parts, "repo:"+qualifiers.Repo)
+	}
+	if qualifiers.In != "" {
+		parts = append(parts, "in:"+qualifiers.In)
+	}
+
+	// Repos-applicable qualifiers
+	if qualifiers.Stars != "" {
+		parts = append(parts, "stars:"+qualifiers.Stars)
+	}
+	if qualifiers.Topic != "" {
+		parts = append(parts, "topic:"+qualifiers.Topic)
+	}
+	if qualifiers.License != "" {
+		parts = append(parts, "license:"+qualifiers.License)
+	}
+	if qualifiers.Archived != "" {
+		parts = append(parts, "archived:"+qualifiers.Archived)
+	}
+	if qualifiers.Fork != "" {
+		parts = append(parts, "fork:"+qualifiers.Fork)
+	}
+	if qualifiers.Pushed != "" {
+		parts = append(parts, "pushed:"+qualifiers.Pushed)
+	}
+	if qualifiers.Created != "" {
+		parts = append(parts, "created:"+qualifiers.Created)
+	}
+
+	// Code-applicable qualifiers
+	if qualifiers.Filename != "" {
+		parts = append(parts, "filename:"+qualifiers.Filename)
+	}
+	if qualifiers.Extension != "" {
+		parts = append(parts, "extension:"+qualifiers.Extension)
+	}
+	if qualifiers.Path != "" {
+		parts = append(parts, "path:"+qualifiers.Path)
+	}
+
+	// Issues-applicable qualifiers
+	if qualifiers.State != "" {
+		parts = append(parts, "is:"+qualifiers.State)
+	}
+	if qualifiers.Label != "" {
+		parts = append(parts, "label:"+qualifiers.Label)
+	}
+	if qualifiers.Author != "" {
+		parts = append(parts, "author:"+qualifiers.Author)
+	}
+	if qualifiers.Assignee != "" {
+		parts = append(parts, "assignee:"+qualifiers.Assignee)
+	}
+
+	// Issues mode: always append is:issue unless user query already has it
+	if mode == "issues" {
+		joined := strings.Join(parts, " ")
+		if !strings.Contains(joined, "is:issue") && !strings.Contains(joined, "is:pull-request") {
+			parts = append(parts, "is:issue")
 		}
 	}
-	return query
+
+	return strings.Join(parts, " ")
 }

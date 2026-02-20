@@ -415,10 +415,131 @@ func TestGitHubPrepareQuery(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			result := g.prepareQuery(tt.query, tt.mode)
+			result := g.prepareQuery(tt.query, tt.mode, GitHubQualifiers{})
 			if result != tt.expected {
 				t.Errorf("prepareQuery(%q, %q) = %q, want %q",
 					tt.query, tt.mode, result, tt.expected)
+			}
+		})
+	}
+}
+
+func TestPrepareQueryWithQualifiers(t *testing.T) {
+	g := NewGitHub("", "")
+
+	tests := []struct {
+		name       string
+		query      string
+		mode       string
+		qualifiers GitHubQualifiers
+		expected   string
+	}{
+		{
+			name:       "language qualifier appended",
+			query:      "web framework",
+			mode:       "repos",
+			qualifiers: GitHubQualifiers{Language: "go"},
+			expected:   "web framework language:go",
+		},
+		{
+			name:       "multiple qualifiers",
+			query:      "cli tool",
+			mode:       "repos",
+			qualifiers: GitHubQualifiers{Language: "go", Stars: ">1000"},
+			expected:   "cli tool language:go stars:>1000",
+		},
+		{
+			name:       "code mode with filename",
+			query:      "http.ListenAndServe",
+			mode:       "code",
+			qualifiers: GitHubQualifiers{Language: "go", Filename: "main.go"},
+			expected:   "http.ListenAndServe language:go filename:main.go",
+		},
+		{
+			name:       "issues mode with state and label",
+			query:      "deadlock",
+			mode:       "issues",
+			qualifiers: GitHubQualifiers{State: "open", Label: "bug"},
+			expected:   "deadlock is:open label:bug is:issue",
+		},
+		{
+			name:       "issues mode state overrides auto is:issue",
+			query:      "memory leak",
+			mode:       "issues",
+			qualifiers: GitHubQualifiers{State: "closed"},
+			expected:   "memory leak is:closed is:issue",
+		},
+		{
+			name:       "empty qualifiers unchanged",
+			query:      "go web framework",
+			mode:       "repos",
+			qualifiers: GitHubQualifiers{},
+			expected:   "go web framework",
+		},
+		{
+			name:       "user and org qualifiers",
+			query:      "router",
+			mode:       "repos",
+			qualifiers: GitHubQualifiers{User: "gorilla"},
+			expected:   "router user:gorilla",
+		},
+		{
+			name:       "repo qualifier for code search",
+			query:      "func main",
+			mode:       "code",
+			qualifiers: GitHubQualifiers{Repo: "golang/go", Extension: "go"},
+			expected:   "func main repo:golang/go extension:go",
+		},
+		{
+			name:       "repos with topic and license",
+			query:      "machine learning",
+			mode:       "repos",
+			qualifiers: GitHubQualifiers{Topic: "deep-learning", License: "mit"},
+			expected:   "machine learning topic:deep-learning license:mit",
+		},
+		{
+			name:       "issues with author and assignee",
+			query:      "crash",
+			mode:       "issues",
+			qualifiers: GitHubQualifiers{Author: "octocat", Assignee: "mona"},
+			expected:   "crash author:octocat assignee:mona is:issue",
+		},
+		{
+			name:       "in qualifier",
+			query:      "kubernetes",
+			mode:       "repos",
+			qualifiers: GitHubQualifiers{In: "name,description"},
+			expected:   "kubernetes in:name,description",
+		},
+		{
+			name:       "repos with archived and fork",
+			query:      "framework",
+			mode:       "repos",
+			qualifiers: GitHubQualifiers{Archived: "false", Fork: "true"},
+			expected:   "framework archived:false fork:true",
+		},
+		{
+			name:       "repos with pushed and created",
+			query:      "new project",
+			mode:       "repos",
+			qualifiers: GitHubQualifiers{Pushed: ">2024-01-01", Created: ">2023-01-01"},
+			expected:   "new project pushed:>2024-01-01 created:>2023-01-01",
+		},
+		{
+			name:       "code with path qualifier",
+			query:      "config",
+			mode:       "code",
+			qualifiers: GitHubQualifiers{Path: "src/config"},
+			expected:   "config path:src/config",
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			result := g.prepareQuery(tt.query, tt.mode, tt.qualifiers)
+			if result != tt.expected {
+				t.Errorf("prepareQuery(%q, %q, %+v) = %q, want %q",
+					tt.query, tt.mode, tt.qualifiers, result, tt.expected)
 			}
 		})
 	}
