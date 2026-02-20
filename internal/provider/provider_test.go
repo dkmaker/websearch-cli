@@ -37,6 +37,33 @@ func TestSearchOptionsValidate(t *testing.T) {
 	}
 }
 
+func TestGitHubQualifiersIsEmpty(t *testing.T) {
+	q := GitHubQualifiers{}
+	if !q.IsEmpty() {
+		t.Error("empty qualifiers should return true")
+	}
+	q.Language = "go"
+	if q.IsEmpty() {
+		t.Error("qualifiers with language set should not be empty")
+	}
+}
+
+func TestGitHubQualifiersCacheKey(t *testing.T) {
+	q := GitHubQualifiers{Language: "go", Stars: ">100"}
+	key := q.CacheKey()
+	if key == "" {
+		t.Error("expected non-empty cache key")
+	}
+	q2 := GitHubQualifiers{Language: "python", Stars: ">100"}
+	if q.CacheKey() == q2.CacheKey() {
+		t.Error("different qualifiers should produce different cache keys")
+	}
+	q3 := GitHubQualifiers{}
+	if q3.CacheKey() != "" {
+		t.Error("empty qualifiers should produce empty cache key")
+	}
+}
+
 func TestResultHasSources(t *testing.T) {
 	r := &Result{
 		Content: "answer text",

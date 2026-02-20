@@ -4,6 +4,7 @@ package provider
 import (
 	"context"
 	"fmt"
+	"strings"
 )
 
 // Provider is the interface that search providers must implement.
@@ -11,6 +12,50 @@ type Provider interface {
 	Search(ctx context.Context, query string, opts SearchOptions) (*Result, error)
 	Name() string
 	SupportedModes() []string
+}
+
+// GitHubQualifiers holds GitHub-specific search qualifiers exposed as CLI flags.
+type GitHubQualifiers struct {
+	Language  string
+	User      string
+	Org       string
+	Repo      string
+	Stars     string
+	Topic     string
+	License   string
+	Archived  string
+	Fork      string
+	Pushed    string
+	Created   string
+	Sort      string
+	Filename  string
+	Extension string
+	Path      string
+	State     string
+	Label     string
+	Author    string
+	Assignee  string
+	In        string
+}
+
+// IsEmpty returns true if no qualifiers are set.
+func (q GitHubQualifiers) IsEmpty() bool {
+	return q == GitHubQualifiers{}
+}
+
+// CacheKey returns a deterministic string representation for cache keying.
+// Returns empty string if no qualifiers are set.
+func (q GitHubQualifiers) CacheKey() string {
+	if q.IsEmpty() {
+		return ""
+	}
+	parts := []string{
+		q.Language, q.User, q.Org, q.Repo, q.Stars, q.Topic,
+		q.License, q.Archived, q.Fork, q.Pushed, q.Created, q.Sort,
+		q.Filename, q.Extension, q.Path, q.State, q.Label, q.Author,
+		q.Assignee, q.In,
+	}
+	return strings.Join(parts, "\x00")
 }
 
 // SearchOptions configures a search request.
@@ -23,6 +68,7 @@ type SearchOptions struct {
 	RecencyFilter     string
 	IncludeSources    bool
 	SearchContextSize string
+	GitHub            GitHubQualifiers
 }
 
 // Validate checks that search options are valid.
