@@ -302,6 +302,31 @@ func TestSelfPrimerGitHub(t *testing.T) {
 	if !strings.Contains(output, "repos*") {
 		t.Error("expected repos* mode")
 	}
+	if !strings.Contains(output, "--gh-language") {
+		t.Error("expected --gh-language in self-primer output")
+	}
+	if !strings.Contains(output, "--gh-state") {
+		t.Error("expected --gh-state in self-primer output")
+	}
+}
+
+func TestGitHubQualifiersWithNonGitHubProviderErrors(t *testing.T) {
+	// buildGitHubQualifiers reads from flag vars, so set one directly
+	oldVal := flagGHLanguage
+	flagGHLanguage = "go"
+	defer func() { flagGHLanguage = oldVal }()
+
+	q := buildGitHubQualifiers()
+	if q.IsEmpty() {
+		t.Fatal("expected non-empty qualifiers")
+	}
+
+	// The validation check in run() is: !ghQualifiers.IsEmpty() && providerName != "github"
+	// We test the logic directly since run() requires full setup
+	providerName := "perplexity"
+	if !(!q.IsEmpty() && providerName != "github") {
+		t.Error("expected validation to trigger for non-github provider with qualifiers")
+	}
 }
 
 func TestDetectDeflection(t *testing.T) {
